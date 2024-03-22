@@ -1,0 +1,129 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "C:/LoLLiPoP/project/NSBot/runprocess.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": false
+  },
+  {
+   "optionDest": "console",
+   "value": true
+  },
+  {
+   "optionDest": "icon_file",
+   "value": "C:/LoLLiPoP/icon.ico"
+  },
+  {
+   "optionDest": "name",
+   "value": "runprocess"
+  },
+  {
+   "optionDest": "ascii",
+   "value": false
+  },
+  {
+   "optionDest": "clean_build",
+   "value": true
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": false
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "embed_manifest",
+   "value": true
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": false
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": false
+  },
+  {
+   "optionDest": "win_private_assemblies",
+   "value": false
+  },
+  {
+   "optionDest": "win_no_prefer_redirects",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "argv_emulation",
+   "value": false
+  },
+  {
+   "optionDest": "excludes",
+   "value": "numpy"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "PIL"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "psutil"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "tk"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "tcl"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "pywintypes"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "win32process"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "requests"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "tkinter"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "shutil"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "zipfile"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "urllib.request"
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}
