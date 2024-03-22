@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import sys
 import time
 import inspect
@@ -31,38 +30,4 @@ def printWithTime(*objects, sep=' ', end='\n', file=sys.stdout, flush=False):
     print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)
 
 def inputWithTimePrompt(prompt):
-=======
-import sys
-import time
-import inspect
-import ctypes
-
-
-
-def _asyncRaise(threadId, exctype):
-    threadId = ctypes.c_long(threadId)
-    if not inspect.isclass(exctype):
-        exctype = type(exctype)
-    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(threadId, ctypes.py_object(exctype))
-    if res == 0:
-        raise ValueError("invalid thread id")
-    elif res != 1:
-        # """if it returns a number greater than one, you're in trouble,
-        # and you should call it again with exc=NULL to revert the effect"""
-        ctypes.pythonapi.PyThreadState_SetAsyncExc(threadId, None)
-        raise SystemError("PyThreadState_SetAsyncExc failed")
-
-def stopThread(thread):
-    if thread.is_alive():
-        _asyncRaise(thread.ident, SystemExit)
-
-def getTimeFormatted():
-    return time.strftime("[%Y-%m-%d %H:%M:%S]",time.localtime())
-
-def printWithTime(*objects, sep=' ', end='\n', file=sys.stdout, flush=False):
-    print(getTimeFormatted()+":", sep=' ', end='')
-    print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)
-
-def inputWithTimePrompt(prompt):
->>>>>>> 5aba08ced5481b6f7896a7cef616b87c6e9f4d1e
     return input(getTimeFormatted()+":"+prompt)
