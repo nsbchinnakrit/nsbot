@@ -1,0 +1,17 @@
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\bin\Release\net6.0-windows\win-x86\runupdate.exe
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\bin\Release\net6.0-windows\win-x86\runupdate.deps.json
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\bin\Release\net6.0-windows\win-x86\runupdate.runtimeconfig.json
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\bin\Release\net6.0-windows\win-x86\runupdate.dll
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\bin\Release\net6.0-windows\win-x86\Newtonsoft.Json.dll
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\runupdate.csproj.AssemblyReference.cache
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\update.Form1.resources
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\runupdate.csproj.GenerateResource.cache
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\runupdate.GeneratedMSBuildEditorConfig.editorconfig
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\runupdate.AssemblyInfoInputs.cache
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\runupdate.AssemblyInfo.cs
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\runupdate.csproj.CoreCompileInputs.cache
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\runupdate.csproj.CopyComplete
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\runupdate.dll
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\refint\runupdate.dll
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\runupdate.genruntimeconfig.cache
+C:\LoLLiPoP\project\NSBot\Gui\Update\update\update\obj\Release\net6.0-windows\win-x86\ref\runupdate.dll
