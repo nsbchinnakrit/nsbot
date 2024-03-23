@@ -89,7 +89,7 @@ class GuildRealmRaid(threading.Thread):
             #Drag mouse down if enemy not found
             guildscroll=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDSCROLL_PATH'])
             position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH'])
-            positionGB=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.88) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.97))
+            positionGB=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.95) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.97))
             positionCN=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.88) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.97))
             position1= positionGB or positionCN
             position2=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDPAGEEND_PATH'])
@@ -141,7 +141,7 @@ class GuildRealmRaid(threading.Thread):
             #Click Realm
             guild=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDSCROLL_PATH'])
             position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH'])
-            positionGB=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.88) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.97))
+            positionGB=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.95) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.97))
             positionCN=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.85) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.85))
             position1= positionGB or positionCN
             position2=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE'])
