@@ -1,16 +1,12 @@
 __pycache__
 GameMode/__pycache__
 
-runprocess/temp*
+runprocess/*
+คนเหลี่ยมๆ/*
 temp*
 NSLaunch.spec
 output/update.exe
-Gui/NewUI/WinFormsApp1/WinFormsApp1/bin
-Gui/NewUI/WinFormsApp1/WinFormsApp1/obj
-Gui/NewUI/WinFormsApp1/.vs
-Gui/NewUI/WinFormsApp1/WinFormsApp1/obj/project.nuget.cache
-
-Gui/NewUI/WinFormsApp1/WinFormsApp1/obj/
+Gui/*
 .gitignore
-Gui/NewUI/WinFormsApp1/.vs/WinFormsApp1/v17/.suo
-Gui/NewUI/WinFormsApp1/WinFormsApp1/Properties/PublishProfiles/FolderProfile.pubxml.user
+log.log
+logs/*

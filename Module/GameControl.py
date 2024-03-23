@@ -19,7 +19,7 @@ fimg = 0
 
 class GameControl():
     global fimg
-    def __init__(self, hwnd, quit_game_enable=1, fimgdelay=0.07):
+    def __init__(self, hwnd, quit_game_enable=1, fimgdelay=0.01):
         '''
         initialization
 
@@ -35,14 +35,16 @@ class GameControl():
         self.quit_game_enable = quit_game_enable
         self.debug_enable = False
         l1, t1, r1, b1 = win32gui.GetWindowRect(self.hwnd)
-        #print(l1,t1, r1,b1)
         l2, t2, r2, b2 = win32gui.GetClientRect(self.hwnd)
-        # print(l2,t2,r2,b2)
         self._client_h = b2 - t2
         self._client_w = r2 - l2
         self._border_l = ((r1 - l1) - (r2 - l2)) // 2
         self._border_t = ((b1 - t1) - (b2 - t2)) - self._border_l
         self.client = 0
+        if self.client == 1:
+            from  ppadb.client import Client as AbdClient
+            client = AbdClient(host='127.0.0.1', port=5037)
+            devices = client.devices()
       
     def init_mem(self):
         self.hwindc = win32gui.GetWindowDC(self.hwnd)
@@ -52,6 +54,15 @@ class GameControl():
         self.bmp.CreateCompatibleBitmap(
             self.srcdc, self._client_w, self._client_h)
         self.memdc.SelectObject(self.bmp)
+    
+    def recheckRect(self):
+        logging.debug('Detected ChatPanel: GetClientRect')
+        l1, t1, r1, b1 = win32gui.GetWindowRect(self.hwnd)
+        l2, t2, r2, b2 = win32gui.GetClientRect(self.hwnd)
+        self._client_h = b2 - t2
+        self._client_w = r2 - l2
+        self._border_l = ((r1 - l1) - (r2 - l2)) // 2
+        self._border_t = ((b1 - t1) - (b2 - t2)) - self._border_l
 
     def window_full_shot(self, file_name=None, gray=0):
         '''
@@ -212,10 +223,10 @@ class GameControl():
         # Get screenshot
         if part == 1:
             img_src = self.window_part_shot(pos1, pos2, None, gray)
-            #print('take part shot')
+            #logging.info('take part shot')
         else:
             img_src = self.window_full_shot(None, gray)
-            #print('take full shot')
+            #logging.info('take full shot')
         # show_img(img_src)
 
         # Read file
@@ -236,8 +247,8 @@ class GameControl():
                     img = self.window_full_shot()
                 self.img = cv2.rectangle(img, maxLoc, (maxLoc[0]+img_template.shape[1],maxLoc[1]+img_template.shape[0]), (0, 255, 0), 3)
                 show_img(img)
-                print("Top left point location: ",maxLoc)
-                print("Score: ",maxVal)
+                logging.info("Top left point location: ",maxLoc)
+                logging.info("Score: ",maxVal)
             if center:
                 maxLoc=list(maxLoc)
                 maxLoc[0]=int(maxLoc[0]+(img_template.shape[1]/2))
@@ -275,7 +286,7 @@ class GameControl():
 
         try:
             maxLoc = match_img_knn(img_template, img_src, thread)
-            # print(maxLoc)
+            # logging.info(maxLoc)
             if self.debug_enable:
                 if part == 1:
                     img = self.window_part_shot(pos1,pos2,None,gray)
@@ -283,8 +294,8 @@ class GameControl():
                     img = self.window_full_shot()
 
                 self.img = cv2.rectangle(img, maxLoc, (maxLoc[0]+img_template.shape[1],maxLoc[1]+img_template.shape[0]), (0, 255, 0), 3)
-                print("Top left point location: ",maxLoc)
-                #print("Score: ",maxVal)
+                logging.info("Top left point location: ",maxLoc)
+                #logging.info("Score: ",maxVal)
                 show_img(img)
             if center:
                 maxLoc=list(maxLoc)
@@ -345,14 +356,6 @@ class GameControl():
         user32 = ctypes.WinDLL('user32.dll')
         user32.SwitchToThisWindow(self.hwnd, True)
     
-    def send_key(self):
-        '''
-        Send Key
-        '''
-        win32api.SendMessage(self.hwnd, win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
-        time.sleep(random.randint(20, 80)/1000)
-        win32api.SendMessage(self.hwnd, win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
-    
     def send_esc_down(self, getkey='d'):
         '''
         Send Key Down and Key Up
@@ -362,8 +365,10 @@ class GameControl():
         else:
             key = win32con.WM_KEYUP
         if self.client == 0:
-            print('Send')
+            logging.info('Press "ESC"')
             win32api.PostMessage(self.hwnd, key, win32con.VK_ESCAPE, 0)
+        if self.client == 1:
+            os.system('adb shell input keyevent 4')
 
     def mouse_move(self, pos, pos_end=None):
         '''
@@ -416,6 +421,7 @@ class GameControl():
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
 
     def mouse_click_bg(self, pos, pos_end=None):
+        
         '''
             Background mouse click
             : param pos: (x, y) the coordinates of the mouse click
@@ -433,6 +439,7 @@ class GameControl():
             pos_rand = (random.randint(
                 pos[0], pos_end[0]), random.randint(pos[1], pos_end[1]))
         if self.client == 0:
+            # logging.debug("Click:%s" %str(pos_rand))
             #win32gui.SendMessage(self.hwnd, win32con.BM_CLICK,300,300)
             win32gui.SendMessage(self.hwnd, win32con.WM_MOUSEMOVE,
                                  0, win32api.MAKELONG(pos_rand[0], pos_rand[1]))
@@ -441,8 +448,10 @@ class GameControl():
             time.sleep(random.randint(20, 80)/1000)
             win32gui.SendMessage(self.hwnd, win32con.WM_LBUTTONUP,
                                  0, win32api.MAKELONG(pos_rand[0], pos_rand[1]))
+
         else:
             command = str(pos_rand[0]) + ' ' + str(pos_rand[1])
+            logging.debug('adb shell input tap (pos:%s)'%command)
             os.system('adb shell input tap ' + command)
 
     def mouse_drag_bg(self, pos1, pos2,delay=0.04):
@@ -476,7 +485,6 @@ class GameControl():
         : param quit = True: whether to quit after timeout
         : return: return coordinates successfully, False if failed
         """
-        self.rejectbounty()
         start_time = time.time()
         while time.time()-start_time <= max_time and self.run:
             maxVal, maxLoc = self.find_img(img_path)
@@ -500,7 +508,6 @@ class GameControl():
         : param quit = True: whether to quit after timeout
         : return: return coordinates successfully, False if failed
         '''
-        self.rejectbounty()
         start_time = time.time()
         while time.time()-start_time <= max_time and self.run:
             maxLoc = self.find_img_knn(img_path, thread=thread)
@@ -526,7 +533,6 @@ class GameControl():
         : param quit = True: whether to quit after timeout
         : return: Returns True on success, False on failure
         '''
-        # self.rejectbounty()
         start_time = time.time()
         while time.time()-start_time <= max_time and self.run:
             pos = self.find_color(region, color)
@@ -548,25 +554,18 @@ class GameControl():
         #logging.info('Exit, the last display has been saved to the /img/screenshots folder')
         sys.exit(0)
 
-    def takescreenshot(self):
+
+    def takescreenshot(self, locationsave=''):
         '''
         Screenshot
         '''
         name = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
-        img_src_path = 'img/screenshots/%s.png' %(name)
+        folder_path = './' + locationsave
+        os.makedirs(folder_path, exist_ok=True)
+        img_src_path = folder_path + '/%s.png' % (name)
         self.window_full_shot(img_src_path)
-        logging.info('Screenshot has been saved to img/screenshots/%s.png' %(name))
-
-    def rejectbounty(self):
-        '''
-        Refusal
-        return: refuse to return True, otherwise return False
-        '''
-        maxVal, maxLoc = self.find_img('./screenshots/coopwanted.png',thread=0.8)
-        if maxVal > 0.9:
-            self.mouse_click_bg((749, 453))
-            return True
-        return False
+        logging.info('Take Screenshot: %s/%s.png' % (folder_path, name))
+        return name +'.png'
 
     def find_game_img(self, img_path, part=0, pos1=None, pos2=None, gray=1, center=True, delay=fimg, thread=0.9):
         '''
@@ -579,10 +578,10 @@ class GameControl():
         : param thread = 0.9: custom threshold
         : return: Returns the position coordinates after successful search, otherwise returns False
         '''
-        #self.rejectbounty()
         maxVal, maxLoc = self.find_img(img_path, part, pos1, pos2, gray,center,delay)
-        # print(maxVal)
+        # logging.info(maxVal)
         if maxVal > thread:
+            logging.debug('Found:%s, value:%s, pos:%s', img_path, maxVal, maxLoc)
             return list(maxLoc)
         else:
             return False
@@ -598,9 +597,8 @@ class GameControl():
         : param thread = 0:
         : return: Returns the position coordinates after successful search, otherwise returns False
         '''
-        #self.rejectbounty()
         maxLoc = self.find_img_knn(img_path, part, pos1, pos2, gray, thread,center)
-        # print(maxVal)
+        # logging.info(maxVal)
         if maxLoc != (0, 0):
             return maxLoc
         else:
@@ -636,16 +634,6 @@ class GameControl():
         self.memdc.DeleteDC()
         win32gui.ReleaseDC(self.hwnd, self.hwindc)
         win32gui.DeleteObject(self.bmp.GetHandle())
-
-    def clean_mem2(self):
-        '''
-        Clean up memory
-        '''
-        self.srcdc.DeleteDC()
-        self.memdc.DeleteDC()
-        win32gui.ReleaseDC(self.hwnd, self.hwindc)
-        win32gui.DeleteObject(self.bmp.GetHandle())
-
 
 # For testing
 
@@ -721,22 +709,22 @@ def main():
     #yys.debug()
     # start = timer() 
     # s=yys.find_game_img('test.png',gray=0)
-    # print("\nnormal rgb:", timer()-start,'\n')
+    # logging.info("\nnormal rgb:", timer()-start,'\n')
 
     # start = timer() 
     # s=yys.find_game_img('test.png',gray=1)
-    # print("normal gray:", timer()-start,'\n')
+    # logging.info("normal gray:", timer()-start,'\n')
     
     # start = timer() 
     # s=yys.find_game_img_knn('test.png',gray=0)
-    # print("knn:", timer()-start,'\n')
+    # logging.info("knn:", timer()-start,'\n')
 
     # start = timer() 
     # s=yys.find_game_img_knn('test.png',gray=1)
-    # print("knn gray:", timer()-start,'\n')
+    # logging.info("knn gray:", timer()-start,'\n')
     
     #show_img(s)
-    #print("with GPU:", timer()-start) 
+    #logging.info("with GPU:", timer()-start) 
     #yys.debug_enable=False
     
 
