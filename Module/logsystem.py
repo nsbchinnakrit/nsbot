@@ -35,7 +35,7 @@ class MyLog():
                     log_filename = f'./logs/log_inst{instance_num}.txt'
             
             logging.basicConfig(level=setloglv,
-                                format='%(asctime)s %(levelname)-3s [%(module)-0s]: %(message)s',
+                                format='%(asctime)s %(levelname)-3s [%(module)-0s | %(lineno)d]: %(message)s',
                                 datefmt='[%H:%M:%S]',
                                 filename=log_filename,
                                 filemode='w')
@@ -44,7 +44,7 @@ class MyLog():
             console = logging.StreamHandler()
             console.setLevel(setloglv)
             formatter = logging.Formatter(
-                '%(asctime)s %(levelname)-3s [%(module)-0s]: %(message)s',
+                '%(asctime)s %(levelname)-3s [%(module)-0s | %(lineno)d]: %(message)s',
                 datefmt='[%H:%M:%S]',)
             console.setFormatter(formatter)
             MyLog.mlogger.addHandler(console)
