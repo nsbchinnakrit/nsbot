@@ -11,15 +11,16 @@ import win32api
 import win32con
 import win32gui
 import win32ui
+from Module.loadconfig import *
 from timeit import default_timer as timer
 from PIL import Image
 
 
-fimg = 0
+fimg = config['VALUE']['FIND_IMG_DELAY']
 
 class GameControl():
     global fimg
-    def __init__(self, hwnd, quit_game_enable=1, fimgdelay=0.01):
+    def __init__(self, hwnd, quit_game_enable=1):
         '''
         initialization
 
@@ -30,8 +31,7 @@ class GameControl():
         '''
         self.run = True
         self.hwnd = hwnd
-        self.findimgdelay = fimgdelay
-        fimg = self.findimgdelay
+        self.findimgdelay = config['VALUE']['FIND_IMG_DELAY']
         self.quit_game_enable = quit_game_enable
         self.debug_enable = False
         l1, t1, r1, b1 = win32gui.GetWindowRect(self.hwnd)
