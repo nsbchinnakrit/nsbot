@@ -13,3 +13,4 @@ Gui/*
 .gitignore
 log.log
 logs/*
+GameMode/__pycache__/*
