@@ -396,7 +396,7 @@ class Explor3Realm(threading.Thread):
                     _is3Realm = True
 
             #Click Realm
-            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTIONFROG_PATH'], thread=0.94)
+            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTIONFROG_PATH'], thread=0.91)
             # position2=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION2_PATH']))
             position2=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION2_PATH']))
             positionatk=(position or position2)

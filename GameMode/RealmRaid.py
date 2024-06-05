@@ -81,7 +81,7 @@ class RealmRaid(threading.Thread):
                     _is3Realm = True
 
             #Click Realm
-            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTIONFROG_PATH'], thread=0.94)
+            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTIONFROG_PATH'], thread=0.91)
             position2=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION2_PATH']))
             positionatk=(position or position2)
             position3=self.__gui.find_game_img(config[svselect]['IMAGE_REALM_ATK_PATH'])
