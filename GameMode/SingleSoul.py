@@ -33,15 +33,13 @@ class SingleSoul(threading.Thread):
 
             #lock line up
             position=self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_LOCK_PATH'])
-            position2=self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'])
+            position2=(self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'])) or (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_TOTEM_STAT_PATH']))
             if position != False and position2 != False:
                 logging.info("Successfully lock lineup...")
                 self.__gui.mouse_click_bg(position)
                 continue
             
-            positions = (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'], part=0, pos1=(_displayChat+965, 485), pos2=(_displayChat+1135, 639)
-            ) or self.__gui.find_game_img(config['EVENT']['IMAGE_EVENT_START'], part=0, pos1=(_displayChat+965, 485), pos2=(_displayChat+1135, 639)
-            ) or self.__gui.find_game_img(config['EVENT']['IMAGE_EVENT_START2'], part=0, pos1=(_displayChat+965, 485), pos2=(_displayChat+1135, 639)))
+            positions = (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'])) or (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_TOTEM_STAT_PATH']))
             if positions:
                 logging.info('Start:%s'%positions)
                 cantattk+=1
@@ -50,7 +48,7 @@ class SingleSoul(threading.Thread):
                 time.sleep(1)
                 continue
 
-            if cantattk >= 12 or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False and self.__gui.find_game_img(config['DEFAULT']['IMAGE_MAIL'],thread=0.78) == False) or (self.__gui.find_game_img(config[svselect]['IMAGE_REALM_CANCEL']) != False) and (self.__gui.find_game_img(config['SOUL']['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], thread=0.98) == False):
+            if cantattk >= 12 or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False and self.__gui.find_game_img(config['DEFAULT']['IMAGE_MAIL'],thread=0.78) != False) or (self.__gui.find_game_img(config[svselect]['IMAGE_REALM_CANCEL']) != False) and (self.__gui.find_game_img(config['SOUL']['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], thread=0.98) == False):
                 logging.info("Unable to process, Exit!")
                 total = str(self.__total)
                 self.create_file(data=total)

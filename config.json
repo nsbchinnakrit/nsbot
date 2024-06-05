@@ -30,6 +30,7 @@
   "SOUL": {
     "IMAGE_SINGLE_SOUL_LOCK_PATH": "./screenshots/Soul/lock.png",
     "IMAGE_SINGLE_SOUL_STAT_PATH": "./screenshots/Soul/singlesoul.png",
+    "IMAGE_SINGLE_TOTEM_STAT_PATH": "./screenshots/Soul/singletotem.png",
     "IMAGE_SOUL_STARTCN_PATH": "./screenshots/Soul/startcn.png",
     "IMAGE_SOUL_INVITE_PATH": "./screenshots/Soul/teamInvite.png",
     "IMAGE_SOUL_AUTOACCEPT_PATH": "./screenshots/Soul/autoaccept.png",

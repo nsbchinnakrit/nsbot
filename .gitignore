@@ -11,9 +11,3 @@ Gui/*
 .gitignore
 log.log
 logs/*
-GameMode/__pycache__/Explor3Realm.cpython-310.pyc
-GameMode/__pycache__/Explor3RealmW3F3.cpython-310.pyc
-GameMode/__pycache__/RealmRaid.cpython-310.pyc
-GameMode/__pycache__/RealmRaidW3F3.cpython-310.pyc
-GameMode/__pycache__/SingleSoul.cpython-310.pyc
-GameMode/__pycache__/Soul.cpython-310.pyc
