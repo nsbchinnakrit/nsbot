@@ -25,7 +25,8 @@
     "IMAGE_WQ_SUSHI": "./screenshots/Default/wq_sushi.png",
     "IMAGE_WQ_FOODDOG": "./screenshots/Default/wq_fooddog.png",
     "IMAGE_WQ_FOODCAT": "./screenshots/Default/wq_foodcat.png",
-    "IMAGE_EMPTY_SUSHI": "./screenshots/Default/emptyshshi.png"
+    "IMAGE_EMPTY_SUSHI": "./screenshots/Default/emptyshshi.png",
+    "IMAGE_EMPTY_SUSHI_CLOSE": "./screenshots/Default/emptyshshi_close.png"
   },
   "SOUL": {
     "IMAGE_SINGLE_SOUL_LOCK_PATH": "./screenshots/Soul/lock.png",
