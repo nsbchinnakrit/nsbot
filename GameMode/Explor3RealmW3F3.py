@@ -332,7 +332,7 @@ class Explor3RealmW3F3(threading.Thread):
             if position != False:
                 logging.info("Get treasure.... ")
                 self.__gui.send_esc_down()
-                time.sleep(0.4)
+                time.sleep(2)
                 self.__gui.mouse_click_bg((_displayChat+655, 383))
                 _idlecount=0
                 
