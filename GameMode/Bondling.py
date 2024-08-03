@@ -165,7 +165,7 @@ class Bondling(threading.Thread):
                 pactst = True
             
             if (self.__mode == 'Pact' or self.__mode == 'Both') and (self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_INFO']) != False
-                ) and (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH']) != False):
+                ) and (self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACTSETTINGS']) != False):
                 logging.info('Pact-forming Start')
                 cantattk+=1
                 _idlecount=0
@@ -173,7 +173,7 @@ class Bondling(threading.Thread):
                 time.sleep(1)
 
             if (self.__mode == 'Explore' or self.__mode == 'Both') and (self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_EXPDETECT']) != False
-                ) and (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH']) != False):
+                ) and (self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_SUMMON']) != False):
                 logging.info('Explore Start')
                 cantattk+=1
                 _idlecount=0
@@ -182,7 +182,7 @@ class Bondling(threading.Thread):
 
             #lock line up
             position=self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_LOCK_PATH'])
-            position2=self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'])
+            position2=self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_SUMMON'])
             if position != False and position2 != False:
                 logging.info("Successfully lock lineup...")
                 self.__gui.mouse_click_bg(position)
@@ -241,7 +241,7 @@ class Bondling(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI'])) != False:
+                    if (self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_SUMMON']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI'])) != False:
                         break
 
                     #soulmax
