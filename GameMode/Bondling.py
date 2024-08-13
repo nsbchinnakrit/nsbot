@@ -93,6 +93,8 @@ class Bondling(threading.Thread):
             if self.__mode == 'Pact' and self.__crystal != 'false':
                 if (self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACT%s'%self.__crystal], gray=0, thread=0.90) == False) and (position != False):
                     logging.info("Summon Bondling!")
+                    self.__gui.mouse_click_bg((50, 500))
+                    time.sleep(1)
                     self.__gui.mouse_click_bg(position)
                     _idlecount=0
                     time.sleep(2)
@@ -241,7 +243,8 @@ class Bondling(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_SUMMON']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI'])) != False:
+                    if (self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_SUMMON']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) or self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACTSETTINGS'])) != False:
+                        logging.info("Round End...")
                         break
 
                     #soulmax
