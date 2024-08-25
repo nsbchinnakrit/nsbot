@@ -10,6 +10,7 @@ _displayChat=0
 svselect=''
 _isLeader=False
 _cAutoRotation=False
+_isboss=False
 cantattk=0
 waittime=0
 _idlecount=0
@@ -27,7 +28,7 @@ class Explore(threading.Thread):
         self.__gui=GameControl(self.__hwnd,0)
 
     def gameModeExplore(self):
-        global _isLeader, _cAutoRotation, cantattk, waittime, _idlecount
+        global _isLeader, _cAutoRotation, cantattk, waittime, _idlecount, _isboss
         CLICK_SOULMAX=(568, 387)
         CLICK_FINISH2=(35, 510)
         SLIDE_STORY_COORDINATE=[(_displayChat+200,200),(_displayChat+1000,200)]
@@ -124,7 +125,7 @@ class Explore(threading.Thread):
             if (_isLeader and position) != False:
                 logging.info("BOSS was detected: ")
                 self.__gui.mouse_click_bg(position)
-                _localVariable.isBossDetected=True
+                _isboss=True
                 cantattk+=1
                 _idlecount=0
                 time.sleep(1)
@@ -177,12 +178,21 @@ class Explore(threading.Thread):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
-                    if (self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH']) != False or 
+                    if (_isboss != True) and (self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH']) != False or 
                         self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_ACCEPT_PATH']) != False or 
                         self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_LIST_CHAPTER_PATH']) != False or 
                         self.__gui.find_game_img(config['DEFAULT']['IMAGE_BUFF']) != False or 
                         self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False):
                         time.sleep(1)
+                        break
+                    if (_isboss) and (self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH']) != False):
+                        time.sleep(2)
+                        logging.info("Get treasure.... Test")
+                        self.__gui.send_esc_down()
+                        time.sleep(1.5)
+                        _idlecount=0
+                        self.__gui.mouse_click_bg((_displayChat+655, 383))
+                        _isboss=False
                         break
                     if self.__gui.find_game_img(config[svselect]['IMAGE_SOULMAX']) != False:
                         logging.info("Soul Max")

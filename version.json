@@ -7,5 +7,6 @@
   "azure": false,
   "kuro": false,
   "tomb": true,
-  "disc": "3"
+  "disc": "1",
+  "theme": "system"
 }
