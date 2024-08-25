@@ -59,7 +59,7 @@ class Bondling(threading.Thread):
 
             
             #Tomb
-            position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACT1'], gray=0, thread=0.93)
+            position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACT1'], gray=0, thread=0.95)
             if (self.__mode == 'Pact' or self.__mode == 'Both') and ((self.__crystal == '1') or (self.__tomb == 'true')) and position != False:
                 logging.info("Tomb Guard!")
                 self.__gui.mouse_click_bg(position)
@@ -69,7 +69,7 @@ class Bondling(threading.Thread):
                 time.sleep(2)
 
             #SnowBall
-            position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACT2'], gray=0, thread=0.93)
+            position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACT2'], gray=0, thread=0.95)
             if (self.__mode == 'Pact' or self.__mode == 'Both') and ((self.__crystal == '2') or (self.__snowball == 'true')) and position != False:
                 logging.info("Snowball!")
                 self.__gui.mouse_click_bg(position)
@@ -79,7 +79,7 @@ class Bondling(threading.Thread):
                 time.sleep(2)
 
             #Azure
-            position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACT3'], gray=0, thread=0.93)
+            position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACT3'], gray=0, thread=0.95)
             if (self.__mode == 'Pact' or self.__mode == 'Both') and ((self.__crystal == '3') or (self.__azure == 'true')) and position != False:
                 logging.info("Azure Basan!")
                 self.__gui.mouse_click_bg(position)
@@ -89,7 +89,7 @@ class Bondling(threading.Thread):
                 time.sleep(2)
 
             #Kuro
-            position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACT4'], gray=0, thread=0.93)
+            position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_PACT4'], gray=0, thread=0.95)
             if (self.__mode == 'Pact' or self.__mode == 'Both') and ((self.__crystal == '4') or (self.__kuro == 'true')) and position != False:
                 logging.info("Kuro!")
                 self.__gui.mouse_click_bg(position)
