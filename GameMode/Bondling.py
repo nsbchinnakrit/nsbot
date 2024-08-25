@@ -112,35 +112,35 @@ class Bondling(threading.Thread):
                     self.__gui.mouse_click_bg(position)
                     _idlecount=0
                     time.sleep(2)
-                    position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_KUROFACE'])
+                    position = self.__gui.find_game_img(config['BONDLING']['IMAGE_BONDLING_TOMBFACE'])
                     if position != False:
-
+                        logging.info("Select Bondling!")
                         if self.__crystal == '1':
                             logging.info("Tomb Guard Select!")
-                            self.__gui.mouse_click_bg((position[0]+740,position[1]))
+                            self.__gui.mouse_click_bg((_displayChat+896, 383))
                             time.sleep(1)
-                            self.__gui.mouse_click_bg((position[0]+900,position[1]+305))
+                            self.__gui.mouse_click_bg((_displayChat+1036, 566))
                             time.sleep(5)
 
                         if self.__crystal == '2':
                             logging.info("Snowball Select!")
-                            self.__gui.mouse_click_bg((position[0]+245,position[1]))
+                            self.__gui.mouse_click_bg((_displayChat+405, 383))
                             time.sleep(1)
-                            self.__gui.mouse_click_bg((position[0]+900,position[1]+305))
+                            self.__gui.mouse_click_bg((_displayChat+1036, 566))
                             time.sleep(5)
 
                         if self.__crystal == '3':
                             logging.info("Azure Basan Select!")
-                            self.__gui.mouse_click_bg((position[0]+515,position[1]))
+                            self.__gui.mouse_click_bg((_displayChat+639, 383))
                             time.sleep(1)
-                            self.__gui.mouse_click_bg((position[0]+900,position[1]+305))
+                            self.__gui.mouse_click_bg((_displayChat+1036, 566))
                             time.sleep(5)
                             
                         if self.__crystal == '4':
                             logging.info("Kuro Select!")
-                            self.__gui.mouse_click_bg((position[0]+0,position[1]))
+                            self.__gui.mouse_click_bg((_displayChat+190, 383))
                             time.sleep(1)
-                            self.__gui.mouse_click_bg((position[0]+900,position[1]+305))
+                            self.__gui.mouse_click_bg((_displayChat+1036, 566))
                             time.sleep(5)
 
             
