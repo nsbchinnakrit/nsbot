@@ -117,7 +117,7 @@ class SingleSoul(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH']) != False  or self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False:
+                    if (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH']) or (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_TOTEM_STAT_PATH']))) != False  or self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False:
                         break
 
                     if self.__gui.find_game_img(config[svselect]['IMAGE_SOUL_PETREWARD_PATH']):
