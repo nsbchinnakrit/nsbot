@@ -90,7 +90,7 @@ class SingleSoul(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH']) != False:
+                    if (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'])) or (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_TOTEM_STAT_PATH'])) != False:
                         break
 
                     if self.__gui.find_game_img(config[svselect]['IMAGE_SOUL_PETREWARD_PATH']):
