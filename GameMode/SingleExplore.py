@@ -80,7 +80,7 @@ class SingleExplore(threading.Thread):
                 if position != False:
                     _localVariable.isBossDetected=False
                     logging.info("Entering last chapter.... ")
-                    self.__gui.mouse_click_bg((position[0],position[1]+400))
+                    self.__gui.mouse_click_bg((position[0],position[1]+370))
                     _idlecount=0
                     time.sleep(1)
                     continue
