@@ -16,7 +16,7 @@ waittime=0
 _idlecount=0
 
 class Explore(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
         global svselect
         threading.Thread.__init__(self)
         self.__server=Server
@@ -98,7 +98,7 @@ class Explore(threading.Thread):
                 continue
 
             #-=======================================================================================================
-            position=self.__gui.find_game_img((config[svselect]['IMAGE_STORY_LEAD_PATH']), part=1, pos1=(80, 250), pos2=(135, 300), gray=0, thread=0.99)
+            position=self.__gui.find_game_img((config[svselect]['IMAGE_STORY_LEAD_PATH']), part=1, pos1=(66, 164), pos2=(195, 300), gray=0, thread=0.99)
             if _isLeader == False:
                 if position != False:
                     logging.info("Leader Detected in display..")

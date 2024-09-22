@@ -13,7 +13,7 @@ _firstclick=False
 _ispact=False
 
 class Bondling(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
         global svselect
         threading.Thread.__init__(self)
         self.__server=Server

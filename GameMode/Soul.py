@@ -9,11 +9,12 @@ import threading, subprocess
 _displayChat = 0
 cantattk=0
 _idlecount=0
+_bossmarkChecked=False
 CLICK_SOULMAX=(568, 387)
 START_SOUL_COORDINATE = (1075, 565)
 
 class Soul(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
         global svselect
         threading.Thread.__init__(self)
         self.__server=Server
@@ -22,10 +23,11 @@ class Soul(threading.Thread):
         self.__beforetotal=beforetotal
         self.__total=total
         self.__pid=pid
+        self.__bossmark=markboss
         self.__gui=GameControl(self.__hwnd,0)
 
     def gameModeSoul(self):
-        global _displayChat, cantattk, _idlecount
+        global _displayChat, cantattk, _idlecount, _bossmarkChecked
         while True:
             detectAssistance = threading.Thread(target=self.detectAssistance())
             detectAssistance.setDaemon(True)
@@ -72,6 +74,11 @@ class Soul(threading.Thread):
                 self.__gui.mouse_click_bg(position)
                 time.sleep(2)
                 continue
+            
+            if (self.__bossmark == 'true')  and (self.__gui.find_game_img(config[svselect]['IMAGE_BOSSMARK'],thread=0.9) == False):
+                bossmarkCheck = threading.Thread(target=self.bossmarkCheck())
+                bossmarkCheck.setDaemon(True)
+                bossmarkCheck.start
 
             if (
                 self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED0_PATH']) or 
@@ -81,6 +88,7 @@ class Soul(threading.Thread):
             ):
                 cantattk=0
                 _idlecount=0
+                _bossmarkChecked=False
                 while True:
                     if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
@@ -127,6 +135,16 @@ class Soul(threading.Thread):
 
             else:
                 _idlecount+=1
+
+    def bossmarkCheck(self):
+        global _bossmarkChecked
+        if _bossmarkChecked==False:
+            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_BOSSHP'],thread=0.9) != False) and (self.__gui.find_game_img(config[svselect]['IMAGE_BOSSMARK'],thread=0.9) != False):
+                _bossmarkChecked=True
+                logging.info('Boss Marked')
+            elif (self.__gui.find_game_img(config['DEFAULT']['IMAGE_BOSSHP'],thread=0.9) != False) and (self.__gui.find_game_img(config[svselect]['IMAGE_BOSSMARK'],thread=0.9) == False):
+                self.__gui.mouse_click_bg((_displayChat+360, 30))
+                time.sleep(2)
 
     def detectAssistance(self):
         global _displayChat, _idlecount

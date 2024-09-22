@@ -29,6 +29,7 @@ tomb = sys.argv[9]
 snowball = sys.argv[10]
 azure = sys.argv[11]
 kuro = sys.argv[12]
+markboss = sys.argv[13]
 
 if getgameMode == 'SingleSoul':
     gameMode = SingleSoul
@@ -68,7 +69,7 @@ def create_file(data='0'):
 def main():
     MyLog.init(loglv='DEBUG') #(Use: INFO, DEBUG, OFF)
     logging.debug('GameMode:[%s], Server:[%s], Total Round:[%s]',getgameMode, Server, total)
-    accounts.append(gameMode(Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro))
+    accounts.append(gameMode(Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss))
     account=threading.Thread(accounts[0].run())
 
 if __name__ == '__main__':
