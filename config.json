@@ -71,7 +71,8 @@
     "IMAGE_REALM_GUILD_PATH": "./screenshots/RealmRaid/guildcn.png",
     "IMAGE_REALM_CANCEL": "./screenshots/RealmRaid/cancelcn.png",
     "IMAGE_REALM_CANCEL_BATTLE": "./screenshots/RealmRaid/cancelcn.png",
-    "IMAGE_BUFF": "./screenshots/Default/buffcn.png"
+    "IMAGE_BUFF": "./screenshots/Default/buffcn.png",
+    "IMAGE_BOSSMARK": "./screenshots/MultiServ/bossmarkcn.png"
   },
   "GB": {
     "IMAGE_READY_PATH": "./screenshots/MultiServ/ready.png",
@@ -118,7 +119,8 @@
     "IMAGE_REALM_GUILD_PATH": "./screenshots/RealmRaid/guildjp.png",
     "IMAGE_REALM_CANCEL": "./screenshots/RealmRaid/canceljp.png",
     "IMAGE_REALM_CANCEL_BATTLE": "./screenshots/RealmRaid/cancelbattlejp.png",
-    "IMAGE_BUFF": "./screenshots/Default/buff.png"
+    "IMAGE_BUFF": "./screenshots/Default/buff.png",
+    "IMAGE_BOSSMARK": "./screenshots/MultiServ/bossmarkjp.png"
   },
   "REALM": {
     "IMAGE_REALM_FN3R_PATH": "./screenshots/RealmRaid/finished3Realm.png",

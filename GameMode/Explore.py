@@ -98,7 +98,7 @@ class Explore(threading.Thread):
                 continue
 
             #-=======================================================================================================
-            position=self.__gui.find_game_img((config[svselect]['IMAGE_STORY_LEAD_PATH']), part=1, pos1=(66, 164), pos2=(195, 300), gray=0, thread=0.99)
+            position=self.__gui.find_game_img((config[svselect]['IMAGE_STORY_LEAD_PATH']), part=1, pos1=(75, 245), pos2=(170, 300), gray=0, thread=0.90)
             if _isLeader == False:
                 if position != False:
                     logging.info("Leader Detected in display..")
@@ -186,14 +186,8 @@ class Explore(threading.Thread):
                         time.sleep(1)
                         break
                     if (_isboss) and (self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH']) != False):
-                        time.sleep(2)
-                        logging.info("Get treasure.... Test")
-                        self.__gui.send_esc_down()
-                        time.sleep(1.5)
-                        _idlecount=0
-                        self.__gui.mouse_click_bg((_displayChat+655, 383))
                         _isboss=False
-                        break
+                        continue
                     if self.__gui.find_game_img(config[svselect]['IMAGE_SOULMAX']) != False:
                         logging.info("Soul Max")
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
