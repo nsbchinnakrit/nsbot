@@ -100,7 +100,7 @@ class Event(threading.Thread):
                 continue
                 
             #check finish
-            if self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1_PATH']) != False or self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED2_PATH']) != False:
+            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1_PATH']) != False) or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1S1_PATH']) != False) or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED2_PATH']) != False):
                 logging.info("Finishing...")
                 cantattk=0
                 _idlecount=0

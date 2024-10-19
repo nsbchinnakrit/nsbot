@@ -9,6 +9,7 @@
   "DEFAULT": {
     "IMAGE_FINISHED0_PATH": "./screenshots/Default/finished0.png",
     "IMAGE_FINISHED1_PATH": "./screenshots/Default/finished1.png",
+    "IMAGE_FINISHED1S1_PATH": "./screenshots/Default/finished1_1.png",
     "IMAGE_FINISHED1S2_PATH": "./screenshots/Default/finished1_2.png",
     "IMAGE_FINISHED1S3_PATH": "./screenshots/Default/finished1_3.png",
     "IMAGE_FINISHED2_PATH": "./screenshots/Default/finished2.png",
