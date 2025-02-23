@@ -632,7 +632,7 @@ class Explor3RealmW3F3(threading.Thread):
 
     def run(self):
         count=self.__beforetotal
-        self.create_file(data=str(count))
+        self.create_file(data=str(_setroundcount))
         _localVariable.detectCount=30
         while self.__total-count>0:
             seconds=0

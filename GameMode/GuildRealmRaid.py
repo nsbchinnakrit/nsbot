@@ -10,7 +10,7 @@ _cAttackRealm=0
 _idlecount=0
 _scrollcount=0
 _need1scrollup=False
-SCROLL_DOWN=[(910, 500),(910, 386)]
+SCROLL_DOWN=[(910, 520),(910, 165)]
 CLICK_FINISH=(35, 510)
 START_SOUL_COORDINATE = (1075, 565)
 
@@ -88,11 +88,11 @@ class GuildRealmRaid(threading.Thread):
             
             #Drag mouse down if enemy not found
             guildscroll=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDSCROLL_PATH'])
-            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH'])
+            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION2_PATH'])
             positionGB=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.95) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.97))
             positionCN=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.88) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.97))
             position1= positionGB or positionCN
-            position2=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDPAGEEND_PATH'])
+            position2=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDPAGEEND_PATH']) #รูปเขตที่ตีไปแล้ว
             if (guildscroll != False and position1 == False) and position == False:
                 logging.debug("Looking for enemy")
                 if position2:
@@ -106,7 +106,7 @@ class GuildRealmRaid(threading.Thread):
                             detectAssistance.start
                         if _scrollcount > 2:
                             break
-                        if self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH']):
+                        if self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION2_PATH']):
                             break 
                         if self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDPAGEEND_TOP_PATH'],thread=0.96):
                             break
@@ -129,7 +129,7 @@ class GuildRealmRaid(threading.Thread):
                             detectAssistance.start
                         if _scrollcount > 2:
                             break
-                        if self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH']):
+                        if self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION2_PATH']):
                             break 
                         if self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDPAGEEND_PATH']):
                             break 
@@ -140,7 +140,7 @@ class GuildRealmRaid(threading.Thread):
             
             #Click Realm
             guild=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDSCROLL_PATH'])
-            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH'])
+            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION2_PATH'])
             positionGB=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.95) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.97))
             positionCN=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(760, 500), pos2=(810, 525), thread=0.85) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(226, 492), pos2=(286, 529), thread=0.85))
             position1= positionGB or positionCN
@@ -161,8 +161,8 @@ class GuildRealmRaid(threading.Thread):
                     time.sleep(1)
                     continue
                 if atk == False and position2 != False:
-                    self.__gui.mouse_click_bg((_displayChat+position[0]-77,position[1]+194))    
-                    self.__gui.mouse_click_bg((_displayChat+position[0]-77,position[1]+190))    
+                    self.__gui.mouse_click_bg((_displayChat+position[0]-24,position[1]+148))    
+                    # self.__gui.mouse_click_bg((_displayChat+position[0]-24,position[1]+190))    
                     #If Can't Attack Enemy 
                     position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE'])
                     position2=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CANTATTK_PATH'],gray=0)
@@ -199,7 +199,7 @@ class GuildRealmRaid(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDSCROLL_PATH'])) != False:
+                    if (self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION2_PATH']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_GUILDSCROLL_PATH'])) != False:
                         time.sleep(1)
                         _cAttackRealm=0
                         _idlecount=0
