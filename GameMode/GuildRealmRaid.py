@@ -157,10 +157,12 @@ class GuildRealmRaid(threading.Thread):
                 atk=self.__gui.find_game_img(config[svselect]['IMAGE_REALM_ATK_PATH'])
                 logging.info("Click Attack..")
                 if atk != False and position2 != False:
+                    logging.debug("Click Attack by atk image")
                     self.__gui.mouse_click_bg(atk)
                     time.sleep(1)
                     continue
                 if atk == False and position2 != False:
+                    logging.debug("Click Attack by SECTION2 image")
                     self.__gui.mouse_click_bg((_displayChat+position[0]-24,position[1]+148))    
                     # self.__gui.mouse_click_bg((_displayChat+position[0]-24,position[1]+190))    
                     #If Can't Attack Enemy 
