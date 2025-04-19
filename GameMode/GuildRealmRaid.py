@@ -210,9 +210,9 @@ class GuildRealmRaid(threading.Thread):
                 break
 
             elif position1 != False:
-                logging.info("Round: 0/6 | Sleep for Wait 20s")
-                time.sleep(20)
-                _idlecount+=20
+                # logging.info("Round: 0/6 | Sleep for Wait 5s")
+                time.sleep(5)
+                _idlecount+=5
 
             else:
                 _idlecount+=1
