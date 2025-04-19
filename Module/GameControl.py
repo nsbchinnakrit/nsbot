@@ -581,7 +581,7 @@ class GameControl():
         maxVal, maxLoc = self.find_img(img_path, part, pos1, pos2, gray,center,delay)
         # logging.info(maxVal)
         if maxVal > thread:
-            logging.debug('Found:%s, value:%s, pos:%s', img_path, maxVal, maxLoc)
+            logging.debug('Detected:%s, value:%.4f, pos:%s', img_path, maxVal, maxLoc)
             return list(maxLoc)
         else:
             return False
