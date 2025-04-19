@@ -209,6 +209,11 @@ class GuildRealmRaid(threading.Thread):
                     self.__gui.mouse_click_bg((_displayChat+CLICK_FINISH[0], CLICK_FINISH[1]))
                 break
 
+            elif position1 != False:
+                logging.info("Round: 0/6 | Sleep for Wait 20s")
+                time.sleep(20)
+                _idlecount+=20
+
             else:
                 _idlecount+=1
 
