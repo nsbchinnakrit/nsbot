@@ -25,7 +25,10 @@ class Event(threading.Thread):
         self.__gui=GameControl(self.__hwnd, self.load_templates, 0)
 
         # โหลด template ชุดเดียว
-        self.load_templates({
+        color_templates = {
+        }
+
+        gray_templates = {
             # "back_button": "images/BACK.png",
             "IMAGE_EVENT_LOCK": config['EVENT']['IMAGE_EVENT_LOCK'],
             "IMAGE_EVENT_LOCKED": config['EVENT']['IMAGE_EVENT_LOCKED'],
@@ -49,10 +52,14 @@ class Event(threading.Thread):
             "IMAGE_WQ_SUSHI": config['DEFAULT']['IMAGE_WQ_SUSHI'],
             "IMAGE_WQ_FOODDOG": config['DEFAULT']['IMAGE_WQ_FOODDOG'],
             "IMAGE_WQ_FOODCAT": config['DEFAULT']['IMAGE_WQ_FOODCAT'],
-        })
+        }
     
-    def load_templates(self, paths):
-        self.__gui.load_templates(paths)
+        self.load_templates(gray_templates, gray=1)
+        self.load_templates(color_templates, gray=0)
+    
+    def load_templates(self, paths, gray=1):
+        # print("SV config keys:", config[self.__sv].keys())
+        self.__gui.load_templates(paths, gray=gray)
         logging.info("Event template loaded: %d templates", len(paths))
 
 #   

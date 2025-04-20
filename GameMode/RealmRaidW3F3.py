@@ -27,8 +27,10 @@ class RealmRaidW3F3(threading.Thread):
         self.__pid=pid
         self.__gui=GameControl(self.__hwnd,0)
 
-        # โหลด template ชุดเดียว
-        self.load_templates({
+        color_templates = {
+        }
+
+        gray_templates = {
             # REALM
             "IMAGE_REALM_FN3R_PATH": config['REALM']['IMAGE_REALM_FN3R_PATH'],
             "IMAGE_REALM_CLOSE": config['REALM']['IMAGE_REALM_CLOSE'],
@@ -72,11 +74,15 @@ class RealmRaidW3F3(threading.Thread):
             "IMAGE_WQ_SUSHI": config['DEFAULT']['IMAGE_WQ_SUSHI'],
             "IMAGE_WQ_FOODDOG": config['DEFAULT']['IMAGE_WQ_FOODDOG'],
             "IMAGE_WQ_FOODCAT": config['DEFAULT']['IMAGE_WQ_FOODCAT'],
-        })
+        }
+
+        self.load_templates(gray_templates, gray=1)
+        self.load_templates(color_templates, gray=0)
     
         
-    def load_templates(self, paths):
-        self.__gui.load_templates(paths)
+    def load_templates(self, paths, gray=1):
+        # print("SV config keys:", config[self.__sv].keys())
+        self.__gui.load_templates(paths, gray=gray)
         logging.info("Event template loaded: %d templates", len(paths))
 
     def gameModeRealmRaid(self):
