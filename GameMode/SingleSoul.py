@@ -34,13 +34,13 @@ class SingleSoul(threading.Thread):
             detectAssistance.start
 
             #lock line up
-            position=self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_LOCK_PATH'])
-            position2=(self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'])) or (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_TOTEM_STAT_PATH']))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_LOCK_PATH'])
+            position2=(self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT_PATH'])) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT_PATH']))
             if position != False and position2 != False:
                 logging.info("Successfully lock lineup...")
                 self.__gui.mouse_click_bg(position)
             
-            positions = (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'])) or (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_TOTEM_STAT_PATH']))
+            positions = (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT_PATH'])) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT_PATH']))
             if positions:
                 logging.info('Start:%s'%positions)
                 cantattk+=1
@@ -48,7 +48,7 @@ class SingleSoul(threading.Thread):
                 self.__gui.mouse_click_bg(positions)
                 time.sleep(1)
 
-            if cantattk >= 5 or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False and self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI_CLOSE']) != False) or (self.__gui.find_game_img(config[svselect]['IMAGE_REALM_CANCEL']) != False) and (self.__gui.find_game_img(config['SOUL']['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], thread=0.98) == False):
+            if cantattk >= 5 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE']) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL']) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], thread=0.98) == False):
                 logging.info("Unable to process, Exit!")
                 total = str(self.__total)
                 self.create_file(data=total)
@@ -56,90 +56,90 @@ class SingleSoul(threading.Thread):
                 subprocess.Popen(args)
                 sys.exit()
 
-            gameready=self.__gui.find_game_img(config[svselect]['IMAGE_READY_PATH'])
+            gameready=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'])
             if gameready != False:
                 self.__gui.mouse_click_bg(gameready)
                 time.sleep(1)
             
-            if (self.__bossmark == 'true')  and (self.__gui.find_game_img(config[svselect]['IMAGE_BOSSMARK'],thread=0.9) == False):
+            if (self.__bossmark == 'true')  and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSMARK'],thread=0.9) == False):
                 bossmarkCheck = threading.Thread(target=self.bossmarkCheck())
                 bossmarkCheck.setDaemon(True)
                 bossmarkCheck.start
             
             #Fail
-            position=self.__gui.find_game_img(config['DEFAULT']['IMAGE_FAILED_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'])
             if position != False:
                 cantattk=0
                 _idlecount=0
                 logging.info("Failed..")
                 self.__gui.mouse_click_bg(position)
                 while True:
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
-                    if self.__gui.find_game_img(config['DEFAULT']['IMAGE_FAILED_PATH']) == False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH']) == False:
                         break
                     self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
 
              #check finish
-            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED0_PATH']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1S2_PATH'])) != False:
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED0_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2_PATH'])) != False:
                 logging.info("Finishing...")
                 cantattk=0
                 _idlecount=0
                 _bossmarkChecked=False
                 while True:
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'])) or (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_TOTEM_STAT_PATH'])) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT_PATH'])) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT_PATH'])) != False:
                         break
 
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_SOUL_PETREWARD_PATH']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_PETREWARD_PATH']):
                         logging.info("Claim Pet Reward.")
                         self.__gui.mouse_click_bg((_displayChat + 950, 450))
                         time.sleep(1)
 
                     #soulmax
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_SOULMAX']) != False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX']) != False:
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                         time.sleep(1)
 
                     self.__gui.mouse_click_bg(START_SOUL_COORDINATE)
                 break
             
-            if self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED2_PATH']) != False:
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH']) != False:
                 logging.info("Getting reward...")
                 _idlecount=0
                 _bossmarkChecke=False
                 while True:
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH']) or (self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_TOTEM_STAT_PATH']))) != False  or self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT_PATH']) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT_PATH']))) != False  or self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) != False:
                         break
 
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_SOUL_PETREWARD_PATH']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_PETREWARD_PATH']):
                         logging.info("Claim Pet Reward.")
                         self.__gui.mouse_click_bg((_displayChat + 950, 450))
 
                     #soulmax
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_SOULMAX']) != False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX']) != False:
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                     self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 break
 
-            if self.__gui.find_game_img(config[svselect]['IMAGE_SOUL_PETREWARD_PATH']):
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_PETREWARD_PATH']):
                 logging.info("Claim Pet Reward.")
                 self.__gui.mouse_click_bg((_displayChat + 950, 450))
                 time.sleep(1)
 
             #soulmax
-            if self.__gui.find_game_img(config[svselect]['IMAGE_SOULMAX']) != False:
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX']) != False:
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 time.sleep(1)
             
@@ -149,19 +149,19 @@ class SingleSoul(threading.Thread):
     def bossmarkCheck(self):
         global _bossmarkChecked
         if _bossmarkChecked==False:
-            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_BOSSHP'],thread=0.9) != False) and (self.__gui.find_game_img(config[svselect]['IMAGE_BOSSMARK'],thread=0.9) != False):
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSHP'],thread=0.9) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSMARK'],thread=0.9) != False):
                 _bossmarkChecked=True
                 logging.info('Boss Marked')
-            elif (self.__gui.find_game_img(config['DEFAULT']['IMAGE_BOSSHP'],thread=0.9) != False) and (self.__gui.find_game_img(config[svselect]['IMAGE_BOSSMARK'],thread=0.9) == False):
+            elif (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSHP'],thread=0.9) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSMARK'],thread=0.9) == False):
                 self.__gui.mouse_click_bg((_displayChat+360, 30))
                 time.sleep(2)
     
     def detectAssistance(self):
         global _displayChat, _idlecount
-        position1 = self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL'])
-        position2 = self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER'])
-        position3 = self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])
-        position4 = self.__gui.find_game_img(config['DEFAULT']['IMAGE_CLOSEWANTED'])
+        position1 = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'])
+        position2 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'])
+        position3 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])
+        position4 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CLOSEWANTED'])
         wq_jade = config['VALUE']['WQ_JADE']
         wq_coin = config['VALUE']['WQ_COIN']
         wq_sushi = config['VALUE']['WQ_SUSHI']
@@ -179,10 +179,10 @@ class SingleSoul(threading.Thread):
             logging.info('ChatPanel detected, closed..')
 
         if position1:
-            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_JADE'], thread=0.8) and wq_jade
-            ) or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_COIN'], thread=0.8) and wq_coin
-            ) or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_SUSHI'], thread=0.8) and wq_sushi
-            ) or ((self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_FOODDOG'], thread=0.8) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_FOODCAT'], thread=0.8)) and wq_food):
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE'], thread=0.8) and wq_jade
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN'], thread=0.8) and wq_coin
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI'], thread=0.8) and wq_sushi
+            ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG'], thread=0.8) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'], thread=0.8)) and wq_food):
                 logging.info("Accept wanted quest...")
                 self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 222))
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')

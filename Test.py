@@ -29,14 +29,14 @@ class Test(threading.Thread):
     def gameModeTest(self):
         while True:
             time.sleep(1)
-            self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_JADE'], thread=0.8)
-            # self.__gui.find_game_img(config['DEFAULT']['IMAGE_MAIL'], thread=0.96)
+            self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE'], thread=0.8)
+            # self.__gui.find_game_img(self.__gui.templates['IMAGE_MAIL'], thread=0.96)
 
-            # self.__gui.find_game_img(config['REALM']['IMAGE_REALM_3RAIDFROG_PATH'])
-            # self.__gui.find_game_img(config['EVENT']['IMAGE_EVENT_START'])
-            # self.__gui.find_game_img(config['EVENT']['IMAGE_EVENT_START2'])
-            # self.__gui.find_game_img(config[svselect]['IMAGE_SOUL_START_PATH'])
-            # self.__gui.find_game_img(config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'])
+            # self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH'])
+            # self.__gui.find_game_img(self.__gui.templates['IMAGE_EVENT_START'])
+            # self.__gui.find_game_img(self.__gui.templates['IMAGE_EVENT_START2'])
+            # self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_START_PATH'])
+            # self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT_PATH'])
 
         
 

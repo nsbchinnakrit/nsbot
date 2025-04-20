@@ -41,17 +41,17 @@ class Explor3RealmW3F3(threading.Thread):
             detectAssistance.setDaemon(True)
             detectAssistance.start
 
-            if self.__gui.find_game_img(config[svselect]['IMAGE_REALM_CANCEL_BATTLE'], thread=0.70):
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL_BATTLE'], thread=0.70):
                 logging.info("Exit Battle..")
                 time.sleep(0.4)
                 self.__gui.mouse_click_bg((_displayChat+655, 383))
                 _exit = True
                 
-            position=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_EMPTY_TICKET2'], thread=0.90) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_EMPTY_TICKET2CN'], thread=0.90))
-            position2=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_LIST_CHAPTER_PATH'])  
-            position3=self.__gui.find_game_img(config[svselect]['IMAGE_REALM_GUILD_PATH'])
-            position4=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE'])
-            position5=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_BOX_PATH'])
+            position=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET2'], thread=0.90) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET2CN'], thread=0.90))
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER_PATH'])  
+            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILD_PATH'])
+            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
+            position5=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_BOX_PATH'])
             #time.sleep(5)
             if position5 != False:
                 logging.info("Box Found. (Func.1)")
@@ -65,17 +65,17 @@ class Explor3RealmW3F3(threading.Thread):
                     time.sleep(1)
                     continue
                 
-            position4=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE'])
+            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
             if position != False or position3 != False:
                 logging.info("Change to Realm Raid")
                 while True:
                     time.sleep(1)
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_REALM_EMPTY_TICKET'],thread=0.97) !=False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'],thread=0.97) !=False:
                         logging.info("Close RealmPage...")
                         self.__gui.mouse_click_bg((_displayChat+1070, 120))
                         if _firstcheck == False:
@@ -96,11 +96,11 @@ class Explor3RealmW3F3(threading.Thread):
                     else:
                         self.gameModeRealmRaid()
 
-            if position == False and position2 != False or self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH']) != False or self.__gui.find_game_img(config[svselect]['IMAGE_STORY_START_PATH']) != False:
+            if position == False and position2 != False or self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE_PATH']) != False or self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_START_PATH']) != False:
                 self.gameModeExplor()
             
             #Fail
-            position=self.__gui.find_game_img(config['DEFAULT']['IMAGE_FAILED_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'])
             if position != False:
                 logging.info("Failed..")
                 cantattk=0
@@ -110,29 +110,29 @@ class Explor3RealmW3F3(threading.Thread):
                 continue
 
             #check finish
-            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1S2_PATH']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1S3_PATH']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED2_PATH'])) != False:
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S3_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'])) != False:
                 logging.info("Finishing...")
                 cantattk=0
                 _idlecount=0
                 while True:
                     self.__gui.mouse_click_bg((_displayChat+CLICK_FINISH2[0], CLICK_FINISH2[1]))
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
-                    if (self.__gui.find_game_img(config['SOUL']['IMAGE_SOUL_ROOM_DETECT_PATH']
-                        ) or self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_BACK_PATH']
-                        ) or self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH'])) != False or (
-                        self.__gui.find_game_img(config[svselect]['IMAGE_BUFF'])) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_ROOM_DETECT_PATH']
+                        ) or self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_BACK_PATH']
+                        ) or self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE_PATH'])) != False or (
+                        self.__gui.find_game_img(self.__gui.templates['IMAGE_BUFF'])) != False:
                         break
-                    if self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE']) != False or self.__gui.find_game_img(
-                        config['REALM']['IMAGE_REALM_JADE_PATH']) != False or self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE']) != False or self.__gui.find_game_img(
+                        config['REALM']['IMAGE_REALM_JADE_PATH']) != False or self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) != False:
                         _cAttackRealm=0
                         break
                 break
 
             #soulmax
-            if self.__gui.find_game_img(config[svselect]['IMAGE_SOULMAX']) != False:
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX']) != False:
                 logging.info("Soul Max")
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 time.sleep(1)
@@ -149,9 +149,9 @@ class Explor3RealmW3F3(threading.Thread):
             detectAssistance.setDaemon(True)
             detectAssistance.start
 
-            position=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_BOX_PATH'])
-            position2=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE'])
-            position3=self.__gui.find_game_img(config[svselect]['IMAGE_REALM_GUILD_PATH'])    
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_BOX_PATH'])
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
+            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILD_PATH'])    
 
             if position != False:
                 logging.info("Box Found. (Func.2)")
@@ -163,7 +163,7 @@ class Explor3RealmW3F3(threading.Thread):
                 self.__gui.mouse_click_bg(position)
                 time.sleep(1)
 
-            if cantattk >= 12 or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False and self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI_CLOSE']) == False) and (self.__gui.find_game_img(config['SOUL']['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], thread=0.98) == False):
+            if cantattk >= 12 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE']) == False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], thread=0.98) == False):
                 logging.info("Unable to process, Exit!")
                 total = str(self.__total)
                 self.create_file(data=total)
@@ -175,7 +175,7 @@ class Explor3RealmW3F3(threading.Thread):
                 logging.debug("Return to Main function")
                 self.gameModeExplore_3Realm()
                 
-            position=self.__gui.find_game_img(config[svselect]['IMAGE_STORY_AUTOFOOD_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_AUTOFOOD_PATH'])
             if position != False:
                 logging.info("Click Auto Rotation")
                 self.__gui.mouse_click_bg((_displayChat+117, 599))
@@ -187,11 +187,11 @@ class Explor3RealmW3F3(threading.Thread):
                     subprocess.Popen(args)
                 time.sleep(1)
 
-            position=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE_PATH'])
             if position == False:
                 time.sleep(1)
-                position=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_LIST_CHAPTER_PATH'])  
-                if _firstcheck == False and (self.__gui.find_game_img(config['REALM']['IMAGE_REALM_EMPTY_TICKET2'], gray=1) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_EMPTY_TICKET2CN'],thread=0.91) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_EMPTY_TICKET2CN'],thread=0.99)) != False:
+                position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER_PATH'])  
+                if _firstcheck == False and (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET2'], gray=1) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET2CN'],thread=0.91) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET2CN'],thread=0.99)) != False:
                     _setround+=1
                     _idlecount=0
                     self.create_file(data=str(_setround))
@@ -205,9 +205,9 @@ class Explor3RealmW3F3(threading.Thread):
                     time.sleep(1)
                     continue
                 
-            position=self.__gui.find_game_img(config[svselect]['IMAGE_STORY_START_PATH'])
-            position2=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_BOX_PATH'])
-            position3=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_START_PATH'])
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_BOX_PATH'])
+            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
             if position != False:
                 #time.sleep(0.5)
                 if position2 != False and position3 != False:
@@ -218,7 +218,7 @@ class Explor3RealmW3F3(threading.Thread):
                         while True:
                             self.__gui.mouse_click_bg(position3)
                             time.sleep(1)
-                            if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                            if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                                 detectAssistance = threading.Thread(target=self.detectAssistance())
                                 detectAssistance.setDaemon(True)
                                 detectAssistance.start
@@ -243,11 +243,11 @@ class Explor3RealmW3F3(threading.Thread):
                     time.sleep(1)
                     break
             
-            position=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_FIGHT_PATH'])
-            position2=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH'])
-            position3=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_FIGHT_BOSS_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_PATH'])
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE_PATH'])
+            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS_PATH'])
             if position == False and position2 != False and position3 == False:
-                position=(self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_FIGHT_PATH']) and self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_FIGHT_BOSS_PATH']))
+                position=(self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_PATH']) and self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS_PATH']))
                 if position == False:
                     self.__gui.mouse_drag_bg(SLIDE_STORY_COORDINATE[1],SLIDE_STORY_COORDINATE[0])
                     _localVariable.detectCount -= 1
@@ -255,7 +255,7 @@ class Explor3RealmW3F3(threading.Thread):
                         # self.__gui.mouse_drag_bg(SLIDE_STORY_COORDINATE[1],SLIDE_STORY_COORDINATE[0])
                         self.__gui.mouse_drag_bg(SLIDE_STORY_COORDINATE[0],SLIDE_STORY_COORDINATE[1])
                         _localVariable.detectCount=30
-            position=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_FIGHT_BOSS_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS_PATH'])
             if position != False:
                 logging.info("BOSS was detected: ")
                 self.__gui.mouse_click_bg(position)
@@ -266,7 +266,7 @@ class Explor3RealmW3F3(threading.Thread):
                 time.sleep(1)
                 continue
 
-            position=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_FIGHT_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_PATH'])
             if position != False:
                 logging.info("Monster was detected... ")
                 self.__gui.mouse_click_bg(position)
@@ -276,7 +276,7 @@ class Explor3RealmW3F3(threading.Thread):
                 continue
 
             #=========================================get ready=================================================
-            position=self.__gui.find_game_img(config[svselect]['IMAGE_READY_PATH']) or self.__gui.find_game_img(config[svselect]['IMAGE_READY_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'])
             if position != False:
                 logging.info("Starting battle.... ")
                 self.__gui.mouse_click_bg(position)
@@ -285,7 +285,7 @@ class Explor3RealmW3F3(threading.Thread):
 
             #=========================================Finish=================================================
             #Fail
-            position=self.__gui.find_game_img(config['DEFAULT']['IMAGE_FAILED_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'])
             if position != False:
                 cantattk=0
                 _idlecount=0
@@ -293,7 +293,7 @@ class Explor3RealmW3F3(threading.Thread):
                 self.__gui.mouse_click_bg(position)
                 continue
 
-            position=self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED2_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'])
             if position != False:
                 cantattk=0
                 _idlecount=0
@@ -302,25 +302,25 @@ class Explor3RealmW3F3(threading.Thread):
 
 
             #check finish
-            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1S2_PATH'])) != False:
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2_PATH'])) != False:
                 logging.info("Finishing...")
                 cantattk=0
                 _idlecount=0
                 while True:
                     self.__gui.mouse_click_bg((_displayChat+CLICK_FINISH2[0], CLICK_FINISH2[1]))
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH']) != False or 
-                        self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_LIST_CHAPTER_PATH']) != False or 
-                        self.__gui.find_game_img(config['DEFAULT']['IMAGE_BUFF']) != False or 
-                        self.__gui.find_game_img(config['DEFAULT']['IMAGE_EMPTY_SUSHI']) != False):
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE_PATH']) != False or 
+                        self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER_PATH']) != False or 
+                        self.__gui.find_game_img(self.__gui.templates['IMAGE_BUFF']) != False or 
+                        self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) != False):
                         time.sleep(1)
                         break
                     #soulmax
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_SOULMAX']) != False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX']) != False:
                         logging.info("Soul Max")
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                         time.sleep(1)
@@ -328,7 +328,7 @@ class Explor3RealmW3F3(threading.Thread):
                 break
 
             #==========================================Reward settlement=============================================
-            position=self.__gui.find_game_img(config['EXPLORE']['IMAGE_STORY_GET_REWARD_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_GET_REWARD_PATH'])
             if position != False:
                 logging.info("Get treasure.... ")
                 self.__gui.send_esc_down()
@@ -337,7 +337,7 @@ class Explor3RealmW3F3(threading.Thread):
                 _idlecount=0
                 
             #soulmax
-            if self.__gui.find_game_img(config[svselect]['IMAGE_SOULMAX']) != False:
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX']) != False:
                 logging.info("Soul Max")
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 time.sleep(1)
@@ -354,8 +354,8 @@ class Explor3RealmW3F3(threading.Thread):
             detectAssistance.setDaemon(True)
             detectAssistance.start
             #If Found Daruma
-            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_FN3R_PATH'])
-            position2=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_FN3R_PATH'])
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
             if position and position2:
                 logging.info('3 Realm Raid Reward')
                 time.sleep(2)
@@ -364,7 +364,7 @@ class Explor3RealmW3F3(threading.Thread):
                 _is3Realm = True
                 _idlecount=0
             
-            if self.__gui.find_game_img(config[svselect]['IMAGE_REALM_CANCEL_BATTLE'], thread=0.70):
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL_BATTLE'], thread=0.70):
                 logging.info("Exit Battle..")
                 time.sleep(0.4)
                 self.__gui.mouse_click_bg((_displayChat+655, 383))
@@ -372,8 +372,8 @@ class Explor3RealmW3F3(threading.Thread):
 
             #not enough ticket
             # if self.__gameMode == 6:
-            position = (self.__gui.find_game_img(config['GB']['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1005, 10), pos2=(1105, 45), thread=0.88) or self.__gui.find_game_img(config['GB']['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1530, 10), pos2=(1630, 45), thread=0.97))
-            positionCN = (self.__gui.find_game_img(config['CN']['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1005, 10), pos2=(1105, 45), thread=0.88) or self.__gui.find_game_img(config['CN']['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1530, 10), pos2=(1630, 45), thread=0.91))
+            position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1005, 10), pos2=(1105, 45), thread=0.88) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1530, 10), pos2=(1630, 45), thread=0.97))
+            positionCN = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1005, 10), pos2=(1105, 45), thread=0.88) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1530, 10), pos2=(1630, 45), thread=0.91))
             if  position or positionCN:
                 time.sleep(1)
                 logging.info("Game Mode Story")
@@ -387,7 +387,7 @@ class Explor3RealmW3F3(threading.Thread):
                 self.gameModeExplore_3Realm()
 
             #Click icon realm
-            position=self.__gui.find_game_img(config[svselect]['IMAGE_REALM_RAID_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_RAID_PATH'])
             if position != False:
                 logging.info("Click icon realm raid...")
                 self.__gui.mouse_click_bg(position)
@@ -396,14 +396,14 @@ class Explor3RealmW3F3(threading.Thread):
                 continue
             
             #lock line up
-            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_LOCK_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_LOCK_PATH'])
             if position != False:
                 logging.info("Successfully lock lineup...")
                 self.__gui.mouse_click_bg(position)
                 continue
             
             if _is3Realm == False:
-                position=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_3RAID_PATH']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_3RAID2_PATH']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_3RAIDFROG_PATH']))
+                position=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID2_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH']))
                 if position == False:
                     # logging.info('Not Found 3Realm raid icon')
                     # _is3Realm = False
@@ -413,19 +413,19 @@ class Explor3RealmW3F3(threading.Thread):
                     _is3Realm = True
 
             #Click Realm
-            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTIONFROG_PATH'], thread=0.91)
-            position2=(self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION_PATH']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_SECTION2_PATH']))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTIONFROG_PATH'], thread=0.91)
+            position2=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION2_PATH']))
             positionatk=(position or position2)
-            position3=self.__gui.find_game_img(config[svselect]['IMAGE_REALM_ATK_PATH'])
-            position4=self.__gui.find_game_img(config[svselect]['IMAGE_REALM_REFRESH_PATH'], thread=0.96)
-            position5=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE'])
+            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'])
+            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_REFRESH_PATH'], thread=0.96)
+            position5=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
             #This to Refresh#=========================================================================================================
             if _is3Realm != False and _isFail >= 3 and position4 != False:
                 logging.debug('This should refresh')
                 self.__gui.mouse_click_bg(position4)
                 time.sleep(1)
                 #This to Click OK button
-                if self.__gui.find_game_img(config[svselect]['IMAGE_REALM_CANCEL']) != False:
+                if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL']) != False:
                     self.__gui.mouse_click_bg((position4[0]-253,position4[1]-145))
                     logging.debug('set 3Realm raid state = False')
                     _is3Realm = False
@@ -442,7 +442,7 @@ class Explor3RealmW3F3(threading.Thread):
                         _idlecount=0
                         _exit = False
                         time.sleep(1)
-                        position3=self.__gui.find_game_img(config[svselect]['IMAGE_REALM_ATK_PATH'])
+                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'])
                         if position3:
                             logging.debug('Click Attack Button')
                             self.__gui.mouse_click_bg(position3)
@@ -452,12 +452,12 @@ class Explor3RealmW3F3(threading.Thread):
                         _idlecount=0
                         while True:
                             _idlecount+=1
-                            if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                            if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                                 detectAssistance = threading.Thread(target=self.detectAssistance())
                                 detectAssistance.setDaemon(True)
                                 detectAssistance.start
 
-                            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_BACK'], gray=1) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_BACK2'], gray=1, thread=0.78)) != False:
+                            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BACK'], gray=1) or self.__gui.find_game_img(self.__gui.templates['IMAGE_BACK2'], gray=1, thread=0.78)) != False:
                                 self.__gui.send_esc_down()
                                 time.sleep(0.4)
                                 self.__gui.mouse_click_bg((_displayChat+655, 383))
@@ -481,13 +481,13 @@ class Explor3RealmW3F3(threading.Thread):
                         _cAttackRealm+=1
                         _firstcheck = False
                         _idlecount=0
-                        position3=self.__gui.find_game_img(config[svselect]['IMAGE_REALM_ATK_PATH'])
+                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'])
                         time.sleep(0.5)
                         if position3:
                             logging.debug('Click Attack Button')
                             self.__gui.mouse_click_bg(position3)
                         else:
-                            position=self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE'])
+                            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
                             time.sleep(0.5)
                             if position:
                                 logging.debug('Click Close')
@@ -504,7 +504,7 @@ class Explor3RealmW3F3(threading.Thread):
                 self.__gui.mouse_click_bg(position4)
                 time.sleep(1)
                 #This to Click OK button
-                if self.__gui.find_game_img(config[svselect]['IMAGE_REALM_CANCEL']) != False:
+                if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL']) != False:
                     self.__gui.mouse_click_bg((position4[0]-253,position4[1]-145))
                     logging.debug('set 3Realm raid state = False')
                     _is3Realm = False
@@ -512,48 +512,48 @@ class Explor3RealmW3F3(threading.Thread):
                     time.sleep(1)
             
             #=========================================get ready=================================================
-            position=self.__gui.find_game_img(config[svselect]['IMAGE_READY_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'])
             if position != False:
                 # logging.info("Starting battle.... ")
                 self.__gui.mouse_click_bg(position)
                 time.sleep(2)
                 continue
 
-            if self.__gui.find_game_img(config[svselect]['IMAGE_REALM_CANCEL_BATTLE'], thread=0.70):
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL_BATTLE'], thread=0.70):
                 logging.info("Exit Battle..")
                 time.sleep(0.4)
                 self.__gui.mouse_click_bg((_displayChat+655, 383))
                 _exit = True
 
             #Fail
-            position=self.__gui.find_game_img(config['DEFAULT']['IMAGE_FAILED_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'])
             if position != False:
                 logging.info("Failed..")
                 _cAttackRealm=0
                 _idlecount=0
                 _isFail+=1
                 while True:
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_JADE_PATH'])) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_JADE_PATH'])) != False:
                         _cAttackRealm=0
                         break
                     self.__gui.mouse_click_bg((_displayChat+CLICK_FINISH2[0], CLICK_FINISH2[1]))
 
             #check finish
-            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED1S3_PATH']) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_FINISHED2_PATH'])) != False:
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S3_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'])) != False:
                 logging.info("Finishing...")
                 #time.sleep(5)
                 while True:
-                    if self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(config['REALM']['IMAGE_REALM_CLOSE']) or self.__gui.find_game_img(config['REALM']['IMAGE_REALM_JADE_PATH'])) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_JADE_PATH'])) != False:
                         _cAttackRealm=0
                         _idlecount=0
                         break
@@ -565,10 +565,10 @@ class Explor3RealmW3F3(threading.Thread):
     
     def detectAssistance(self):
         global _displayChat, _idlecount
-        position1 = self.__gui.find_game_img(config[svselect]['IMAGE_COOP2_SEAL'])
-        position2 = self.__gui.find_game_img(config[svselect]['IMAGE_CHATSTICKER'])
-        position3 = self.__gui.find_game_img(config[svselect]['IMAGE_CHATDETECT'])
-        position4 = self.__gui.find_game_img(config['DEFAULT']['IMAGE_CLOSEWANTED'])
+        position1 = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'])
+        position2 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'])
+        position3 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])
+        position4 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CLOSEWANTED'])
         wq_jade = config['VALUE']['WQ_JADE']
         wq_coin = config['VALUE']['WQ_COIN']
         wq_sushi = config['VALUE']['WQ_SUSHI']
@@ -586,10 +586,10 @@ class Explor3RealmW3F3(threading.Thread):
             logging.info('ChatPanel detected, closed..')
 
         if position1:
-            if (self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_JADE'], thread=0.8) and wq_jade
-            ) or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_COIN'], thread=0.8) and wq_coin
-            ) or (self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_SUSHI'], thread=0.8) and wq_sushi
-            ) or ((self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_FOODDOG'], thread=0.8) or self.__gui.find_game_img(config['DEFAULT']['IMAGE_WQ_FOODCAT'], thread=0.8)) and wq_food):
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE'], thread=0.8) and wq_jade
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN'], thread=0.8) and wq_coin
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI'], thread=0.8) and wq_sushi
+            ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG'], thread=0.8) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'], thread=0.8)) and wq_food):
                 logging.info("Accept wanted quest...")
                 self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 222))
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')
