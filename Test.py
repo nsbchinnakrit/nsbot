@@ -29,8 +29,8 @@ class Test(threading.Thread):
     def gameModeTest(self):
         while True:
             time.sleep(1)
-            self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE'], thread=0.8)
-            # self.__gui.find_game_img(self.__gui.templates['IMAGE_MAIL'], thread=0.96)
+            self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE'], threshold=0.8)
+            # self.__gui.find_game_img(self.__gui.templates['IMAGE_MAIL'], threshold=0.96)
 
             # self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH'])
             # self.__gui.find_game_img(self.__gui.templates['IMAGE_EVENT_START'])

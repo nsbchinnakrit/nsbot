@@ -176,7 +176,7 @@ class GameControl:
             logging.warning(f"find_img failed: {e}")
             return 0, 0
     
-    def find_game_img(self, img_path, part=0, pos1=None, pos2=None, gray=1, center=True, delay=fimg, thread=0.9):
+    def find_game_img(self, img_path, part=0, pos1=None, pos2=None, gray=1, center=True, delay=fimg, threshold=0.9):
         maxVal, maxLoc = self.find_img(img_path, part, pos1, pos2, gray, center, delay)
         if maxVal > thread:
             logging.debug('Detected:%s, value:%.4f, pos:%s', img_path, maxVal, maxLoc)

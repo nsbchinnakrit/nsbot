@@ -97,7 +97,7 @@ class SingleSoul(threading.Thread):
                 self.__gui.mouse_click_bg(positions)
                 time.sleep(1)
 
-            if cantattk >= 5 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE']) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL']) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], thread=0.98) == False):
+            if cantattk >= 5 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE']) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL']) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], threshold=0.98) == False):
                 logging.info("Unable to process, Exit!")
                 total = str(self.__total)
                 self.create_file(data=total)
@@ -110,7 +110,7 @@ class SingleSoul(threading.Thread):
                 self.__gui.mouse_click_bg(gameready)
                 time.sleep(1)
             
-            if (self.__bossmark == 'true')  and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSMARK'],thread=0.9) == False):
+            if (self.__bossmark == 'true')  and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSMARK'],threshold=0.9) == False):
                 bossmarkCheck = threading.Thread(target=self.bossmarkCheck())
                 bossmarkCheck.setDaemon(True)
                 bossmarkCheck.start
@@ -198,10 +198,10 @@ class SingleSoul(threading.Thread):
     def bossmarkCheck(self):
         global _bossmarkChecked
         if _bossmarkChecked==False:
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSHP'],thread=0.9) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSMARK'],thread=0.9) != False):
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSHP'],threshold=0.9) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSMARK'],threshold=0.9) != False):
                 _bossmarkChecked=True
                 logging.info('Boss Marked')
-            elif (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSHP'],thread=0.9) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSMARK'],thread=0.9) == False):
+            elif (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSHP'],threshold=0.9) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BOSSMARK'],threshold=0.9) == False):
                 self.__gui.mouse_click_bg((_displayChat+360, 30))
                 time.sleep(2)
     

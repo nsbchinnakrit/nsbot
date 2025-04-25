@@ -111,8 +111,8 @@ class RealmRaid(threading.Thread):
 
             #not enough ticket
             # if self.__gameMode == 6:
-            position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET_GB'], part=1, pos1=(1005, 10), pos2=(1105, 45), thread=0.97) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET_GB'], part=1, pos1=(1530, 10), pos2=(1630, 45), thread=0.97))
-            positionCN = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET_CN'], part=1, pos1=(1005, 10), pos2=(1105, 45), thread=0.91) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET_CN'], part=1, pos1=(1530, 10), pos2=(1630, 45), thread=0.91))
+            position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET_GB'], part=1, pos1=(1005, 10), pos2=(1105, 45), threshold=0.97) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET_GB'], part=1, pos1=(1530, 10), pos2=(1630, 45), threshold=0.97))
+            positionCN = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET_CN'], part=1, pos1=(1005, 10), pos2=(1105, 45), threshold=0.91) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET_CN'], part=1, pos1=(1530, 10), pos2=(1630, 45), threshold=0.91))
             if  position or positionCN or (_cAttackRealm >= 5):
                 logging.info("Process Finish.. Exit!")
                 # pyautogui.alert(text='REALM RAID DONE', title='FINISH', button='OK')
@@ -148,11 +148,11 @@ class RealmRaid(threading.Thread):
                     _is3Realm = True
 
             #Click Realm
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTIONFROG_PATH'], thread=0.91)
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTIONFROG_PATH'], threshold=0.91)
             position2=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION2_PATH']))
             positionatk=(position or position2)
             position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'])
-            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_REFRESH_PATH'], thread=0.96)
+            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_REFRESH_PATH'], threshold=0.96)
             position5=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
             #This to Refresh#=========================================================================================================
             if ((_is3Realm != False) and position4 != False and (self.__mode != 'AllRaid')) or (

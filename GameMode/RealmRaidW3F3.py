@@ -125,7 +125,7 @@ class RealmRaidW3F3(threading.Thread):
 
             #not enough ticket
             # if self.__gameMode == 6:
-            position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1005, 10), pos2=(1105, 45), thread=0.97) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1530, 10), pos2=(1630, 45), thread=0.97))
+            position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1005, 10), pos2=(1105, 45), threshold=0.97) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1530, 10), pos2=(1630, 45), threshold=0.97))
             if  position:
                 logging.info("Process Finish.. Exit!")
                 # pyautogui.alert(text='REALM RAID DONE', title='FINISH', button='OK')
@@ -161,11 +161,11 @@ class RealmRaidW3F3(threading.Thread):
                     _is3Realm = True
 
             #Click Realm
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTIONFROG_PATH'], thread=0.91)
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTIONFROG_PATH'], threshold=0.91)
             position2=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION2_PATH']))
             positionatk=(position or position2)
             position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'])
-            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_REFRESH_PATH'], thread=0.96)
+            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_REFRESH_PATH'], threshold=0.96)
             position5=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
             #This to Refresh#=========================================================================================================
             if _is3Realm != False and _isFail >= 3 and position4 != False:
@@ -206,7 +206,7 @@ class RealmRaidW3F3(threading.Thread):
                                 detectAssistance.setDaemon(True)
                                 detectAssistance.start
 
-                            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BACK'], gray=1) or self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'], gray=1, thread=0.78)) != False:
+                            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BACK'], gray=1) or self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'], gray=1, threshold=0.78)) != False:
                                 self.__gui.send_esc_down()
                                 time.sleep(0.4)
                                 self.__gui.mouse_click_bg((_displayChat+655, 383))

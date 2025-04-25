@@ -153,7 +153,7 @@ class Explore(threading.Thread):
                 continue
 
             #-=======================================================================================================
-            IMAGE_STORY_LEAD_PATH=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LEAD_PATH'], part=1, pos1=(75, 245), pos2=(170, 300), gray=0, thread=0.90)
+            IMAGE_STORY_LEAD_PATH=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LEAD_PATH'], part=1, pos1=(75, 245), pos2=(170, 300), gray=0, threshold=0.90)
             if _isLeader == False:
                 if IMAGE_STORY_LEAD_PATH != False:
                     logging.info("Leader Detected in display..")
@@ -195,7 +195,7 @@ class Explore(threading.Thread):
                 time.sleep(1)
                 continue
             #=========================================get ready=================================================
-            IMAGE_READY_PATH=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'],thread=0.8)
+            IMAGE_READY_PATH=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'],threshold=0.8)
             if IMAGE_READY_PATH != False:
                 logging.info("Starting battle.... ")
                 self.__gui.mouse_click_bg(IMAGE_READY_PATH)
@@ -296,10 +296,10 @@ class Explore(threading.Thread):
             logging.info('ChatPanel detected, closed..')
 
         if IMAGE_COOP2_SEAL:
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE'], thread=0.8) and wq_jade
-            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN'], thread=0.8) and wq_coin
-            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI'], thread=0.8) and wq_sushi
-            ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG'], thread=0.8) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'], thread=0.8)) and wq_food):
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE'], threshold=0.8) and wq_jade
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN'], threshold=0.8) and wq_coin
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI'], threshold=0.8) and wq_sushi
+            ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG'], threshold=0.8) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'], threshold=0.8)) and wq_food):
                 logging.info("Accept wanted quest...")
                 self.__gui.mouse_click_bg((IMAGE_COOP2_SEAL[0] + 279, IMAGE_COOP2_SEAL[1] + 220))
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')

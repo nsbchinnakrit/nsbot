@@ -83,7 +83,7 @@ class GuildRealmRaid(threading.Thread):
                 _idlecount+=1
                 continue
 
-            REALM_GRAIDCOUNT=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(750, 490), pos2=(820, 540), thread=0.95) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(210, 480), pos2=(300, 540), thread=0.97))
+            REALM_GRAIDCOUNT=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(750, 490), pos2=(820, 540), threshold=0.95) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(210, 480), pos2=(300, 540), threshold=0.97))
             if REALM_GRAIDCOUNT != False:
                 logging.info("Round: 0/6 | Sleep for Wait 5s")
                 time.sleep(5)
@@ -144,7 +144,7 @@ class GuildRealmRaid(threading.Thread):
                             break
                         if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION2_PATH']):
                             break 
-                        if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDPAGEEND_TOP_PATH'],thread=0.96):
+                        if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDPAGEEND_TOP_PATH'],threshold=0.96):
                             break
                         self.__gui.mouse_drag_bg(SCROLL_DOWN[1],SCROLL_DOWN[0]) #up
                         time.sleep(1)
