@@ -17,7 +17,6 @@ class RealmRaid(threading.Thread):
     def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
         # global self.__sv
         threading.Thread.__init__(self)
-        # self.__server=Server
         self.__sv=Server
         self.__hwnd=windowName
         self.__beforetotal=beforetotal
@@ -53,6 +52,7 @@ class RealmRaid(threading.Thread):
             "IMAGE_CHATSTICKER": config[self.__sv]['IMAGE_CHATSTICKER'],
             "IMAGE_REALM_CANCEL": config[self.__sv]['IMAGE_REALM_CANCEL'],
             "IMAGE_READY_PATH": config[self.__sv]['IMAGE_READY_PATH'],
+            "IMAGE_REALM_COOLDOWN": config[self.__sv]['IMAGE_REALM_COOLDOWN'],
 
             # GB & CN (ใช้ชื่อ key เดิมได้เพราะ path ไม่ชนกัน)
             "IMAGE_REALM_EMPTY_TICKET_GB": config['GB']['IMAGE_REALM_EMPTY_TICKET'],
@@ -61,6 +61,7 @@ class RealmRaid(threading.Thread):
             # DEFAULT
             "IMAGE_BACK": config['DEFAULT']['IMAGE_BACK'],
             "IMAGE_BACK2": config['DEFAULT']['IMAGE_BACK2'],
+            "IMAGE_INBATTLE": config[self.__sv]['IMAGE_INBATTLE'],
             "IMAGE_FAILED_PATH": config['DEFAULT']['IMAGE_FAILED_PATH'],
             "IMAGE_FINISHED1_PATH": config['DEFAULT']['IMAGE_FINISHED1_PATH'],
             "IMAGE_FINISHED1S3_PATH": config['DEFAULT']['IMAGE_FINISHED1S3_PATH'],
@@ -80,13 +81,21 @@ class RealmRaid(threading.Thread):
     
         
     def load_templates(self, paths, gray=1):
-        # print("SV config keys:", config[self.__sv].keys())
         self.__gui.load_templates(paths, gray=gray)
-        logging.info("Event template loaded: %d templates", len(paths))
+        mode = "GRAY" if gray else "COLOR"
+        logging.info("Event template loaded (%s): %d templates", mode, len(paths))
 
     def gameModeRealmRaid(self):
         global _cAttackRealm, _displayChat, _is3Realm, _idlecount
         while True:
+            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'])
+            COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'])
+            IMAGE_REALM_COOLDOWN = self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_COOLDOWN'])
+            if (INBATTLE!= False and COOP_QUEST == False) or ((IMAGE_REALM_COOLDOWN != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH'])) and (self.__mode != 'AllRaid')):
+                time.sleep(1)
+                _idlecount+=1
+                continue
+                
             detectAssistance = threading.Thread(target=self.detectAssistance())
             detectAssistance.setDaemon(True)
             detectAssistance.start
@@ -210,7 +219,7 @@ class RealmRaid(threading.Thread):
             #Fail
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'])
             if position != False:
-                logging.info("Failed..")
+                logging.info("Battle End, Fail..")
                 _cAttackRealm=0
                 _idlecount=0
                 while True:
@@ -227,7 +236,7 @@ class RealmRaid(threading.Thread):
 
             #check finish
             if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S3_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'])) != False:
-                logging.info("Finishing...")
+                logging.info("Battle End, Victory!")
                 #time.sleep(5)
                 while True:
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
@@ -259,26 +268,26 @@ class RealmRaid(threading.Thread):
         if _displayChat == 0 and position3:
             _displayChat = 525
             self.__gui.recheckRect()
-            logging.info('External chat detected..')
+            logging.info('External chat detected.')
 
         if (not position3) and position2:
             self.__gui.mouse_click_bg(position2)
             _displayChat = 0
             self.__gui.recheckRect()
-            logging.info('ChatPanel detected, closed..')
+            logging.info('ChatPanel detected, closed!')
 
         if position1:
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE'], thread=0.8) and wq_jade
-            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN'], thread=0.8) and wq_coin
-            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI'], thread=0.8) and wq_sushi
-            ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG'], thread=0.8) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'], thread=0.8)) and wq_food):
-                logging.info("Accept wanted quest...")
-                self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 222))
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE']) and wq_jade
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN']) and wq_coin
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI']) and wq_sushi
+            ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'])) and wq_food):
+                logging.info("Accept wanted quest!")
+                self.__gui.mouse_click_bg(position1[0] + 174, position1[1] + 222)
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')
                 self.create_file2(data=screenshot)
             else:
-                logging.info("Refuse to accept the invitation for the wanted seal...")
-                self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 308))
+                logging.info("Refuse to accept the invitation for the wanted seal.")
+                self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 309))
                 self.__gui.takescreenshot('คนเหลี่ยมๆ')
         
         if position4 != False:

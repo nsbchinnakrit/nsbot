@@ -3,6 +3,8 @@ import os
 import logging
 import importlib
 import argparse
+import threading
+import keyboard  # <== เพิ่มไลบรารีนี้ด้วย
 from Module.logsystem import MyLog
 
 def create_file(pid, data='0'):
@@ -83,6 +85,13 @@ def main():
         args.kuro,
         args.mark_boss
     )
+
+    # 🛑 หยุดบอทด้วยปุ่ม Esc
+    def stop_bot():
+        logging.warning("[STOP] Ctrl+Shift+F10 pressed — force stopping the bot.")
+        os._exit(0)
+
+    keyboard.add_hotkey("ctrl+shift+f10", stop_bot)
 
     try:
         instance.start()

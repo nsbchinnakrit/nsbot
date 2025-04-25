@@ -23,11 +23,7 @@ def _load_template_cached(img_path, gray):
     flag = cv2.IMREAD_GRAYSCALE if gray else cv2.IMREAD_COLOR
     return cv2.imread(img_path, flag)
 
-
-fimg = config['VALUE']['FIND_IMG_DELAY']
-
 class GameControl:
-    global fimg
     def __init__(self, hwnd, load_templates, quit_game_enable=1):
         self.run = True
         self.hwnd = hwnd
@@ -47,10 +43,23 @@ class GameControl:
             from ppadb.client import Client as AbdClient
             client = AbdClient(host='127.0.0.1', port=5037)
             devices = client.devices()
+        
+        # กำหนดชื่อรูปที่ไม่ต้อง log
+        self.exclude_log_templates = {
+            # "IMAGE_BACK2",
+            "IMAGE_REALM_COOLDOWN",
+            "IMAGE_REALM_3RAID_PATH",
+            'IMAGE_INBATTLE',
+        }
     
     def load_templates(self, template_paths: dict, gray=1):
-        if not hasattr(self, "templates"):
-            self.templates = {}
+        """
+        Load all templates from given dict of name: path
+        Store as self.templates[name] = image (np.ndarray)
+        And reverse-map id(image) to name for debug labeling
+        """
+        self.templates = getattr(self, "templates", {})
+        self.template_labels = getattr(self, "template_labels", {})
 
         flag = cv2.IMREAD_GRAYSCALE if gray else cv2.IMREAD_COLOR
 
@@ -58,11 +67,11 @@ class GameControl:
             img = cv2.imread(path, flag)
             if img is not None:
                 self.templates[name] = img
-                logging.debug(f"Loaded template: {name} from {path}, shape: {img.shape}")
+                self.template_labels[id(img)] = name  # Add reverse mapping
+                logging.debug(f"Loaded template: {name} from {path}")
+                # logging.debug(f"Find Image Delay: {self.findimgdelay}")
             else:
                 logging.warning(f"Failed to load template: {name} from {path}")
-
-
 
     def stop(self):
         self.run = False
@@ -157,7 +166,7 @@ class GameControl:
             self.quit_game()
         return False
 
-    def find_img(self, img_template, part=0, pos1=None, pos2=None, gray=0, center=True, delay=0.08, label="Unknown"):
+    def find_img(self, img_template, part=0, pos1=None, pos2=None, gray=0, center=True, delay=0.0, label="Unknown"):
         '''
         Find template image (ndarray only)
         :param img_template: Template image as numpy.ndarray
@@ -203,19 +212,56 @@ class GameControl:
             logging.warning(f"[find_img] Failed ({label}): {e}")
             return 0, 0
 
-    
-    def find_game_img(self, img_template, part=0, pos1=None, pos2=None, gray=1, center=True, delay=0.03, thread=0.9, label="Unknown"):
+
+    def find_game_img(self, img_template, part=0, pos1=None, pos2=None, gray=1, center=True, delay=0.04, thread=0.9, label=None):
         '''
         Find game image using preloaded numpy template
-        :param img_template: numpy.ndarray (template image)
-        :param thread: threshold score (0–1)
-        :return: center position (x, y) if found, else False
         '''
+        if label is None:
+            label = self.template_labels.get(id(img_template), "Unknown")
+
         maxVal, maxLoc = self.find_img(img_template, part, pos1, pos2, gray, center, delay, label)
         if maxVal > thread:
-            logging.debug(f'Detected ({label}) with value: %.4f, pos: %s', maxVal, maxLoc)
+            if label not in self.exclude_log_templates:
+                logging.debug(f'Detected "{label}" with value: %.4f, pos: %s', maxVal, maxLoc)
             return list(maxLoc)
         return False
+    
+    def find_game_img_count(self, img_template, part=0, pos1=None, pos2=None, gray=1, delay=0.0, threshold=0.9, label=None):
+        '''
+        Return count of matched images (grouped to avoid duplicates)
+        '''
+        if label is None:
+            label = self.template_labels.get(id(img_template), "Unknown")
+
+        if delay > 0:
+            time.sleep(delay)
+
+        img_src = self.window_part_shot(pos1, pos2, None, gray) if part == 1 else self.window_full_shot(None, gray)
+        if img_src is None:
+            logging.warning("Screenshot is None.")
+            return 0
+
+        try:
+            res = cv2.matchTemplate(img_src, img_template, cv2.TM_CCOEFF_NORMED)
+            loc = np.where(res >= threshold)
+            rectangles = []
+
+            for pt in zip(*loc[::-1]):
+                rect = [int(pt[0]), int(pt[1]), img_template.shape[1], img_template.shape[0]]
+                rectangles.append(rect)
+                rectangles.append(rect)  # ต้องใส่ซ้ำสำหรับ groupRectangles
+
+            rectangles, _ = cv2.groupRectangles(rectangles, groupThreshold=1, eps=0.5)
+            count = len(rectangles)
+
+            logging.debug(f'Counted {count} unique matches for "{label}" with threshold {threshold}')
+            return count
+
+        except Exception as e:
+            logging.warning(f"[find_game_img_count] Failed ({label}): {e}")
+            return 0
+
 
 
     def quit_game(self):

@@ -1,7 +1,7 @@
 {
   "VALUE": {
     "FIND_IMG_DELAY": 0.04,
-    "WQ_JADE": false,
+    "WQ_JADE": true,
     "WQ_COIN": false,
     "WQ_SUSHI": false,
     "WQ_FOOD": false
@@ -73,7 +73,10 @@
     "IMAGE_REALM_CANCEL": "./Image/RealmRaid/cancelcn.png",
     "IMAGE_REALM_CANCEL_BATTLE": "./Image/RealmRaid/cancelcn.png",
     "IMAGE_BUFF": "./Image/Default/buffcn.png",
-    "IMAGE_BOSSMARK": "./Image/MultiServ/bossmarkcn.png"
+    "IMAGE_BOSSMARK": "./Image/MultiServ/bossmarkcn.png",
+    "IMAGE_REALM_GRAIDCOUNT": "./Image/RealmRaid/guildraidcountcn.png",
+    "IMAGE_REALM_COOLDOWN": "./Image/RealmRaid/raidcdcn.png",
+    "IMAGE_INBATTLE": "./Image/Default/inbattlecn.png"
   },
   "GB": {
     "IMAGE_READY_PATH": "./Image/MultiServ/ready.png",
@@ -97,7 +100,10 @@
     "IMAGE_REALM_CANCEL": "./Image/RealmRaid/cancel.png",
     "IMAGE_REALM_CANCEL_BATTLE": "./Image/RealmRaid/cancelbattle.png",
     "IMAGE_BUFF": "./Image/Default/buff.png",
-    "IMAGE_BOSSMARK": "./Image/MultiServ/bossmark.png"
+    "IMAGE_BOSSMARK": "./Image/MultiServ/bossmark.png",
+    "IMAGE_REALM_GRAIDCOUNT": "./Image/RealmRaid/guildraidcount.png",
+    "IMAGE_REALM_COOLDOWN": "./Image/RealmRaid/raidcd.png",
+    "IMAGE_INBATTLE": "./Image/Default/inbattle.png"
   },
   "JP": {
     "IMAGE_READY_PATH": "./Image/MultiServ/readyjp.png",
@@ -121,7 +127,10 @@
     "IMAGE_REALM_CANCEL": "./Image/RealmRaid/canceljp.png",
     "IMAGE_REALM_CANCEL_BATTLE": "./Image/RealmRaid/cancelbattlejp.png",
     "IMAGE_BUFF": "./Image/Default/buff.png",
-    "IMAGE_BOSSMARK": "./Image/MultiServ/bossmarkjp.png"
+    "IMAGE_BOSSMARK": "./Image/MultiServ/bossmarkjp.png",
+    "IMAGE_REALM_GRAIDCOUNT": "./Image/RealmRaid/guildraidcount.png",
+    "IMAGE_REALM_COOLDOWN": "./Image/RealmRaid/raidcdjp.png",
+    "IMAGE_INBATTLE": "./Image/Default/inbattlejp.png"
   },
   "REALM": {
     "IMAGE_REALM_FN3R_PATH": "./Image/RealmRaid/finished3Realm.png",
@@ -143,9 +152,8 @@
     "IMAGE_REALM_EMPTY_TICKET1": "./Image/RealmRaid/empty1.png",
     "IMAGE_REALM_EMPTY_TICKET2": "./Image/RealmRaid/empty2.png",
     "IMAGE_REALM_EMPTY_TICKET2CN": "./Image/RealmRaid/empty2cn.png",
-    "IMAGE_REALM_CLOSE": "./Image/RealmRaid/close.png",
-    "IMAGE_REALM_GRAIDCOUNT_CN": "./Image/RealmRaid/guildraidcountcn.png",
-    "IMAGE_REALM_GRAIDCOUNT": "./Image/RealmRaid/guildraidcount.png"
+    "IMAGE_REALM_RAID_FAILED": "./Image/RealmRaid/raidfailed.png",
+    "IMAGE_REALM_CLOSE": "./Image/RealmRaid/close.png"
   },
   "EVENT": {
     "IMAGE_EVENT_START": "./Image/Event/evstart.png",

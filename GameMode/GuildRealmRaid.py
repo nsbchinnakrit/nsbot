@@ -26,11 +26,13 @@ class GuildRealmRaid(threading.Thread):
         self.__gui=GameControl(self.__hwnd,0)
 
         color_templates = {
+            "IMAGE_REALM_CANTATTK_PATH": config['REALM']['IMAGE_REALM_CANTATTK_PATH'],
         }
 
         gray_templates = {
             # DEFAULT
             "IMAGE_ROOM_BACK": config['DEFAULT']['IMAGE_ROOM_BACK'],
+            "IMAGE_INBATTLE": config[self.__sv]['IMAGE_INBATTLE'],
             "IMAGE_FAILED_PATH": config['DEFAULT']['IMAGE_FAILED_PATH'],
             "IMAGE_FINISHED1_PATH": config['DEFAULT']['IMAGE_FINISHED1_PATH'],
             "IMAGE_FINISHED1S3_PATH": config['DEFAULT']['IMAGE_FINISHED1S3_PATH'],
@@ -51,10 +53,8 @@ class GuildRealmRaid(threading.Thread):
             "IMAGE_REALM_CLOSE": config['REALM']['IMAGE_REALM_CLOSE'],
             "IMAGE_REALM_GUILDSCROLL_PATH": config['REALM']['IMAGE_REALM_GUILDSCROLL_PATH'],
             "IMAGE_REALM_SECTION2_PATH": config['REALM']['IMAGE_REALM_SECTION2_PATH'],
-            "IMAGE_REALM_GRAIDCOUNT": config['REALM']['IMAGE_REALM_GRAIDCOUNT'],
-            "IMAGE_REALM_GRAIDCOUNT_CN": config['REALM']['IMAGE_REALM_GRAIDCOUNT_CN'],
+            "IMAGE_REALM_GRAIDCOUNT": config[self.__sv]['IMAGE_REALM_GRAIDCOUNT'],
             "IMAGE_REALM_GUILDPAGEEND_TOP_PATH": config['REALM']['IMAGE_REALM_GUILDPAGEEND_TOP_PATH'],
-            "IMAGE_REALM_CANTATTK_PATH": config['REALM']['IMAGE_REALM_CANTATTK_PATH'],
 
             #WANTED Quest
             "IMAGE_CLOSEWANTED": config['DEFAULT']['IMAGE_CLOSEWANTED'],
@@ -69,48 +69,40 @@ class GuildRealmRaid(threading.Thread):
         self.load_templates(color_templates, gray=0)
     
     def load_templates(self, paths, gray=1):
-        # print("SV config keys:", config[self.__sv].keys())
         self.__gui.load_templates(paths, gray=gray)
-        logging.info("Event template loaded: %d templates", len(paths))
+        mode = "GRAY" if gray else "COLOR"
+        logging.info("Event template loaded (%s): %d templates", mode, len(paths))
 
     def gameModeGuildRealmRaid(self):
         global _isPaused, _displayChat, _cAttackRealm, _idlecount, _scrollcount, _need1scrollup
         while True:
+            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'])
+            COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'])
+            if INBATTLE!= False and COOP_QUEST == False:
+                time.sleep(1)
+                _idlecount+=1
+                continue
+
+            REALM_GRAIDCOUNT=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(750, 490), pos2=(820, 540), thread=0.95) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(210, 480), pos2=(300, 540), thread=0.97))
+            if REALM_GRAIDCOUNT != False:
+                logging.info("Round: 0/6 | Sleep for Wait 5s")
+                time.sleep(5)
+                _idlecount+=5
+                continue
+            
             detectAssistance = threading.Thread(target=self.detectAssistance())
             detectAssistance.setDaemon(True)
             detectAssistance.start
 
-            #Room Back
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_ROOM_BACK'], label='IMAGE_ROOM_BACK')
-            if position != False:
-                logging.info("Exit Room..")
-                self.__gui.mouse_click_bg(position)
-                continue
-            
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_RAID_PATH'], label='IMAGE_REALM_RAID_PATH')
-            if position != False:
-                logging.info("Enter Realm Raid")
-                self.__gui.mouse_click_bg(position)
-                time.sleep(2)
-                continue
-
-            #Click Guild Realm Page
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILD_PATH'], label='IMAGE_REALM_GUILD_PATH')
-            if position != False:
-                logging.info("Open Guild Realm Raid")
-                self.__gui.mouse_click_bg(position)
-                _need1scrollup = False
-                continue
-
             #lock line up
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_LOCK_PATH'], label='IMAGE_REALM_LOCK_PATH')
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_LOCK_PATH'])
             if position != False:
                 logging.info("Successfully lock lineup..")
                 self.__gui.mouse_click_bg(position)
                 continue
             
             #KO or Page End
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDPAGEEND_PATH'], label='IMAGE_REALM_GUILDPAGEEND_PATH')
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDPAGEEND_PATH'])
             position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_KO_PATH'])
             if (position !=False and position2 !=False) or _scrollcount > 2:
                 logging.info("Process Finish.. Exit!")
@@ -136,13 +128,10 @@ class GuildRealmRaid(threading.Thread):
             #Drag mouse down if enemy not found
             guildscroll=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDSCROLL_PATH'])
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION2_PATH'])
-            positionGB=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(750, 490), pos2=(820, 540), thread=0.95) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(210, 480), pos2=(300, 540), thread=0.97))
-            positionCN=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(750, 490), pos2=(820, 540), thread=0.95) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(210, 480), pos2=(300, 540), thread=0.95))
-            position1= positionGB or positionCN
-            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDPAGEEND_PATH']) #รูปเขตที่ตีไปแล้ว
-            if (guildscroll != False and position1 == False) and position == False:
+            if (guildscroll != False) and (position == False):
                 logging.debug("Looking for enemy")
-                if position2:
+                page_end=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDPAGEEND_PATH']) #รูปเขตที่ตีไปแล้ว
+                if page_end:
                     logging.debug("scroll up")
                     _scrollcount += 1
                     logging.debug("_scrollcount:%s"%_scrollcount)
@@ -182,33 +171,23 @@ class GuildRealmRaid(threading.Thread):
                             break 
                         time.sleep(1)
                         self.__gui.mouse_drag_bg(SCROLL_DOWN[0],SCROLL_DOWN[1]) #down
-                        
-                        
-            
-            #Click Realm
-            guild=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDSCROLL_PATH'])
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION2_PATH'])
-            positionGB=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(750, 490), pos2=(820, 540), thread=0.95) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(210, 480), pos2=(300, 540), thread=0.97))
-            positionCN=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(750, 490), pos2=(820, 540), thread=0.95) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT_CN'], part=1, pos1=(210, 480), pos2=(300, 540), thread=0.95))
-            position1= positionGB or positionCN
-            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
-            # Click icon realm
-            
-            if (position and guild) != False and position1 == False:
+
+            if (position and guildscroll) != False:
                 self.__gui.mouse_click_bg(position)
                 _cAttackRealm+=1
                 _idlecount=0
                 _scrollcount=0
                 _need1scrollup=True
                 time.sleep(0.5)
+                logging.info("Attack Realm!")
                 atk=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'])
-                logging.info("Click Attack..")
+                position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
                 if atk != False and position2 != False:
                     logging.debug("Click Attack by atk image")
                     self.__gui.mouse_click_bg(atk)
                     time.sleep(1)
                     continue
-                if atk == False and position2 != False:
+                elif atk == False and position2 != False:
                     logging.debug("Click Attack by SECTION2 image")
                     self.__gui.mouse_click_bg((_displayChat+position[0]-24,position[1]+148))    
                     # self.__gui.mouse_click_bg((_displayChat+position[0]-24,position[1]+190))    
@@ -217,7 +196,7 @@ class GuildRealmRaid(threading.Thread):
                     position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANTATTK_PATH'],gray=0)
                     if position2 != False:
                         time.sleep(1)
-                        logging.info("Reopen Guild Realm Raid")
+                        logging.info("Reopen Guild RealmRaid Page.")
                         self.__gui.mouse_click_bg(position)
                         self.__gui.mouse_click_bg(position)
                         time.sleep(1)
@@ -231,7 +210,7 @@ class GuildRealmRaid(threading.Thread):
             #Fail
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'])
             if position != False:
-                logging.info("Failed..")
+                logging.info("Battle End, Fail..")
                 self.__gui.mouse_click_bg(position)
                 time.sleep(1)
                 _cAttackRealm=0
@@ -240,7 +219,7 @@ class GuildRealmRaid(threading.Thread):
                 
            #check finish
             if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S3_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'])) != False:
-                logging.info("Finishing...")
+                logging.info("Battle End, Victory!")
                 #time.sleep(5)
                 while True:
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
@@ -256,10 +235,28 @@ class GuildRealmRaid(threading.Thread):
                     self.__gui.mouse_click_bg((_displayChat+CLICK_FINISH[0], CLICK_FINISH[1]))
                 break
 
-            elif position1 != False:
-                # logging.info("Round: 0/6 | Sleep for Wait 5s")
-                time.sleep(5)
-                _idlecount+=5
+            
+            #Room Back
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_ROOM_BACK'])
+            if position != False:
+                logging.info("In Room Detected, Exit Room..")
+                self.__gui.mouse_click_bg(position)
+                continue
+            
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_RAID_PATH'])
+            if position != False:
+                logging.info("Enter Realm Raid!")
+                self.__gui.mouse_click_bg(position)
+                time.sleep(2)
+                continue
+
+            #Click Guild Realm Page
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILD_PATH'])
+            if position != False:
+                logging.info("Open Guild RealmRaid Page.")
+                self.__gui.mouse_click_bg(position)
+                _need1scrollup = False
+                continue
 
             else:
                 _idlecount+=1
@@ -279,26 +276,26 @@ class GuildRealmRaid(threading.Thread):
         if _displayChat == 0 and position3:
             _displayChat = 525
             self.__gui.recheckRect()
-            logging.info('External chat detected..')
+            logging.info('External chat detected.')
 
         if (not position3) and position2:
             self.__gui.mouse_click_bg(position2)
             _displayChat = 0
             self.__gui.recheckRect()
-            logging.info('ChatPanel detected, closed..')
+            logging.info('ChatPanel detected, closed!')
 
         if position1:
             if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE']) and wq_jade
             ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN']) and wq_coin
             ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI']) and wq_sushi
             ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'])) and wq_food):
-                logging.info("Accept wanted quest...")
-                self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 222))
+                logging.info("Accept wanted quest!")
+                self.__gui.mouse_click_bg(position1[0] + 174, position1[1] + 222)
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')
                 self.create_file2(data=screenshot)
             else:
-                logging.info("Refuse to accept the invitation for the wanted seal...")
-                self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 308))
+                logging.info("Refuse to accept the invitation for the wanted seal.")
+                self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 309))
                 self.__gui.takescreenshot('คนเหลี่ยมๆ')
         
         if position4 != False:

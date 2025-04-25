@@ -14,15 +14,70 @@ _idlecount=0
 
 class SingleExplore(threading.Thread):
     def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
-        global svselect
+        # global svselect
         threading.Thread.__init__(self)
-        self.__server=Server
-        svselect=self.__server
+        self.__sv=Server
         self.__hwnd=windowName
         self.__beforetotal=beforetotal
         self.__total=total
         self.__pid=pid
         self.__gui=GameControl(self.__hwnd,0)
+    
+        color_templates = {
+        }
+
+        gray_templates = {
+            # EXPLORE
+            "IMAGE_STORY_BOX_PATH": config['EXPLORE']['IMAGE_STORY_BOX_PATH'],
+            "IMAGE_STORY_CHERRY_CAKE_PATH": config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH'],
+            "IMAGE_STORY_LIST_CHAPTER_PATH": config['EXPLORE']['IMAGE_STORY_LIST_CHAPTER_PATH'],
+            "IMAGE_STORY_FIGHT_PATH": config['EXPLORE']['IMAGE_STORY_FIGHT_PATH'],
+            "IMAGE_STORY_FIGHT_BOSS_PATH": config['EXPLORE']['IMAGE_STORY_FIGHT_BOSS_PATH'],
+            "IMAGE_STORY_GET_REWARD_PATH": config['EXPLORE']['IMAGE_STORY_GET_REWARD_PATH'],
+
+            # DEFAULT
+            "IMAGE_EMPTY_SUSHI": config['DEFAULT']['IMAGE_EMPTY_SUSHI'],
+            "IMAGE_EMPTY_SUSHI_CLOSE": config['DEFAULT']['IMAGE_EMPTY_SUSHI_CLOSE'],
+            "IMAGE_FAILED_PATH": config['DEFAULT']['IMAGE_FAILED_PATH'],
+            "IMAGE_FINISHED2_PATH": config['DEFAULT']['IMAGE_FINISHED2_PATH'],
+            "IMAGE_FINISHED1_PATH": config['DEFAULT']['IMAGE_FINISHED1_PATH'],
+            "IMAGE_FINISHED1S2_PATH": config['DEFAULT']['IMAGE_FINISHED1S2_PATH'],
+            "IMAGE_INBATTLE": config[self.__sv]['IMAGE_INBATTLE'],
+
+            # SOUL
+            "IMAGE_SOUL_INVITE_CHECKBOX_PATH": config['SOUL']['IMAGE_SOUL_INVITE_CHECKBOX_PATH'],
+
+            # REALM
+            "IMAGE_REALM_CLOSE": config['REALM']['IMAGE_REALM_CLOSE'],
+
+            # SERVER-SPECIFIC (self.__sv)
+            "IMAGE_STORY_LIMIT_PATH": config[self.__sv]['IMAGE_STORY_LIMIT_PATH'],
+            "IMAGE_REALM_CANCEL": config[self.__sv]['IMAGE_REALM_CANCEL'],
+            "IMAGE_STORY_AUTOFOOD_PATH": config[self.__sv]['IMAGE_STORY_AUTOFOOD_PATH'],
+            "IMAGE_STORY_START_PATH": config[self.__sv]['IMAGE_STORY_START_PATH'],
+            "IMAGE_COOP2_SEAL": config[self.__sv]['IMAGE_COOP2_SEAL'],
+            "IMAGE_CHATDETECT": config[self.__sv]['IMAGE_CHATDETECT'],
+            "IMAGE_CHATSTICKER": config[self.__sv]['IMAGE_CHATSTICKER'],
+            "IMAGE_READY_PATH": config[self.__sv]['IMAGE_READY_PATH'],
+            "IMAGE_SOULMAX": config[self.__sv]['IMAGE_SOULMAX'],
+            "IMAGE_STORY_REWARD_CONFIRMED_PATH": config[self.__sv]['IMAGE_STORY_REWARD_CONFIRMED_PATH'],
+        
+            #WANTED Quest
+            "IMAGE_CLOSEWANTED": config['DEFAULT']['IMAGE_CLOSEWANTED'],
+            "IMAGE_WQ_JADE": config['DEFAULT']['IMAGE_WQ_JADE'],
+            "IMAGE_WQ_COIN": config['DEFAULT']['IMAGE_WQ_COIN'],
+            "IMAGE_WQ_SUSHI": config['DEFAULT']['IMAGE_WQ_SUSHI'],
+            "IMAGE_WQ_FOODDOG": config['DEFAULT']['IMAGE_WQ_FOODDOG'],
+            "IMAGE_WQ_FOODCAT": config['DEFAULT']['IMAGE_WQ_FOODCAT'],
+        }
+
+        self.load_templates(gray_templates, gray=1)
+        self.load_templates(color_templates, gray=0)
+    
+    def load_templates(self, paths, gray=1):
+        self.__gui.load_templates(paths, gray=gray)
+        mode = "GRAY" if gray else "COLOR"
+        logging.info("Event template loaded (%s): %d templates", mode, len(paths))
 
 
     def gameModeSingleExplore(self):
@@ -166,7 +221,7 @@ class SingleExplore(threading.Thread):
             if position != False:
                 cantattk=0
                 _idlecount=0
-                logging.info("Failed..")
+                logging.info("Battle End, Fail..")
                 self.__gui.mouse_click_bg(position)
                 continue
 
@@ -180,7 +235,7 @@ class SingleExplore(threading.Thread):
 
             #check finish
             if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2_PATH'])) != False:
-                logging.info("Finishing...")
+                logging.info("Battle End, Victory!")
                 cantattk=0
                 _idlecount=0
                 while True:
@@ -233,26 +288,26 @@ class SingleExplore(threading.Thread):
         if _displayChat == 0 and position3:
             _displayChat = 525
             self.__gui.recheckRect()
-            logging.info('External chat detected..')
+            logging.info('External chat detected.')
 
         if (not position3) and position2:
             self.__gui.mouse_click_bg(position2)
             _displayChat = 0
             self.__gui.recheckRect()
-            logging.info('ChatPanel detected, closed..')
+            logging.info('ChatPanel detected, closed!')
 
         if position1:
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE'], thread=0.8) and wq_jade
-            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN'], thread=0.8) and wq_coin
-            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI'], thread=0.8) and wq_sushi
-            ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG'], thread=0.8) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'], thread=0.8)) and wq_food):
-                logging.info("Accept wanted quest...")
-                self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 222))
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE']) and wq_jade
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN']) and wq_coin
+            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI']) and wq_sushi
+            ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'])) and wq_food):
+                logging.info("Accept wanted quest!")
+                self.__gui.mouse_click_bg(position1[0] + 174, position1[1] + 222)
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')
                 self.create_file2(data=screenshot)
             else:
-                logging.info("Refuse to accept the invitation for the wanted seal...")
-                self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 308))
+                logging.info("Refuse to accept the invitation for the wanted seal.")
+                self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 309))
                 self.__gui.takescreenshot('คนเหลี่ยมๆ')
         
         if position4 != False:

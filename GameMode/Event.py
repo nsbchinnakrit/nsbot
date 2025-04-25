@@ -24,12 +24,10 @@ class Event(threading.Thread):
         self.__bossmark=markboss
         self.__gui=GameControl(self.__hwnd, self.load_templates, 0)
 
-        # โหลด template ชุดเดียว
         color_templates = {
         }
 
         gray_templates = {
-            # "back_button": "images/BACK.png",
             "IMAGE_EVENT_LOCK": config['EVENT']['IMAGE_EVENT_LOCK'],
             "IMAGE_EVENT_LOCKED": config['EVENT']['IMAGE_EVENT_LOCKED'],
             "IMAGE_REALM_CANCEL": config[self.__sv]['IMAGE_REALM_CANCEL'],
@@ -44,6 +42,8 @@ class Event(threading.Thread):
             "IMAGE_FINISHED1_PATH": config['DEFAULT']['IMAGE_FINISHED1_PATH'],
             "IMAGE_FINISHED1S1_PATH": config['DEFAULT']['IMAGE_FINISHED1S1_PATH'],
             "IMAGE_FINISHED2_PATH": config['DEFAULT']['IMAGE_FINISHED2_PATH'],
+            "IMAGE_BACK2": config['DEFAULT']['IMAGE_BACK2'],
+            "IMAGE_INBATTLE": config[self.__sv]['IMAGE_INBATTLE'],
 
             #WANTED Quest
             "IMAGE_CLOSEWANTED": config['DEFAULT']['IMAGE_CLOSEWANTED'],
@@ -58,15 +58,22 @@ class Event(threading.Thread):
         self.load_templates(color_templates, gray=0)
     
     def load_templates(self, paths, gray=1):
-        # print("SV config keys:", config[self.__sv].keys())
         self.__gui.load_templates(paths, gray=gray)
-        logging.info("Event template loaded: %d templates", len(paths))
+        mode = "GRAY" if gray else "COLOR"
+        logging.info("Event template loaded (%s): %d templates", mode, len(paths))
 
 #   
     def gameModeEvent(self):
         global _displayChat, cantattk, _idlecount, _bossmarkChecked
         CLICK_SOULMAX=(568, 387)
         while True:
+            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'])
+            COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'])
+            if INBATTLE!= False and COOP_QUEST == False:
+                time.sleep(1)
+                _idlecount+=1
+                continue
+
             detectAssistance = threading.Thread(target=self.detectAssistance())
             detectAssistance.setDaemon(True)
             detectAssistance.start
@@ -132,7 +139,7 @@ class Event(threading.Thread):
             position=self.__gui.find_game_img(self.__gui.templates["IMAGE_FAILED_PATH"])
             if position != False:
                 cantattk=0
-                logging.info("Failed..")
+                logging.info("Battle End, Fail..")
                 self.__gui.mouse_click_bg(position)
                 _idlecount=0
                 continue
@@ -140,7 +147,7 @@ class Event(threading.Thread):
             #check finish
             # if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S1_PATH']) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH']) != False):
             if (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1_PATH"]) != False) or (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S1_PATH"]) != False) or (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED2_PATH"]) != False):
-                logging.info("Finishing...")
+                logging.info("Battle End, Victory!")
                 cantattk=0
                 _idlecount=0
                 _bossmarkChecked=False
@@ -217,12 +224,12 @@ class Event(threading.Thread):
             ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI'], thread=0.8) and wq_sushi
             ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG'], thread=0.8) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'], thread=0.8)) and wq_food):
                 logging.info("Accept wanted quest...")
-                self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 222))
+                self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 220))
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')
                 self.create_file2(data=screenshot)
             else:
                 logging.info("Refuse to accept the invitation for the wanted seal...")
-                self.__gui.mouse_click_bg((position1[0] + 174, position1[1] + 308))
+                self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 309))
                 self.__gui.takescreenshot('คนเหลี่ยมๆ')
         
         if position4 != False:
