@@ -24,12 +24,21 @@ def _load_template_cached(img_path, gray):
     return cv2.imread(img_path, flag)
 
 class GameControl:
-    def __init__(self, hwnd, load_templates, quit_game_enable=1):
+    def __init__(self, hwnd, load_templates, mode=0, quit_game_enable=1):
         self.run = True
         self.hwnd = hwnd
         self.findimgdelay = config['VALUE']['FIND_IMG_DELAY']
         self.quit_game_enable = quit_game_enable
         self.debug_enable = False
+        self.mode = mode
+        self.templates = {}           # <<<<<<<<<< สำคัญ!
+        self.template_labels = {}      # <<<<<<<<<< สำคัญ!
+        self.color_templates = set()   # <<<<<<<<<< สำคัญ!
+        self.gray_templates = set()    # <<<<<<<<<< สำคัญ!
+        self.exclude_log_templates = set()
+
+        self._init_capture()
+
 
         l1, t1, r1, b1 = win32gui.GetWindowRect(self.hwnd)
         l2, t2, r2, b2 = win32gui.GetClientRect(self.hwnd)
@@ -52,26 +61,48 @@ class GameControl:
             # 'IMAGE_INBATTLE',
         }
     
-    def load_templates(self, template_paths: dict, gray=1):
-        """
-        Load all templates from given dict of name: path
-        Store as self.templates[name] = image (np.ndarray)
-        And reverse-map id(image) to name for debug labeling
-        """
-        self.templates = getattr(self, "templates", {})
-        self.template_labels = getattr(self, "template_labels", {})
+    def load_templates(self, paths, gray=1):
+        mode = "GRAY" if gray else "COLOR"
+        for label, filepath in paths.items():
+            if not os.path.exists(filepath):
+                logging.warning(f"Template not found: {filepath}")
+                continue
 
-        flag = cv2.IMREAD_GRAYSCALE if gray else cv2.IMREAD_COLOR
+            flag = cv2.IMREAD_GRAYSCALE if gray else cv2.IMREAD_COLOR
+            template = cv2.imread(filepath, flag)
 
-        for name, path in template_paths.items():
-            img = cv2.imread(path, flag)
-            if img is not None:
-                self.templates[name] = img
-                self.template_labels[id(img)] = name  # Add reverse mapping
-                logging.debug(f"Loaded template: {name} from {path}")
-                # logging.debug(f"Find Image Delay: {self.findimgdelay}")
+            if template is None:
+                logging.warning(f"Failed to load template: {filepath}")
+                continue
+
+            self.templates[label] = template
+            self.template_labels[id(template)] = label
+
+            # >>>> อันนี้คือส่วนที่เพิ่มเข้าไป <<<<
+            if gray:
+                if not hasattr(self, 'gray_templates'):
+                    self.gray_templates = set()
+                self.gray_templates.add(label)
             else:
-                logging.warning(f"Failed to load template: {name} from {path}")
+                if not hasattr(self, 'color_templates'):
+                    self.color_templates = set()
+                self.color_templates.add(label)
+            # >>>> จบ <<<<
+
+        logging.info("Event template loaded (%s): %d templates", mode, len(paths))
+
+    def _init_capture(self):
+        self.hwindc = win32gui.GetWindowDC(self.hwnd)
+        self.srcdc = win32ui.CreateDCFromHandle(self.hwindc)
+        self.memdc = self.srcdc.CreateCompatibleDC()
+
+        l, t, r, b = win32gui.GetClientRect(self.hwnd)
+        self._client_w = r - l
+        self._client_h = b - t
+
+        self.bmp = win32ui.CreateBitmap()
+        self.bmp.CreateCompatibleBitmap(self.srcdc, self._client_w, self._client_h)
+        self.memdc.SelectObject(self.bmp)
 
     def stop(self):
         self.run = False
@@ -109,7 +140,18 @@ class GameControl:
     def _buffer_to_img(self, bmp, width, height, gray=0):
         signedIntsArray = bmp.GetBitmapBits(True)
         img = np.frombuffer(signedIntsArray, dtype='uint8')
-        img.shape = (height, width, 4)
+
+        expected_size = width * height * 4
+        if img.size != expected_size:
+            logging.error(f"_buffer_to_img: Mismatch buffer size. Got {img.size}, expected {expected_size} ({width}x{height}x4)")
+            return None
+
+        try:
+            img.shape = (height, width, 4)
+        except ValueError:
+            logging.error(f"_buffer_to_img: Failed to reshape buffer ({img.size} bytes) into ({height},{width},4)")
+            return None
+
         if gray:
             return cv2.cvtColor(img, cv2.COLOR_BGRA2GRAY)
         return cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
@@ -120,11 +162,15 @@ class GameControl:
                 self.init_mem()
             target = (0, 0) if self.client == 0 else (0, -35)
             self.memdc.BitBlt(target, (self._client_w, self._client_h), self.srcdc,
-                              (self._border_l, self._border_t), win32con.SRCCOPY)
+                            (self._border_l, self._border_t), win32con.SRCCOPY)
             if file_name:
                 self.bmp.SaveBitmapFile(self.memdc, file_name)
                 return
-            return self._buffer_to_img(self.bmp, self._client_w, self._client_h, gray)
+            img = self._buffer_to_img(self.bmp, self._client_w, self._client_h, gray)
+            if img is None:
+                logging.warning("window_full_shot: Failed to capture image, trying to re-init mem.")
+                self.init_mem()
+            return img
         except Exception:
             self.init_mem()
             logging.warning(traceback.format_exc())
@@ -149,8 +195,12 @@ class GameControl:
             bmp.SaveBitmapFile(memdc, file_name)
             self._release_dc(srcdc, memdc, hwindc, bmp)
             return
+
         img = self._buffer_to_img(bmp, w, h, gray)
         self._release_dc(srcdc, memdc, hwindc, bmp)
+
+        if img is None:
+            logging.warning("window_part_shot: Failed to capture part image.")
         return img
 
     def _release_dc(self, srcdc, memdc, hwindc, bmp):
@@ -184,7 +234,6 @@ class GameControl:
         Find template image (ndarray only)
         :param img_template: Template image as numpy.ndarray
         '''
-        # Ensure label is set, even if None
         if label is None:
             try:
                 label = self.template_labels.get(id(img_template), "Unknown")
@@ -205,25 +254,37 @@ class GameControl:
         if delay > 0:
             time.sleep(delay)
 
-        # Get screen
         img_src = self.window_part_shot(pos1, pos2, None, gray) if part == 1 else self.window_full_shot(None, gray)
         if img_src is None:
             logging.warning("Screenshot is None.")
             return 0, 0
 
-        # Safety check
+        # Safety check size
         if (img_src.shape[0] < img_template.shape[0]) or (img_src.shape[1] < img_template.shape[1]):
             logging.warning(
                 f"[find_img] Template '{label}' size {img_template.shape} is larger than source image {img_src.shape}"
             )
             return 0, 0
 
+        # Safety check dtype and dimension
+        if img_src.dtype != img_template.dtype or img_src.ndim != img_template.ndim:
+            logging.warning(
+                f"[find_img] Type mismatch: src={img_src.dtype}/{img_src.shape}, tpl={img_template.dtype}/{img_template.shape}"
+            )
+            return 0, 0
+
+        # Safety check depth (must be uint8 or float32)
+        if img_src.dtype not in [np.uint8, np.float32]:
+            logging.warning(f"[find_img] Invalid src depth {img_src.dtype} (must be uint8 or float32)")
+            return 0, 0
+        if img_template.dtype not in [np.uint8, np.float32]:
+            logging.warning(f"[find_img] Invalid template depth {img_template.dtype} (must be uint8 or float32)")
+            return 0, 0
 
         try:
             res = cv2.matchTemplate(img_src, img_template, cv2.TM_CCOEFF_NORMED)
             _, maxVal, _, maxLoc = cv2.minMaxLoc(res)
 
-            # ====== ตรงนี้ปรับค่าตำแหน่งจริงบนหน้าจอ ======
             if part == 1 and pos1 is not None:
                 maxLoc = (maxLoc[0] + pos1[0], maxLoc[1] + pos1[1])
 
@@ -232,12 +293,17 @@ class GameControl:
                     int(maxLoc[0] + img_template.shape[1] / 2),
                     int(maxLoc[1] + img_template.shape[0] / 2)
                 ]
-            # ================================================
 
             if self.debug_enable:
                 img = self.window_part_shot(pos1, pos2, None, gray) if part == 1 else self.window_full_shot()
-                self.img = cv2.rectangle(img, maxLoc, (maxLoc[0]+img_template.shape[1], maxLoc[1]+img_template.shape[0]), (0, 255, 0), 3)
-                show_img(img)
+                self.img = cv2.rectangle(
+                    img,
+                    (maxLoc[0] - img_template.shape[1] // 2, maxLoc[1] - img_template.shape[0] // 2),
+                    (maxLoc[0] + img_template.shape[1] // 2, maxLoc[1] + img_template.shape[0] // 2),
+                    (0, 255, 0),
+                    3
+                )
+                show_img(self.img)
                 logging.info("Top left point location: %s", maxLoc)
                 logging.info("Score: %.4f", maxVal)
 
@@ -248,13 +314,20 @@ class GameControl:
             return 0, 0
 
 
-
-    def find_game_img(self, img_template, part=0, pos1=None, pos2=None, gray=1, center=True, delay=0.04, threshold=0.9, label=None):
+    def find_game_img(self, img_template, part=0, pos1=None, pos2=None, gray=None, center=True, delay=0.04, threshold=0.9, label=None):
         '''
         Find game image using preloaded numpy template
         '''
         if label is None:
             label = self.template_labels.get(id(img_template), "Unknown")
+
+        # ======== เพิ่มตรงนี้: เลือก gray อัตโนมัติ ========
+        if gray is None:
+            if label in self.color_templates:
+                gray = 0  # ใช้สี (BGR)
+            else:
+                gray = 1  # ใช้ขาวดำ (Gray)
+        # ================================================
 
         start_time = time.perf_counter()
 
@@ -264,7 +337,6 @@ class GameControl:
 
         if maxVal > threshold:
             if label not in self.exclude_log_templates:
-                # คำนวณขอบภาพเจอ = pos1/pos2
                 if center:
                     top_left = (
                         int(maxLoc[0] - img_template.shape[1] / 2),
@@ -279,7 +351,7 @@ class GameControl:
                 )
 
                 logging.debug(
-                    f'Detected "{label}" with value: %.4f, pos: {maxLoc}, match_area=({top_left}, {bottom_right}) (%.2f ms)',
+                    f'Detected \"{label}\" with value: %.4f, pos: {maxLoc}, match_area=({top_left}, {bottom_right}) (%.2f ms)',
                     maxVal, elapsed
                 )
             return list(maxLoc)
