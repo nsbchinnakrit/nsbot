@@ -4,8 +4,14 @@ import logging
 import importlib
 import argparse
 import threading
-import keyboard  # <== เพิ่มไลบรารีนี้ด้วย
+import signal  # เพิ่มการ import signal
+import keyboard
 from Module.logsystem import MyLog
+
+# ฟังก์ชันสำหรับจัดการ signal
+def signal_handler(sig, frame):
+    logging.warning("[EXIT] Ctrl+C pressed — stopping the bot.")
+    os._exit(0)
 
 def create_file(pid, data='0'):
     try:
@@ -41,6 +47,9 @@ def parse_args():
     return parser.parse_args()
 
 def main():
+    # ลงทะเบียน signal handler สำหรับ SIGINT (Ctrl+C)
+    signal.signal(signal.SIGINT, signal_handler)
+    
     args = parse_args()
     pid = os.getpid()
 
@@ -86,16 +95,23 @@ def main():
         args.mark_boss
     )
 
-    # 🛑 หยุดบอทด้วยปุ่ม Esc
-    def stop_bot():
-        logging.warning("[STOP] Ctrl+Shift+F10 pressed — force stopping the bot.")
-        os._exit(0)
+    # ตั้งค่า hotkey สำหรับ Ctrl+Shift+F10
+    # def stop_bot():
+    #     logging.warning("[STOP] Ctrl+Shift+F10 pressed — force stopping the bot.")
+    #     os._exit(0)
 
-    keyboard.add_hotkey("ctrl+shift+f10", stop_bot)
+    # keyboard.add_hotkey("ctrl+shift+f10", stop_bot)
+    
+    # # เพิ่ม hotkey สำหรับ Ctrl+C ด้วย keyboard library
+    # keyboard.add_hotkey("ctrl+c", lambda: signal_handler(signal.SIGINT, None))
 
     try:
         instance.start()
-        instance.join()
+        
+        # ใช้ while loop เพื่อให้โปรแกรมหลักยังคงทำงานและสามารถรับ signal ได้
+        while instance.is_alive():
+            instance.join(0.1)  # join with timeout เพื่อให้โปรแกรมสามารถรับ interrupt ได้
+            
     except KeyboardInterrupt:
         logging.warning("[EXIT] Ctrl+C pressed — stopping the bot.")
         os._exit(0)
