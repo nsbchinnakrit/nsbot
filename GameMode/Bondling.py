@@ -42,14 +42,15 @@ class Bondling(threading.Thread):
             # BONDLING
             "IMAGE_BONDLING_BONDLING": config['BONDLING']['IMAGE_BONDLING_BONDLING'],
             "IMAGE_BONDLING_SUMMON": config['BONDLING']['IMAGE_BONDLING_SUMMON'],
-            "IMAGE_BONDLING_TOMBFACE": config['BONDLING']['IMAGE_BONDLING_TOMBFACE'],
             "IMAGE_BONDLING_PACTSETTINGS": config['BONDLING']['IMAGE_BONDLING_PACTSETTINGS'],
             "IMAGE_BONDLING_INFO": config['BONDLING']['IMAGE_BONDLING_INFO'],
             "IMAGE_BONDLING_EXPDETECT": config['BONDLING']['IMAGE_BONDLING_EXPDETECT'],
             "IMAGE_BONDLING_BRUSH": config['BONDLING']['IMAGE_BONDLING_BRUSH'],
+            "IMAGE_BONDLING_CANCEL": config['BONDLING']['IMAGE_BONDLING_CANCEL'],
 
             # DEFAULT
             "IMAGE_FAILED_PATH": config['DEFAULT']['IMAGE_FAILED_PATH'],
+            "IMAGE_ROOM_BACK": config['DEFAULT']['IMAGE_ROOM_BACK'],
             "IMAGE_FINISHED0_PATH": config['DEFAULT']['IMAGE_FINISHED0_PATH'],
             "IMAGE_FINISHED1_PATH": config['DEFAULT']['IMAGE_FINISHED1_PATH'],
             "IMAGE_FINISHED2_PATH": config['DEFAULT']['IMAGE_FINISHED2_PATH'],
@@ -95,12 +96,19 @@ class Bondling(threading.Thread):
         CLICK_SOULMAX=(568, 387)
         START_SOUL_COORDINATE=(1075, 565)
         while True:  
+            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+196, 600), pos2=(_displayChat+277, 640))
+            COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
+            if INBATTLE!= False and COOP_QUEST == False:
+                time.sleep(1)
+                _idlecount+=1
+                continue
+                
             detectAssistance = threading.Thread(target=self.detectAssistance())
             detectAssistance.setDaemon(True)
             detectAssistance.start
             time.sleep(1)
 
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_BONDLING'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_BONDLING'],part=1, pos1=(_displayChat+886, 541), pos2=(_displayChat+997, 624))
             if position != False:
                 logging.info("Enter Bondling Fairyland")
                 self.__gui.mouse_click_bg(position)
@@ -116,100 +124,110 @@ class Bondling(threading.Thread):
             #     time.sleep(1)
 
             
-            #Tomb
-            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACT1'], gray=0 , threshold=0.95)
-            if (self.__mode == 'Pact' or self.__mode == 'Both') and ((self.__crystal == '1') or (self.__tomb == 'true')) and position != False:
-                logging.info("Tomb Guard!")
-                self.__gui.mouse_click_bg(position)
-                _idlecount=0
-                logging.debug("_firstclick = False")
-                _firstclick = False
-                time.sleep(2)
+            # กำหนด mapping ชื่อ - เงื่อนไขไว้ล่วงหน้า
+            pact_targets = [
+                {
+                    "template": "IMAGE_BONDLING_PACT1",
+                    "crystal_value": "1",
+                    "mode_check": "tomb",
+                    "log_name": "Tomb Guard!",
+                    "sleep_time": 2
+                },
+                {
+                    "template": "IMAGE_BONDLING_PACT2",
+                    "crystal_value": "2",
+                    "mode_check": "snowball",
+                    "log_name": "Snowball!",
+                    "sleep_time": 2
+                },
+                {
+                    "template": "IMAGE_BONDLING_PACT3",
+                    "crystal_value": "3",
+                    "mode_check": "azure",
+                    "log_name": "Azure Basan!",
+                    "sleep_time": 2
+                },
+                {
+                    "template": "IMAGE_BONDLING_PACT4",
+                    "crystal_value": "4",
+                    "mode_check": "kuro",
+                    "log_name": "Kuro!",
+                    "sleep_time": 3
+                }
+            ]
 
-            #SnowBall
-            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACT2'], gray=0, threshold=0.95)
-            if (self.__mode == 'Pact' or self.__mode == 'Both') and ((self.__crystal == '2') or (self.__snowball == 'true')) and position != False:
-                logging.info("Snowball!")
-                self.__gui.mouse_click_bg(position)
-                _idlecount=0
-                logging.debug("_firstclick = False")
-                _firstclick = False
-                time.sleep(2)
+            for pact in pact_targets:
+                position = self.__gui.find_game_img(
+                    self.__gui.templates[pact["template"]],
+                    gray=0,
+                    threshold=0.95 ,part=1, pos1=(_displayChat+30, 389), pos2=(_displayChat+1022, 510)
+                )
 
-            #Azure
-            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACT3'], gray=0, threshold=0.95)
-            if (self.__mode == 'Pact' or self.__mode == 'Both') and ((self.__crystal == '3') or (self.__azure == 'true')) and position != False:
-                logging.info("Azure Basan!")
-                self.__gui.mouse_click_bg(position)
-                _idlecount=0
-                logging.debug("_firstclick = False")
-                _firstclick = False
-                time.sleep(2)
+                # ตรงนี้: ดึงชื่อ attribute แบบรองรับ __ ได้
+                attr_name = f"_{self.__class__.__name__}__{pact['mode_check']}"
+                mode_value = getattr(self, attr_name, None)
 
-            #Kuro
-            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACT4'], gray=0, threshold=0.95)
-            if (self.__mode == 'Pact' or self.__mode == 'Both') and ((self.__crystal == '4') or (self.__kuro == 'true')) and position != False:
-                logging.info("Kuro!")
-                self.__gui.mouse_click_bg(position)
-                _idlecount=0
-                logging.debug("_firstclick = False")
-                _firstclick = False
-                time.sleep(3)
+                if (self.__mode in ('Pact', 'Both')) and ((self.__crystal == pact["crystal_value"]) or (mode_value == 'true')) and position:
+                    logging.info(pact["log_name"])
+                    self.__gui.mouse_click_bg(position)
+                    _idlecount = 0
+                    logging.debug("_firstclick = False")
+                    _firstclick = False
+                    time.sleep(pact["sleep_time"])
 
-            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'], threshold=0.93)
+            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'],part=1, pos1=(_displayChat+1018, 378), pos2=(_displayChat+1089, 440))
             if (position != False) and (_firstclick == False):
                 self.__gui.mouse_click_bg((_displayChat+50, 500))
                 _firstclick = True
             
             
-            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'], threshold=0.90)
             if self.__mode == 'Pact' and self.__crystal != 'false':
-                if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACT%s'%self.__crystal], threshold=0.90) == False) and (position != False):
+                if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACT%s'%self.__crystal],part=1, pos1=(_displayChat+30, 389), pos2=(_displayChat+1022, 510)) == False) and (position != False):
                     logging.info("Summon Bondling!")
                     time.sleep(1)
                     self.__gui.mouse_click_bg(position)
                     _idlecount=0
                     time.sleep(2)
-                    position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_TOMBFACE'])
+                    position = self.__gui.find_game_img(self.__gui.templates['IMAGE_ROOM_BACK'],part=1, pos1=(_displayChat+7, 4), pos2=(_displayChat+86, 67))
                     if position != False:
                         logging.info("Select Bondling!")
                         if self.__crystal == '1':
                             logging.info("Tomb Guard Select!")
                             self.__gui.mouse_click_bg((_displayChat+896, 383))
                             time.sleep(1)
-                            self.__gui.mouse_click_bg((_displayChat+1036, 566))
+                            self.__gui.mouse_click_bg((_displayChat+591, 569))
                             time.sleep(5)
 
                         if self.__crystal == '2':
                             logging.info("Snowball Select!")
                             self.__gui.mouse_click_bg((_displayChat+405, 383))
                             time.sleep(1)
-                            self.__gui.mouse_click_bg((_displayChat+1036, 566))
+                            self.__gui.mouse_click_bg((_displayChat+591, 569))
                             time.sleep(5)
 
                         if self.__crystal == '3':
                             logging.info("Azure Basan Select!")
                             self.__gui.mouse_click_bg((_displayChat+639, 383))
                             time.sleep(1)
-                            self.__gui.mouse_click_bg((_displayChat+1036, 566))
+                            self.__gui.mouse_click_bg((_displayChat+591, 569))
                             time.sleep(5)
                             
                         if self.__crystal == '4':
                             logging.info("Kuro Select!")
                             self.__gui.mouse_click_bg((_displayChat+190, 383))
                             time.sleep(1)
-                            self.__gui.mouse_click_bg((_displayChat+1036, 566))
+                            self.__gui.mouse_click_bg((_displayChat+591, 569))
                             time.sleep(5)
 
             
             #Pact Settings
-            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS')
+            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS'],part=1, pos1=(_displayChat+138, 538), pos2=(_displayChat+247, 631))
             if (self.__mode == 'Pact' or self.__mode == 'Both') and (position != False) and pactst == False:
                 logging.info('Pact Settings')
                 self.__gui.mouse_click_bg(position)
                 _idlecount=0
                 time.sleep(1)
-                position2 = self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL'])
+                position2 = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_CANCEL'],part=1, pos1=(_displayChat+424, 467), pos2=(_displayChat+551, 534))
                 if position2 != False:
                     logging.info('Test')
                     self.__gui.mouse_click_bg((position2[0],position2[1]-327))
@@ -241,17 +259,16 @@ class Bondling(threading.Thread):
                 pactst = True
             
             #lock line up
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_LOCK_PATH'])
-            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'])
-            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS'])
-            if position != False and (position2 or position3):
+            position1=self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_LOCK_PATH'],part=1, pos1=(_displayChat+712, 570), pos2=(_displayChat+782, 613))
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'],part=1, pos1=(_displayChat+1018, 378), pos2=(_displayChat+1089, 440))
+            if position1 != False and (position2 or position):
                 logging.info("Successfully lock lineup...")
-                self.__gui.mouse_click_bg(position)
+                self.__gui.mouse_click_bg(position1)
                 _idlecount=0
                 continue
             
-            if (self.__mode == 'Pact' or self.__mode == 'Both') and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_INFO']) != False
-                ) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS']) != False):
+            if (self.__mode == 'Pact' or self.__mode == 'Both') and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_INFO'],part=1, pos1=(_displayChat+31, 535), pos2=(_displayChat+132, 623)) != False
+                ) and (position != False):
                 logging.info('Pact-forming Start')
                 cantattk+=1
                 _idlecount=0
@@ -259,8 +276,8 @@ class Bondling(threading.Thread):
                 self.__gui.mouse_click_bg((_displayChat + 1045, 545))
                 time.sleep(1)
 
-            if (self.__mode == 'Explore' or self.__mode == 'Both') and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_EXPDETECT']) != False
-                ) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON']) != False):
+            if (self.__mode == 'Explore' or self.__mode == 'Both') and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_EXPDETECT'],part=1, pos1=(_displayChat+525, 576), pos2=(_displayChat+616, 636)) != False
+                ) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'],part=1, pos1=(_displayChat+1018, 378), pos2=(_displayChat+1089, 440)) != False):
                 logging.info('Explore Start')
                 cantattk+=1
                 _idlecount=0
@@ -275,7 +292,7 @@ class Bondling(threading.Thread):
                 subprocess.Popen(args)
                 sys.exit()
 
-            gameready=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'])
+            gameready=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'], part=1, pos1=(_displayChat+981, 477), pos2=(_displayChat+1103, 567))
             if gameready != False:
                 self.__gui.mouse_click_bg(gameready)
                 _idlecount=0
@@ -283,12 +300,11 @@ class Bondling(threading.Thread):
                 continue
 
             #Pact sucess
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_BRUSH'],threshold=0.70, gray=1)
-            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_BRUSH'],part=1, pos1=(_displayChat+22, 67), pos2=(_displayChat+200, 300))
             if position != False and position2 == False:
                 logging.info("#Pact sucess")
                 while True:
-                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS'])) != False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_EXPDETECT'],part=1, pos1=(_displayChat+525, 576), pos2=(_displayChat+616, 636)) != False:
                         logging.info("Pact Round End...")
                         # count+=1
                         _idlecount=0
@@ -297,34 +313,34 @@ class Bondling(threading.Thread):
                 break
 
             #Fail
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'], part=1, pos1=(_displayChat+368, 153), pos2=(_displayChat+423, 204))
             if position != False:
                 cantattk=0
                 _idlecount=0
                 logging.info("Battle End, Fail..")
                 self.__gui.mouse_click_bg(position)
                 while True:
-                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175)) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(_displayChat+560, 300), pos2=(_displayChat+607, 397)):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
                         
-                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH']) == False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'], part=1, pos1=(_displayChat+368, 153), pos2=(_displayChat+423, 204)) == False:
                         break
                     self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
 
              #check finish
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED0_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'])) != False:
-                logging.info("Battle End, Victory!")
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) != False:
+                logging.info("Battle End!")
                 cantattk=0
                 _idlecount=0
                 while True:
-                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175)) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(_displayChat+560, 300), pos2=(_displayChat+607, 397)):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS'])) != False:
+                    if (self.__gui.find_game_img(self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'],part=1, pos1=(_displayChat+1018, 378), pos2=(_displayChat+1089, 440)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS'],part=1, pos1=(_displayChat+138, 538), pos2=(_displayChat+247, 631))) != False:
                         logging.info("Round End...")
                         if ((self.__mode == 'Both') or (self.__mode == 'Pact')):
                             count-=1
@@ -332,7 +348,7 @@ class Bondling(threading.Thread):
                         break
 
                     #soulmax
-                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'])) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+361, 207), pos2=(_displayChat+778, 343))) != False:
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                         time.sleep(1)
                         continue
@@ -340,7 +356,7 @@ class Bondling(threading.Thread):
                 break
 
             #soulmax
-            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX']) != False:
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+361, 207), pos2=(_displayChat+778, 343)) != False:
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 _idlecount=0
                 time.sleep(1)
@@ -350,10 +366,10 @@ class Bondling(threading.Thread):
     
     def detectAssistance(self):
         global _displayChat, _idlecount
-        position1 = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'])
-        position2 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'])
+        position1 = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
+        position2 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(_displayChat+560, 300), pos2=(_displayChat+607, 397))
         position3 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])
-        position4 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CLOSEWANTED'])
+        # position4 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CLOSEWANTED'])
         wq_jade = config['VALUE']['WQ_JADE']
         wq_coin = config['VALUE']['WQ_COIN']
         wq_sushi = config['VALUE']['WQ_SUSHI']
@@ -384,9 +400,9 @@ class Bondling(threading.Thread):
                 self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 309))
                 self.__gui.takescreenshot('คนเหลี่ยมๆ')
         
-        if position4 != False:
-            logging.info('Close Event Wanted!')
-            self.__gui.mouse_click_bg(position4)
+        # if position4 != False:
+        #     logging.info('Close Event Wanted!')
+        #     self.__gui.mouse_click_bg(position4)
         
         if _idlecount >= 1200:
             logging.info("Idle Count = 1200, Exit.")
