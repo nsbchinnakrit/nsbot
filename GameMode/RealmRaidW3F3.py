@@ -92,7 +92,7 @@ class RealmRaidW3F3(threading.Thread):
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+196, 600), pos2=(_displayChat+277, 640))
             COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
             IMAGE_REALM_COOLDOWN = self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_COOLDOWN'])
-            if (INBATTLE != False and COOP_QUEST == False and _isFail < 3) or (IMAGE_REALM_COOLDOWN != False and (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH'])) and _isFail >= 3):
+            if (INBATTLE != False and COOP_QUEST == False and _isFail < 3) or (IMAGE_REALM_COOLDOWN != False and (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571))) and _isFail >= 3):
                 time.sleep(1)
                 _idlecount+=1
                 continue
@@ -151,7 +151,7 @@ class RealmRaidW3F3(threading.Thread):
                 continue
             
             if _is3Realm == False:
-                position=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID2_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH']))
+                position=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571)))
                 if position == False:
                     # logging.info('Not Found 3Realm raid icon')
                     # _is3Realm = False
