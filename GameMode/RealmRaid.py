@@ -182,7 +182,7 @@ class RealmRaid(threading.Thread):
                             logging.debug('Click Attack Button')
                             self.__gui.mouse_click_bg(position3)
                         else:
-                            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135)))
+                            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135))
                             time.sleep(0.5)
                             if position:
                                 logging.debug('Click Close')
