@@ -89,8 +89,8 @@ class RealmRaidW3F3(threading.Thread):
     def gameModeRealmRaid(self):
         global _cAttackRealm, _displayChat, _is3Realm, _isFail, _exit, _idlecount
         while True:
-            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'])
-            COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'])
+            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+196, 600), pos2=(_displayChat+277, 640))
+            COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
             IMAGE_REALM_COOLDOWN = self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_COOLDOWN'])
             if (INBATTLE != False and COOP_QUEST == False and _isFail < 3) or (IMAGE_REALM_COOLDOWN != False and (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH'])) and _isFail >= 3):
                 time.sleep(1)
@@ -101,8 +101,8 @@ class RealmRaidW3F3(threading.Thread):
             detectAssistance.setDaemon(True)
             detectAssistance.start
             #If Found Daruma
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_FN3R_PATH'])
-            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_FN3R_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571))
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135))
             if position and position2:
                 logging.info('3 Realm Raid Reward')
                 time.sleep(2)
@@ -111,13 +111,13 @@ class RealmRaidW3F3(threading.Thread):
                 _is3Realm = True
                 _idlecount=0
             
-            Fail_count = self.__gui.find_game_img_count(self.__gui.templates['IMAGE_REALM_RAID_FAILED'])
+            Fail_count = self.__gui.find_game_img_count(self.__gui.templates['IMAGE_REALM_RAID_FAILED'], part=1, pos1=(_displayChat+117, 115), pos2=(_displayChat+1020, 490))
             # logging.debug('Raid Failed:%s', Fail_count)
             if Fail_count >= 3:
                 logging.debug('set "_isFail = %s"', Fail_count)
                 _isFail = Fail_count
             
-            if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL_BATTLE']):
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL'], part=1, pos1=(_displayChat+363, 340), pos2=(_displayChat+555, 430)) != False:
                 logging.info("Exit Battle..")
                 time.sleep(0.4)
                 self.__gui.mouse_click_bg((_displayChat+655, 383))
@@ -136,15 +136,15 @@ class RealmRaidW3F3(threading.Thread):
                 sys.exit()
 
             #Click icon realm
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_RAID_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_RAID_PATH'], part=1, pos1=(_displayChat+44, 547), pos2=(_displayChat+664, 632))
             if position != False:
                 logging.info("Click icon realm raid...")
                 self.__gui.mouse_click_bg(position)
-                time.sleep(3)
+                time.sleep(1)
                 continue
             
             #lock line up
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_LOCK_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_LOCK_PATH'], part=1, pos1=(_displayChat+713, 512), pos2=(_displayChat+775, 556))
             if position != False:
                 logging.info("Successfully lock lineup...")
                 self.__gui.mouse_click_bg(position)
@@ -161,19 +161,19 @@ class RealmRaidW3F3(threading.Thread):
                     _is3Realm = True
 
             #Click Realm
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTIONFROG_PATH'], threshold=0.91)
-            position2=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION2_PATH']))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTIONFROG_PATH'], part=1, pos1=(_displayChat+117, 115), pos2=(_displayChat+1020, 490), threshold=0.91)
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION2_PATH'], part=1, pos1=(_displayChat+117, 115), pos2=(_displayChat+1020, 490))
             positionatk=(position or position2)
-            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'])
-            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_REFRESH_PATH'], threshold=0.96)
-            position5=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
+            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+242, 296), pos2=(_displayChat+993, 621))
+            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_REFRESH_PATH'], part=1, pos1=(_displayChat+840, 490), pos2=(_displayChat+1025, 570), threshold=0.96)
+            position5=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135))
             #This to Refresh#=========================================================================================================
             if _is3Realm != False and _isFail >= 3 and position4 != False:
                 logging.debug('This should refresh')
                 self.__gui.mouse_click_bg(position4)
                 time.sleep(1)
                 #This to Click OK button
-                if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL']) != False:
+                if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL'], part=1, pos1=(_displayChat+363, 340), pos2=(_displayChat+555, 430)) != False:
                     self.__gui.mouse_click_bg((position4[0]-253,position4[1]-145))
                     logging.debug('set 3Realm raid state = False')
                     _is3Realm = False
@@ -191,7 +191,7 @@ class RealmRaidW3F3(threading.Thread):
                         _exit = False
                         _idlecount=0
                         time.sleep(1)
-                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'])
+                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+117, 115), pos2=(_displayChat+1020, 490))
                         if position3:
                             logging.debug('Click Attack Button')
                             self.__gui.mouse_click_bg(position3)
@@ -201,7 +201,7 @@ class RealmRaidW3F3(threading.Thread):
                         _idlecount=0
                         while True:
                             _idlecount+=1
-                            if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
+                            if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175)) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(560, 300), pos2=(607, 397)):
                                 detectAssistance = threading.Thread(target=self.detectAssistance())
                                 detectAssistance.setDaemon(True)
                                 detectAssistance.start
@@ -228,13 +228,13 @@ class RealmRaidW3F3(threading.Thread):
                         time.sleep(2)
                         _cAttackRealm+=1
                         _idlecount=0
-                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'])
+                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+117, 115), pos2=(_displayChat+1020, 490))
                         time.sleep(0.5)
                         if position3:
                             logging.debug('Click Attack Button')
                             self.__gui.mouse_click_bg(position3)
                         else:
-                            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'])
+                            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135))
                             time.sleep(0.5)
                             if position:
                                 logging.debug('Click Close')
@@ -251,7 +251,7 @@ class RealmRaidW3F3(threading.Thread):
                 self.__gui.mouse_click_bg(position4)
                 time.sleep(1)
                 #This to Click OK button
-                if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL']) != False:
+                if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL'], part=1, pos1=(_displayChat+363, 340), pos2=(_displayChat+555, 430)) != False:
                     self.__gui.mouse_click_bg((position4[0]-253,position4[1]-145))
                     logging.debug('set 3Realm raid state = False')
                     _is3Realm = False
@@ -259,48 +259,48 @@ class RealmRaidW3F3(threading.Thread):
                     time.sleep(1)
             
             #=========================================get ready=================================================
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'], part=1, pos1=(_displayChat+981, 477), pos2=(_displayChat+1103, 567))
             if position != False:
                 # logging.info("Starting battle.... ")
                 self.__gui.mouse_click_bg(position)
                 time.sleep(2)
                 continue
             
-            if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL_BATTLE']):
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL_BATTLE'], part=1, pos1=(_displayChat+405, 342), pos2=(_displayChat+547, 419)):
                 logging.info("Exit Battle..")
                 time.sleep(0.4)
                 self.__gui.mouse_click_bg((_displayChat+655, 383))
                 _exit = True
 
             #Fail
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'])
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'], part=1, pos1=(_displayChat+368, 153), pos2=(_displayChat+423, 204))
             if position != False:
                 logging.info("Battle End, Fail..")
                 _cAttackRealm=0
                 _idlecount=0
                 while True:
-                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175)) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(560, 300), pos2=(607, 397)):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
                     
-                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_JADE_PATH'])) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_JADE_PATH'])) != False:
                         _cAttackRealm=0
                         _idlecount=0
                         break
                     self.__gui.mouse_click_bg((_displayChat+CLICK_FINISH2[0], CLICK_FINISH2[1]))
 
             #check finish
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S3_PATH']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'])) != False:
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477))):
                 logging.info("Battle End, Victory!")
                 #time.sleep(5)
                 while True:
-                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL']) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER']):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175)) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(560, 300), pos2=(607, 397)):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_JADE_PATH'])) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_JADE_PATH'])) != False:
                         _cAttackRealm=0
                         _idlecount=0
                         break
@@ -309,13 +309,14 @@ class RealmRaidW3F3(threading.Thread):
 
             else:
                 _idlecount+=1
+                time.sleep(1)
     
     def detectAssistance(self):
         global _displayChat, _idlecount
-        position1 = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'])
-        position2 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'])
-        position3 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])
-        position4 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CLOSEWANTED'])
+        position1 = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
+        position2 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(560, 300), pos2=(607, 397))
+        position3 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'], part=1, pos1=(447, 511), pos2=(526, 568))
+        # position4 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CLOSEWANTED'])
         wq_jade = config['VALUE']['WQ_JADE']
         wq_coin = config['VALUE']['WQ_COIN']
         wq_sushi = config['VALUE']['WQ_SUSHI']
@@ -346,9 +347,9 @@ class RealmRaidW3F3(threading.Thread):
                 self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 309))
                 self.__gui.takescreenshot('คนเหลี่ยมๆ')
         
-        if position4 != False:
-            logging.info('Close Event Wanted!')
-            self.__gui.mouse_click_bg(position4)
+        # if position4 != False:
+        #     logging.info('Close Event Wanted!')
+        #     self.__gui.mouse_click_bg(position4)
         
         if _idlecount >= 1200:
             logging.info("Idle Count = 1200, Exit.")
