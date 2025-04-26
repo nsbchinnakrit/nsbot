@@ -49,7 +49,7 @@ class GameControl:
             # "IMAGE_BACK2",
             "IMAGE_REALM_COOLDOWN",
             "IMAGE_REALM_3RAID_PATH",
-            'IMAGE_INBATTLE',
+            # 'IMAGE_INBATTLE',
         }
     
     def load_templates(self, template_paths: dict, gray=1):
@@ -92,6 +92,19 @@ class GameControl:
         self._client_w = r2 - l2
         self._border_l = ((r1 - l1) - (r2 - l2)) // 2
         self._border_t = ((b1 - t1) - (b2 - t2)) - self._border_l
+
+        # ===== NEW: Re-init memdc & bitmap =====
+        try:
+            self.srcdc.DeleteDC()
+            self.memdc.DeleteDC()
+            win32gui.ReleaseDC(self.hwnd, self.hwindc)
+            win32gui.DeleteObject(self.bmp.GetHandle())
+        except Exception:
+            logging.warning("Failed to delete old DC or Bitmap.")
+
+        self.init_mem()
+        # ========================================
+
 
     def _buffer_to_img(self, bmp, width, height, gray=0):
         signedIntsArray = bmp.GetBitmapBits(True)
@@ -166,14 +179,28 @@ class GameControl:
             self.quit_game()
         return False
 
-    def find_img(self, img_template, part=0, pos1=None, pos2=None, gray=0, center=True, delay=0.0, label="Unknown"):
+    def find_img(self, img_template, part=0, pos1=None, pos2=None, gray=0, center=True, delay=0.0, label=None):
         '''
         Find template image (ndarray only)
         :param img_template: Template image as numpy.ndarray
         '''
+        # Ensure label is set, even if None
+        if label is None:
+            try:
+                label = self.template_labels.get(id(img_template), "Unknown")
+            except Exception:
+                label = "Unknown"
+
         if not isinstance(img_template, np.ndarray):
-            logging.warning("Invalid template type, expected numpy.ndarray.")
-            return 0, 0
+            try:
+                label = label or self.template_labels.get(id(img_template), "Unknown")
+            except Exception:
+                label = "Unknown"
+
+            logging.warning(
+                f"[find_game_img] Invalid template input type '{type(img_template).__name__}' for label '{label}'."
+            )
+            return False
 
         if delay > 0:
             time.sleep(delay)
@@ -184,14 +211,28 @@ class GameControl:
             logging.warning("Screenshot is None.")
             return 0, 0
 
-        # Safety check for shape
+        # Safety check
         if (img_src.shape[0] < img_template.shape[0]) or (img_src.shape[1] < img_template.shape[1]):
-            logging.warning(f"Template size {img_template.shape} is larger than source image {img_src.shape}")
+            logging.warning(
+                f"[find_img] Template '{label}' size {img_template.shape} is larger than source image {img_src.shape}"
+            )
             return 0, 0
+
 
         try:
             res = cv2.matchTemplate(img_src, img_template, cv2.TM_CCOEFF_NORMED)
             _, maxVal, _, maxLoc = cv2.minMaxLoc(res)
+
+            # ====== ตรงนี้ปรับค่าตำแหน่งจริงบนหน้าจอ ======
+            if part == 1 and pos1 is not None:
+                maxLoc = (maxLoc[0] + pos1[0], maxLoc[1] + pos1[1])
+
+            if center:
+                maxLoc = [
+                    int(maxLoc[0] + img_template.shape[1] / 2),
+                    int(maxLoc[1] + img_template.shape[0] / 2)
+                ]
+            # ================================================
 
             if self.debug_enable:
                 img = self.window_part_shot(pos1, pos2, None, gray) if part == 1 else self.window_full_shot()
@@ -200,17 +241,12 @@ class GameControl:
                 logging.info("Top left point location: %s", maxLoc)
                 logging.info("Score: %.4f", maxVal)
 
-            if center:
-                maxLoc = [
-                    int(maxLoc[0] + img_template.shape[1] / 2),
-                    int(maxLoc[1] + img_template.shape[0] / 2)
-                ]
-
             return maxVal, maxLoc
 
         except Exception as e:
             logging.warning(f"[find_img] Failed ({label}): {e}")
             return 0, 0
+
 
 
     def find_game_img(self, img_template, part=0, pos1=None, pos2=None, gray=1, center=True, delay=0.04, threshold=0.9, label=None):
@@ -220,12 +256,36 @@ class GameControl:
         if label is None:
             label = self.template_labels.get(id(img_template), "Unknown")
 
+        start_time = time.perf_counter()
+
         maxVal, maxLoc = self.find_img(img_template, part, pos1, pos2, gray, center, delay, label)
-        if maxVal > thread:
+
+        elapsed = (time.perf_counter() - start_time) * 1000  # ms
+
+        if maxVal > threshold:
             if label not in self.exclude_log_templates:
-                logging.debug(f'Detected "{label}" with value: %.4f, pos: %s', maxVal, maxLoc)
+                # คำนวณขอบภาพเจอ = pos1/pos2
+                if center:
+                    top_left = (
+                        int(maxLoc[0] - img_template.shape[1] / 2),
+                        int(maxLoc[1] - img_template.shape[0] / 2)
+                    )
+                else:
+                    top_left = maxLoc
+
+                bottom_right = (
+                    top_left[0] + img_template.shape[1],
+                    top_left[1] + img_template.shape[0]
+                )
+
+                logging.debug(
+                    f'Detected "{label}" with value: %.4f, pos: {maxLoc}, match_area=({top_left}, {bottom_right}) (%.2f ms)',
+                    maxVal, elapsed
+                )
             return list(maxLoc)
+
         return False
+
     
     def find_game_img_count(self, img_template, part=0, pos1=None, pos2=None, gray=1, delay=0.0, threshold=0.9, label=None):
         '''
