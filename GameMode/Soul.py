@@ -77,7 +77,7 @@ class Soul(threading.Thread):
     def load_templates(self, paths, gray=1):
         self.__gui.load_templates(paths, gray=gray)
         mode = "GRAY" if gray else "COLOR"
-        logging.info("Event template loaded (%s): %d templates", mode, len(paths))
+        # logging.info("Event template loaded (%s): %d templates", mode, len(paths))
 
 
     def gameModeSoul(self):
@@ -219,12 +219,12 @@ class Soul(threading.Thread):
             ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI']) and wq_sushi
             ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'])) and wq_food):
                 logging.info("Accept wanted quest!")
-                self.__gui.mouse_click_bg(position1[0] + 174, position1[1] + 222)
+                self.__gui.mouse_click_bg((_displayChat+757, 368))
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')
                 self.create_file2(data=screenshot)
             else:
                 logging.info("Refuse to accept the invitation for the wanted seal.")
-                self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 309))
+                self.__gui.mouse_click_bg((_displayChat+757, 461))
                 self.__gui.takescreenshot('คนเหลี่ยมๆ')
         
         # if position4 != False:

@@ -71,7 +71,7 @@ class GuildRealmRaid(threading.Thread):
     def load_templates(self, paths, gray=1):
         self.__gui.load_templates(paths, gray=gray)
         mode = "GRAY" if gray else "COLOR"
-        logging.info("Event template loaded (%s): %d templates", mode, len(paths))
+        # logging.info("Event template loaded (%s): %d templates", mode, len(paths))
 
     def gameModeGuildRealmRaid(self):
         global _isPaused, _displayChat, _cAttackRealm, _idlecount, _scrollcount, _need1scrollup
@@ -83,9 +83,9 @@ class GuildRealmRaid(threading.Thread):
                 _idlecount+=1
                 continue
 
-            REALM_GRAIDCOUNT=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(750, 490), pos2=(820, 540), threshold=0.95) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(210, 480), pos2=(300, 540), threshold=0.97))
+            REALM_GRAIDCOUNT=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GRAIDCOUNT'], part=1, pos1=(_displayChat+224, 495), pos2=(_displayChat+285, 540), threshold=0.95))
             if REALM_GRAIDCOUNT != False:
-                logging.info("Round: 0/6 | Sleep for Wait 5s")
+                logging.debug("Round: 0/6 | Sleep for Wait 5s")
                 time.sleep(5)
                 _idlecount+=5
                 continue
@@ -180,7 +180,7 @@ class GuildRealmRaid(threading.Thread):
                 _need1scrollup=True
                 time.sleep(0.5)
                 logging.info("Attack Realm!")
-                atk=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+340, 30), pos2=(_displayChat+990, 610))
+                atk=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+525, 305), pos2=(_displayChat+947, 603))
                 position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135))
                 if atk != False and position2 != False:
                     logging.debug("Click Attack by atk image")
@@ -293,12 +293,12 @@ class GuildRealmRaid(threading.Thread):
             ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI']) and wq_sushi
             ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'])) and wq_food):
                 logging.info("Accept wanted quest!")
-                self.__gui.mouse_click_bg(position1[0] + 174, position1[1] + 222)
+                self.__gui.mouse_click_bg((_displayChat+757, 368))
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')
                 self.create_file2(data=screenshot)
             else:
                 logging.info("Refuse to accept the invitation for the wanted seal.")
-                self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 309))
+                self.__gui.mouse_click_bg((_displayChat+757, 461))
                 self.__gui.takescreenshot('คนเหลี่ยมๆ')
         
         # if position4 != False:

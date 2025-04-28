@@ -1,10 +1,11 @@
 {
   "VALUE": {
+    "LOG_LEVEL": "DEBUG",
     "FIND_IMG_DELAY": 0.04,
     "WQ_JADE": true,
     "WQ_COIN": false,
     "WQ_SUSHI": false,
-    "WQ_FOOD": false
+    "WQ_FOOD": true
   },
   "DEFAULT": {
     "IMAGE_FINISHED0_PATH": "./Image/Default/finished0.png",
@@ -76,6 +77,7 @@
     "IMAGE_BOSSMARK": "./Image/MultiServ/bossmarkcn.png",
     "IMAGE_REALM_GRAIDCOUNT": "./Image/RealmRaid/guildraidcountcn.png",
     "IMAGE_REALM_COOLDOWN": "./Image/RealmRaid/raidcdcn.png",
+    "IMAGE_REALM_EMPTY_TICKET2": "./Image/RealmRaid/empty2cn.png",
     "IMAGE_INBATTLE": "./Image/Default/inbattlecn.png"
   },
   "GB": {
@@ -103,6 +105,7 @@
     "IMAGE_BOSSMARK": "./Image/MultiServ/bossmark.png",
     "IMAGE_REALM_GRAIDCOUNT": "./Image/RealmRaid/guildraidcount.png",
     "IMAGE_REALM_COOLDOWN": "./Image/RealmRaid/raidcd.png",
+    "IMAGE_REALM_EMPTY_TICKET2": "./Image/RealmRaid/empty2.png",
     "IMAGE_INBATTLE": "./Image/Default/inbattle.png"
   },
   "JP": {
@@ -130,6 +133,7 @@
     "IMAGE_BOSSMARK": "./Image/MultiServ/bossmarkjp.png",
     "IMAGE_REALM_GRAIDCOUNT": "./Image/RealmRaid/guildraidcount.png",
     "IMAGE_REALM_COOLDOWN": "./Image/RealmRaid/raidcdjp.png",
+    "IMAGE_REALM_EMPTY_TICKET2": "./Image/RealmRaid/empty2jp.png",
     "IMAGE_INBATTLE": "./Image/Default/inbattlejp.png"
   },
   "REALM": {
@@ -150,8 +154,6 @@
     "IMAGE_REALM_PROFILE_PATH": "./Image/RealmRaid/profile.png",
     "IMAGE_REALM_LOCK_PATH": "./Image/RealmRaid/lock.png",
     "IMAGE_REALM_EMPTY_TICKET1": "./Image/RealmRaid/empty1.png",
-    "IMAGE_REALM_EMPTY_TICKET2": "./Image/RealmRaid/empty2.png",
-    "IMAGE_REALM_EMPTY_TICKET2CN": "./Image/RealmRaid/empty2cn.png",
     "IMAGE_REALM_RAID_FAILED": "./Image/RealmRaid/raidfailed.png",
     "IMAGE_REALM_CLOSE": "./Image/RealmRaid/close.png"
   },
@@ -171,6 +173,7 @@
     "IMAGE_BONDLING_EXPDETECT": "./Image/Bondling/exploredetect.png",
     "IMAGE_BONDLING_PACTSETTINGS": "./Image/Bondling/pactsettings.png",
     "IMAGE_BONDLING_INFO": "./Image/Bondling/info.png",
+    "IMAGE_BONDLING_CANCEL": "./Image/Bondling/cancel.png",
     "IMAGE_BONDLING_BRUSH": "./Image/Bondling/brush.png",
     "IMAGE_BONDLING_SUMMON": "./Image/Bondling/summon.png",
     "IMAGE_BONDLING_TOMBFACE": "./Image/Bondling/tombface.png",

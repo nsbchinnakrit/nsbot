@@ -6,6 +6,19 @@ import argparse
 import threading
 import signal  # เพิ่มการ import signal
 import keyboard
+import GameMode.SingleSoul
+import GameMode.Soul
+import GameMode.Explore
+import GameMode.SingleExplore
+import GameMode.RealmRaid
+import GameMode.RealmRaidW3F3
+import GameMode.GuildRealmRaid
+import GameMode.Explor3Realm
+import GameMode.Explor3RealmW3F3
+import GameMode.Event
+import GameMode.Bondling
+from Module.loadconfig import config
+
 from Module.logsystem import MyLog
 
 # ฟังก์ชันสำหรับจัดการ signal
@@ -54,7 +67,7 @@ def main():
     pid = os.getpid()
 
     # Logging setup
-    MyLog.init(loglv='DEBUG')
+    MyLog.init(loglv=config['VALUE']['LOG_LEVEL'])
     logging.debug("GameMode: [%s], Server: [%s], Total Rounds: [%s]", args.game_mode, args.server, args.total)
 
     # Mapping for game modes (module path, class name)

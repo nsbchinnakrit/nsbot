@@ -56,8 +56,8 @@ class GameControl:
         # กำหนดชื่อรูปที่ไม่ต้อง log
         self.exclude_log_templates = {
             # "IMAGE_BACK2",
-            "IMAGE_REALM_COOLDOWN",
-            "IMAGE_REALM_3RAID_PATH",
+            # "IMAGE_REALM_COOLDOWN",
+            # "IMAGE_REALM_3RAID_PATH",
             # 'IMAGE_INBATTLE',
         }
     

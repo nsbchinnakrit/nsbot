@@ -84,15 +84,15 @@ class RealmRaidW3F3(threading.Thread):
     def load_templates(self, paths, gray=1):
         self.__gui.load_templates(paths, gray=gray)
         mode = "GRAY" if gray else "COLOR"
-        logging.info("Event template loaded (%s): %d templates", mode, len(paths))
+        # logging.info("Event template loaded (%s): %d templates", mode, len(paths))
 
     def gameModeRealmRaid(self):
         global _cAttackRealm, _displayChat, _is3Realm, _isFail, _exit, _idlecount
         while True:
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+196, 600), pos2=(_displayChat+277, 640))
             COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
-            IMAGE_REALM_COOLDOWN = self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_COOLDOWN'])
-            if (INBATTLE != False and COOP_QUEST == False and _isFail < 3) or (IMAGE_REALM_COOLDOWN != False and (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571))) and _isFail >= 3):
+            IMAGE_REALM_COOLDOWN = self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_COOLDOWN'], part=1, pos1=(_displayChat+840, 490), pos2=(_displayChat+1025, 570), threshold=0.95)
+            if (INBATTLE != False and COOP_QUEST == False and _isFail < 3) or (IMAGE_REALM_COOLDOWN != False and (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH'], part=1, pos1=(_displayChat+325, 490), pos2=(_displayChat+451, 571)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH'], part=1, pos1=(_displayChat+325, 490), pos2=(_displayChat+451, 571))) and _isFail >= 3):
                 time.sleep(1)
                 _idlecount+=1
                 continue
@@ -100,8 +100,9 @@ class RealmRaidW3F3(threading.Thread):
             detectAssistance = threading.Thread(target=self.detectAssistance())
             detectAssistance.setDaemon(True)
             detectAssistance.start
+
             #If Found Daruma
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_FN3R_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_FN3R_PATH'], part=1, pos1=(_displayChat+451, 413), pos2=(_displayChat+675, 545))
             position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135))
             if position and position2:
                 logging.info('3 Realm Raid Reward')
@@ -125,7 +126,7 @@ class RealmRaidW3F3(threading.Thread):
 
             #not enough ticket
             # if self.__gameMode == 6:
-            position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1005, 10), pos2=(1105, 45), threshold=0.97) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1530, 10), pos2=(1630, 45), threshold=0.97))
+            position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(_displayChat+1005, 10), pos2=(_displayChat+1105, 45), threshold=0.97))
             if  position:
                 logging.info("Process Finish.. Exit!")
                 # pyautogui.alert(text='REALM RAID DONE', title='FINISH', button='OK')
@@ -151,7 +152,7 @@ class RealmRaidW3F3(threading.Thread):
                 continue
             
             if _is3Realm == False:
-                position=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH'], part=1, pos1=(_displayChat+340, 495), pos2=(_displayChat+451, 571)))
+                position=(self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAID_PATH'], part=1, pos1=(_displayChat+325, 490), pos2=(_displayChat+451, 571)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_3RAIDFROG_PATH'], part=1, pos1=(_displayChat+325, 490), pos2=(_displayChat+451, 571)))
                 if position == False:
                     # logging.info('Not Found 3Realm raid icon')
                     # _is3Realm = False
@@ -191,7 +192,7 @@ class RealmRaidW3F3(threading.Thread):
                         _exit = False
                         _idlecount=0
                         time.sleep(1)
-                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+117, 115), pos2=(_displayChat+1020, 490))
+                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+280, 315), pos2=(_displayChat+995, 620))
                         if position3:
                             logging.debug('Click Attack Button')
                             self.__gui.mouse_click_bg(position3)
@@ -228,7 +229,7 @@ class RealmRaidW3F3(threading.Thread):
                         time.sleep(2)
                         _cAttackRealm+=1
                         _idlecount=0
-                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+117, 115), pos2=(_displayChat+1020, 490))
+                        position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+280, 315), pos2=(_displayChat+995, 620))
                         time.sleep(0.5)
                         if position3:
                             logging.debug('Click Attack Button')
@@ -339,12 +340,12 @@ class RealmRaidW3F3(threading.Thread):
             ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI']) and wq_sushi
             ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'])) and wq_food):
                 logging.info("Accept wanted quest!")
-                self.__gui.mouse_click_bg(position1[0] + 174, position1[1] + 222)
+                self.__gui.mouse_click_bg((_displayChat+757, 368))
                 screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')
                 self.create_file2(data=screenshot)
             else:
                 logging.info("Refuse to accept the invitation for the wanted seal.")
-                self.__gui.mouse_click_bg((position1[0] + 279, position1[1] + 309))
+                self.__gui.mouse_click_bg((_displayChat+757, 461))
                 self.__gui.takescreenshot('คนเหลี่ยมๆ')
         
         # if position4 != False:
