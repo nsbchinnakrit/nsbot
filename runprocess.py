@@ -6,6 +6,7 @@ import argparse
 import threading
 import signal  # เพิ่มการ import signal
 import keyboard
+<<<<<<< HEAD
 import GameMode.SingleSoul
 import GameMode.Soul
 import GameMode.Explore
@@ -19,6 +20,8 @@ import GameMode.Event
 import GameMode.Bondling
 from Module.loadconfig import config
 
+=======
+>>>>>>> 7ed7bfb429ef78e6fdacfacd8ad4c0f79812ea8d
 from Module.logsystem import MyLog
 
 # ฟังก์ชันสำหรับจัดการ signal
@@ -107,6 +110,7 @@ def main():
         args.kuro,
         args.mark_boss
     )
+<<<<<<< HEAD
 
     # ตั้งค่า hotkey สำหรับ Ctrl+Shift+F10
     # def stop_bot():
@@ -118,6 +122,9 @@ def main():
     # # เพิ่ม hotkey สำหรับ Ctrl+C ด้วย keyboard library
     # keyboard.add_hotkey("ctrl+c", lambda: signal_handler(signal.SIGINT, None))
 
+=======
+    
+>>>>>>> 7ed7bfb429ef78e6fdacfacd8ad4c0f79812ea8d
     try:
         instance.start()
         
