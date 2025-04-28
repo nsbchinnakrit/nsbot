@@ -1,3 +1,0 @@
-{"version": "1.0.8", 
-"changelog": "※ เขียน UI ใหม่ โดยเปลี่ยนจาก Python เป็น C# (.Net6)\n※ เพิ่มตัวเลือก 3Win 3Fail ในโหมด RealmRaid และ Explore/Realm\n※ ปรับปรุงโหมด Event เป็นกิจล่าสุด\n※ นำ Delay Settings ออก\n"
-}

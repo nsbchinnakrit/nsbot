@@ -13,3 +13,8 @@ log.log
 logs/*
 GameMode/__pycache__/Bondling.cpython-310.pyc
 GameMode/__pycache__/Explore.cpython-310.pyc
+<<<<<<< HEAD
+version.json
+=======
+nsbot.zip
+>>>>>>> 7ed7bfb429ef78e6fdacfacd8ad4c0f79812ea8d
