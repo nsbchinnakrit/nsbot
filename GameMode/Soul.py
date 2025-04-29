@@ -160,7 +160,7 @@ class Soul(threading.Thread):
                     ):
                         break
 
-                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+361, 207), pos2=(_displayChat+778, 343)) != False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
                         logging.info("Soul Max")
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                         time.sleep(1)
@@ -183,7 +183,7 @@ class Soul(threading.Thread):
                 self.__gui.mouse_click_bg((_displayChat + 950, 450))
                 time.sleep(1)
             
-            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+361, 207), pos2=(_displayChat+778, 343)) != False:
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
                 logging.info("Soul Max")
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 time.sleep(1)

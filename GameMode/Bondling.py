@@ -108,7 +108,7 @@ class Bondling(threading.Thread):
             detectAssistance.start
             time.sleep(1)
 
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_BONDLING'],part=1, pos1=(_displayChat+886, 541), pos2=(_displayChat+997, 624))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_BONDLING'],part=1, pos1=(_displayChat+726, 540), pos2=(_displayChat+1025, 628))
             if position != False:
                 logging.info("Enter Bondling Fairyland")
                 self.__gui.mouse_click_bg(position)
@@ -340,7 +340,7 @@ class Bondling(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'],part=1, pos1=(_displayChat+1018, 378), pos2=(_displayChat+1089, 440)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS'],part=1, pos1=(_displayChat+138, 538), pos2=(_displayChat+247, 631)))) != False:
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'],part=1, pos1=(_displayChat+1018, 378), pos2=(_displayChat+1089, 440)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS'],part=1, pos1=(_displayChat+138, 538), pos2=(_displayChat+247, 631)) != False:
                         logging.info("Round End...")
                         if ((self.__mode == 'Both') or (self.__mode == 'Pact')):
                             count-=1
@@ -356,7 +356,7 @@ class Bondling(threading.Thread):
                 break
 
             #soulmax
-            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+361, 207), pos2=(_displayChat+778, 343)) != False:
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 _idlecount=0
                 time.sleep(1)

@@ -1,6 +1,6 @@
 {
   "VALUE": {
-    "LOG_LEVEL": "DEBUG",
+    "LOG_LV": "DEBUG",
     "FIND_IMG_DELAY": 0.04,
     "WQ_JADE": true,
     "WQ_COIN": false,
