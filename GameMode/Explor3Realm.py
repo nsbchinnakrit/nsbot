@@ -517,6 +517,7 @@ class Explor3Realm(threading.Thread):
                         time.sleep(2)
                         _cAttackRealm+=1
                         _idlecount=0
+                        _firstcheck = False
                         position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_ATK_PATH'], part=1, pos1=(_displayChat+280, 315), pos2=(_displayChat+995, 620))
                         time.sleep(0.5)
                         if position3:
