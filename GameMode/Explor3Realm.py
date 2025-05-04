@@ -10,7 +10,6 @@ _displayChat=0
 _is3Realm=False
 _cAttackRealm=0
 cantattk=0
-_setround=0
 _firstcheck=True
 _idlecount=0
 
@@ -109,7 +108,7 @@ class Explor3Realm(threading.Thread):
         # logging.info("Event template loaded (%s): %d templates", mode, len(paths))
                 
     def gameModeExplore_3Realm(self):
-        global _cAttackRealm, _setround, _firstcheck, _idlecount
+        global _cAttackRealm, _firstcheck, _idlecount
         logging.debug("Working in [gameModeExplore_3Realm]")
         while True: 
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+196, 600), pos2=(_displayChat+448, 640))
@@ -155,9 +154,9 @@ class Explor3Realm(threading.Thread):
                         logging.info("Close RealmPage...")
                         self.__gui.mouse_click_bg((_displayChat+1070, 120))
                         if _firstcheck == False:
-                            _setround+=1
                             _idlecount=0
-                            self.create_file(data=str(_setround))
+                            count+=1
+                            self.create_file(data=str(count))
                             _firstcheck = True
                         time.sleep(1)
                         break
@@ -215,7 +214,7 @@ class Explor3Realm(threading.Thread):
                 _idlecount+=1
     
     def gameModeExplor(self):
-        global _displayChat, _cAutoRotation, cantattk, _setround, _firstcheck, _idlecount
+        global _displayChat, _cAutoRotation, cantattk, _firstcheck, _idlecount
         logging.debug("Working in [gameModeExplor]")
         while True:
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+369, 600), pos2=(_displayChat+448, 640))
@@ -271,9 +270,9 @@ class Explor3Realm(threading.Thread):
                 time.sleep(1)
                 position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+955, 79), pos2=(_displayChat+1080, 180))  
                 if _firstcheck == False and (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET2'],part=1, pos1=(_displayChat+79, 6), pos2=(_displayChat+940, 47))) != False:
-                    _setround+=1
                     _idlecount=0
-                    self.create_file(data=str(_setround))
+                    count+=1
+                    self.create_file(data=str(count))
                     _firstcheck = True
                     self.gameModeExplore_3Realm() 
                 elif position != False:
@@ -421,7 +420,7 @@ class Explor3Realm(threading.Thread):
                 _idlecount+=1
     
     def gameModeRealmRaid(self):
-        global _cAttackRealm, _displayChat, _is3Realm, _setround, _firstcheck, _idlecount
+        global _cAttackRealm, _displayChat, _is3Realm, _firstcheck, _idlecount
         logging.debug("Working in [gameModeRealmRaid]")
         while True:
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+196, 600), pos2=(_displayChat+277, 640))
@@ -454,8 +453,8 @@ class Explor3Realm(threading.Thread):
                 self.__gui.mouse_click_bg((_displayChat+1063, 116))
                 time.sleep(2)
                 if _firstcheck == False:
-                    _setround+=1
-                    self.create_file(data=str(_setround))
+                    count+=1
+                    self.create_file(data=str(count))
                     _firstcheck = True
                     _idlecount=0
                 self.gameModeExplore_3Realm()
