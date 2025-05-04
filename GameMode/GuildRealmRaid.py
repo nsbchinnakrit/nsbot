@@ -104,13 +104,12 @@ class GuildRealmRaid(threading.Thread):
             #KO or Page End
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDPAGEEND_PATH'], part=1, pos1=(_displayChat+637, 118), pos2=(_displayChat+675, 582))
             position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_KO_PATH'], part=1, pos1=(_displayChat+275, 316), pos2=(_displayChat+331, 368))
-            if (position !=False and position2 !=False) or _scrollcount > 2:
+            if (position and position2) or _scrollcount > 2:
                 logging.info("Process Finish.. Exit!")
-                total = str(self.__total)
-                self.create_file(data=total)
-                args = ['taskkill', '/F', '/PID', str(self.__pid)]
-                subprocess.Popen(args, creationflags=subprocess.CREATE_NO_WINDOW)
-                sys.exit()
+                self.create_file(str(self.__total))
+                subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                            creationflags=subprocess.CREATE_NO_WINDOW)
+                return
                 
             #If Can't Attack Enemy 
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+1054, 101), pos2=(_displayChat+1087, 135))
@@ -307,11 +306,10 @@ class GuildRealmRaid(threading.Thread):
         
         if _idlecount >= 1200:
             logging.info("Idle Count = 1200, Exit.")
-            total = str(self.__total)
-            self.create_file(data=total)
-            args = ['taskkill', '/F', '/PID', str(self.__pid)]
-            subprocess.Popen(args)
-            sys.exit()
+            self.create_file(str(self.__total))
+            subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                        creationflags=subprocess.CREATE_NO_WINDOW)
+            return
 
 
     def create_file(self, data='0'):

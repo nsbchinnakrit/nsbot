@@ -117,11 +117,10 @@ class Event(threading.Thread):
 
             if cantattk >= 5 or (self.__gui.find_game_img(self.__gui.templates["IMAGE_REALM_CANCEL"], part=1, pos1=(_displayChat+363, 340), pos2=(_displayChat+575, 420)) != False):
                 logging.info("Unable to process, Exit!")
-                total = str(self.__total)
-                self.create_file(data=total)
-                args = ['taskkill', '/F', '/PID', str(self.__pid)]
-                subprocess.Popen(args)
-                sys.exit()
+                self.create_file(str(self.__total))
+                subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                            creationflags=subprocess.CREATE_NO_WINDOW)
+                return
 
             #=========================================get ready=================================================
             # position=self.__gui.find_game_img(self.__gui.templates["IMAGE_READY_PATH"],threshold=0.8)
@@ -219,11 +218,10 @@ class Event(threading.Thread):
         
         if _idlecount >= 1200:
             logging.info("Idle Count = 1200, Exit.")
-            total = str(self.__total)
-            self.create_file(data=total)
-            args = ['taskkill', '/F', '/PID', str(self.__pid)]
-            subprocess.Popen(args)
-            sys.exit()
+            self.create_file(str(self.__total))
+            subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                        creationflags=subprocess.CREATE_NO_WINDOW)
+            return
 
 
     def create_file(self, data='0'):

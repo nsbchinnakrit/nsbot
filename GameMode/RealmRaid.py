@@ -113,12 +113,10 @@ class RealmRaid(threading.Thread):
             position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1005, 10), pos2=(1105, 45), threshold=0.97) or self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET'], part=1, pos1=(1530, 10), pos2=(1630, 45), threshold=0.97))
             if  position or (_cAttackRealm >= 5):
                 logging.info("Process Finish.. Exit!")
-                # pyautogui.alert(text='REALM RAID DONE', title='FINISH', button='OK')
-                total = str(self.__total)
-                self.create_file(data=total)
-                args = ['taskkill', '/F', '/PID', str(self.__pid)]
-                subprocess.Popen(args, creationflags=subprocess.CREATE_NO_WINDOW)
-                sys.exit()
+                self.create_file(str(self.__total))
+                subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                            creationflags=subprocess.CREATE_NO_WINDOW)
+                return
 
             #Click icon realm
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_RAID_PATH'], part=1, pos1=(_displayChat+44, 547), pos2=(_displayChat+664, 632))
@@ -295,11 +293,10 @@ class RealmRaid(threading.Thread):
         
         if _idlecount >= 1200:
             logging.info("Idle Count = 1200, Exit.")
-            total = str(self.__total)
-            self.create_file(data=total)
-            args = ['taskkill', '/F', '/PID', str(self.__pid)]
-            subprocess.Popen(args)
-            sys.exit()
+            self.create_file(str(self.__total))
+            subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                        creationflags=subprocess.CREATE_NO_WINDOW)
+            return
 
 
     def create_file(self, data='0'):

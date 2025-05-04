@@ -286,11 +286,10 @@ class Bondling(threading.Thread):
 
             if cantattk >= 12 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI']) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE']) == False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL']) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], threshold=0.98) == False):
                 logging.info("Unable to process, Exit!")
-                total = str(self.__total)
-                self.create_file(data=total)
-                args = ['taskkill', '/F', '/PID', str(self.__pid)]
-                subprocess.Popen(args)
-                sys.exit()
+                self.create_file(str(self.__total))
+                subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                            creationflags=subprocess.CREATE_NO_WINDOW)
+                return
 
             gameready=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'], part=1, pos1=(_displayChat+981, 477), pos2=(_displayChat+1103, 567))
             if gameready != False:
@@ -406,11 +405,10 @@ class Bondling(threading.Thread):
         
         if _idlecount >= 1200:
             logging.info("Idle Count = 1200, Exit.")
-            total = str(self.__total)
-            self.create_file(data=total)
-            args = ['taskkill', '/F', '/PID', str(self.__pid)]
-            subprocess.Popen(args)
-            sys.exit()
+            self.create_file(str(self.__total))
+            subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                        creationflags=subprocess.CREATE_NO_WINDOW)
+            return
 
     def create_file(self, data='0'):
         temp_path = f"runprocess/temp{self.__pid}.txt"

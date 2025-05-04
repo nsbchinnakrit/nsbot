@@ -129,11 +129,10 @@ class Explore(threading.Thread):
             
             if cantattk >= 12 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI'], part=1, pos1=(_displayChat+486, 390), pos2=(_displayChat+650, 450)) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE'], part=1, pos1=(_displayChat+792, 143), pos2=(_displayChat+875, 200)) == False):
                 logging.info("Unable to process, Exit!")
-                total = str(self.__total)
-                self.create_file(data=total)
-                args = ['taskkill', '/F', '/PID', str(self.__pid)]
-                subprocess.Popen(args)
-                sys.exit()
+                self.create_file(str(self.__total))
+                subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                            creationflags=subprocess.CREATE_NO_WINDOW)
+                return
                     
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_START_PATH'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))
             position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_PATH'], part=1, pos1=(903, 185), pos2=(1034, 270))
@@ -151,10 +150,10 @@ class Explore(threading.Thread):
                 _cAutoRotation+=1
                 if _cAutoRotation >= 5:
                     logging.info("Exit!")
-                    pyautogui.alert(text='auto rotation food runs out, stop working..', title='Exit!', button='OK')
-                    args = ['taskkill', '/F', '/PID', str(self.__pid)]
-                    subprocess.Popen(args, creationflags=subprocess.CREATE_NO_WINDOW)
-                    sys.exit()
+                    self.create_file(str(self.__total))
+                    subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                                creationflags=subprocess.CREATE_NO_WINDOW)
+                    return
                 time.sleep(1)
                 continue
 
@@ -322,11 +321,10 @@ class Explore(threading.Thread):
         
         if _idlecount >= 1200:
             logging.info("Idle Count = 1200, Exit.")
-            total = str(self.__total)
-            self.create_file(data=total)
-            args = ['taskkill', '/F', '/PID', str(self.__pid)]
-            subprocess.Popen(args)
-            sys.exit()
+            self.create_file(str(self.__total))
+            subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                        creationflags=subprocess.CREATE_NO_WINDOW)
+            return
 
 
     def create_file(self, data='0'):

@@ -163,7 +163,7 @@ class Explor3RealmW3F3(threading.Thread):
                             _firstcheck = True
                         time.sleep(1)
                         break
-                        #sys.exit()
+
                     if position4 != False and position3 == False:
                         self.__gui.mouse_click_bg(position4)
                         logging.info('Close Explore Page.')
@@ -247,11 +247,10 @@ class Explor3RealmW3F3(threading.Thread):
 
             if cantattk >= 12 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI'], part=1, pos1=(_displayChat+486, 390), pos2=(_displayChat+650, 450)) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE'], part=1, pos1=(_displayChat+792, 143), pos2=(_displayChat+875, 200)) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL'], part=1, pos1=(_displayChat+361, 337), pos2=(_displayChat+575, 420)) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+424, 332)) == False):
                 logging.info("Unable to process, Exit!")
-                total = str(self.__total)
-                self.create_file(data=total)
-                args = ['taskkill', '/F', '/PID', str(self.__pid)]
-                subprocess.Popen(args)
-                sys.exit()
+                self.create_file(str(self.__total))
+                subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                            creationflags=subprocess.CREATE_NO_WINDOW)
+                return
             
             if position2 != False and position3 != False:
                 logging.debug("Return to Main function")
@@ -695,11 +694,10 @@ class Explor3RealmW3F3(threading.Thread):
         
         if _idlecount >= 1200:
             logging.info("Idle Count = 1200, Exit.")
-            total = str(self.__total)
-            self.create_file(data=total)
-            args = ['taskkill', '/F', '/PID', str(self.__pid)]
-            subprocess.Popen(args)
-            sys.exit()
+            self.create_file(str(self.__total))
+            subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
+                        creationflags=subprocess.CREATE_NO_WINDOW)
+            return
 
 
     def create_file(self, data='0'):
