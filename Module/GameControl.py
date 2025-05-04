@@ -352,7 +352,7 @@ class GameControl:
 
                 logging.debug(
                     # f'Detected \"{label}\" with value: %.4f, pos: {maxLoc}, match_area=({top_left}, {bottom_right}) (%.2f ms)',
-                    f':FGI: \"{label}\" value: %.4f, (%.2f ms)',
+                    f'F.: \"{label}\" value: %.4f, (%.2f ms)',
                     maxVal, elapsed
                 )
             return list(maxLoc)

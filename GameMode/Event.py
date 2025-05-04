@@ -30,17 +30,17 @@ class Event(threading.Thread):
             "IMAGE_EVENT_LOCK": config['EVENT']['IMAGE_EVENT_LOCK'],
             "IMAGE_EVENT_LOCKED": config['EVENT']['IMAGE_EVENT_LOCKED'],
             "IMAGE_REALM_CANCEL": config[self.__sv]['IMAGE_REALM_CANCEL'],
-            "IMAGE_READY_PATH": config[self.__sv]['IMAGE_READY_PATH'],
+            "IMAGE_READY": config[self.__sv]['IMAGE_READY'],
             "IMAGE_COOP2_SEAL": config[self.__sv]['IMAGE_COOP2_SEAL'],
             "IMAGE_CHATDETECT": config[self.__sv]['IMAGE_CHATDETECT'],
             "IMAGE_CHATSTICKER": config[self.__sv]['IMAGE_CHATSTICKER'],
             "IMAGE_SOULMAX": config[self.__sv]['IMAGE_SOULMAX'],
             "IMAGE_BOSSMARK": config[self.__sv]['IMAGE_BOSSMARK'],
             "IMAGE_BOSSHP": config['DEFAULT']['IMAGE_BOSSHP'],
-            "IMAGE_FAILED_PATH": config['DEFAULT']['IMAGE_FAILED_PATH'],
-            "IMAGE_FINISHED1_PATH": config['DEFAULT']['IMAGE_FINISHED1_PATH'],
-            "IMAGE_FINISHED1S1_PATH": config['DEFAULT']['IMAGE_FINISHED1S1_PATH'],
-            "IMAGE_FINISHED2_PATH": config['DEFAULT']['IMAGE_FINISHED2_PATH'],
+            "IMAGE_FAILED": config['DEFAULT']['IMAGE_FAILED'],
+            "IMAGE_FINISHED1": config['DEFAULT']['IMAGE_FINISHED1'],
+            "IMAGE_FINISHED1S1": config['DEFAULT']['IMAGE_FINISHED1S1'],
+            "IMAGE_FINISHED2": config['DEFAULT']['IMAGE_FINISHED2'],
             "IMAGE_BACK2": config['DEFAULT']['IMAGE_BACK2'],
             "IMAGE_INBATTLE": config[self.__sv]['IMAGE_INBATTLE'],
 
@@ -105,7 +105,7 @@ class Event(threading.Thread):
                 time.sleep(1)
                 continue
 
-            # position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT_PATH'], threshold=0.96) or self.__gui.find_game_img(self.__gui.templates['IMAGE_EVENT_START'], threshold= 0.9) or self.__gui.find_game_img(self.__gui.templates['IMAGE_EVENT_START2'], threshold= 0.9))
+            # position = (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT'], threshold=0.96) or self.__gui.find_game_img(self.__gui.templates['IMAGE_EVENT_START'], threshold= 0.9) or self.__gui.find_game_img(self.__gui.templates['IMAGE_EVENT_START2'], threshold= 0.9))
             # if position != False:
             #     time.sleep(0.5)
             #     logging.info('Start')
@@ -123,13 +123,13 @@ class Event(threading.Thread):
                 return
 
             #=========================================get ready=================================================
-            # position=self.__gui.find_game_img(self.__gui.templates["IMAGE_READY_PATH"],threshold=0.8)
+            # position=self.__gui.find_game_img(self.__gui.templates["IMAGE_READY"],threshold=0.8)
             # if position != False:
             #     self.__gui.mouse_click_bg(position)
             #     time.sleep(2)
             #     continue
             
-            position=self.__gui.find_game_img(self.__gui.templates["IMAGE_FAILED_PATH"], part=1, pos1=(_displayChat+368, 153), pos2=(_displayChat+423, 204))
+            position=self.__gui.find_game_img(self.__gui.templates["IMAGE_FAILED"], part=1, pos1=(_displayChat+368, 153), pos2=(_displayChat+423, 204))
             if position != False:
                 cantattk=0
                 logging.info("Battle End, Fail..")
@@ -138,8 +138,8 @@ class Event(threading.Thread):
                 continue
                 
             #check finish
-            # if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH']) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S1_PATH']) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH']) != False):
-            if (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1_PATH"], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) != False) or (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S1_PATH"], part=1, pos1=(_displayChat+326, 119), pos2=(_displayChat+434, 215)) != False) or (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED2_PATH"], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) != False):
+            # if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1']) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S1']) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2']) != False):
+            if (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1"], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) != False) or (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S1"], part=1, pos1=(_displayChat+326, 119), pos2=(_displayChat+434, 215)) != False) or (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED2"], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) != False):
                 logging.info("Battle End, Victory!")
                 cantattk=0
                 _idlecount=0
@@ -225,18 +225,18 @@ class Event(threading.Thread):
 
 
     def create_file(self, data='0'):
-        temp_path = f"runprocess/temp{self.__pid}.txt"
+        temp = f"runprocess/temp{self.__pid}.txt"
         try:
-            with open(temp_path, "w") as file:
+            with open(temp, "w") as file:
                 file.write(data)
                 file.close
         except Exception as error:
             logging.error(error)
     
     def create_file2(self, data='False'):
-        temp_path = f"runprocess/wanted{self.__pid}.txt"
+        temp = f"runprocess/wanted{self.__pid}.txt"
         try:
-            with open(temp_path, "w") as file:
+            with open(temp, "w") as file:
                 file.write(data)
                 file.close
         except Exception as error:

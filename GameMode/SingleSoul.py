@@ -26,11 +26,11 @@ class SingleSoul(threading.Thread):
 
         gray_templates = {
             # SOUL
-            "IMAGE_SINGLE_SOUL_LOCK_PATH": config['SOUL']['IMAGE_SINGLE_SOUL_LOCK_PATH'],
-            "IMAGE_SINGLE_SOUL_STAT_PATH": config['SOUL']['IMAGE_SINGLE_SOUL_STAT_PATH'],
-            "IMAGE_SINGLE_TOTEM_STAT_PATH": config['SOUL']['IMAGE_SINGLE_TOTEM_STAT_PATH'],
-            "IMAGE_SOUL_INVITE_CHECKBOX_PATH": config['SOUL']['IMAGE_SOUL_INVITE_CHECKBOX_PATH'],
-            "IMAGE_SOUL_PETREWARD_PATH": config[self.__sv]['IMAGE_SOUL_PETREWARD_PATH'],
+            "IMAGE_SINGLE_SOUL_LOCK": config['SOUL']['IMAGE_SINGLE_SOUL_LOCK'],
+            "IMAGE_SINGLE_SOUL_STAT": config['SOUL']['IMAGE_SINGLE_SOUL_STAT'],
+            "IMAGE_SINGLE_TOTEM_STAT": config['SOUL']['IMAGE_SINGLE_TOTEM_STAT'],
+            "IMAGE_SOUL_INVITE_CHECKBOX": config['SOUL']['IMAGE_SOUL_INVITE_CHECKBOX'],
+            "IMAGE_SOUL_PETREWARD": config[self.__sv]['IMAGE_SOUL_PETREWARD'],
             "IMAGE_SOULMAX": config[self.__sv]['IMAGE_SOULMAX'],
 
             # REALM
@@ -39,17 +39,17 @@ class SingleSoul(threading.Thread):
             # DEFAULT
             "IMAGE_EMPTY_SUSHI": config['DEFAULT']['IMAGE_EMPTY_SUSHI'],
             "IMAGE_EMPTY_SUSHI_CLOSE": config['DEFAULT']['IMAGE_EMPTY_SUSHI_CLOSE'],
-            "IMAGE_FAILED_PATH": config['DEFAULT']['IMAGE_FAILED_PATH'],
-            "IMAGE_FINISHED0_PATH": config['DEFAULT']['IMAGE_FINISHED0_PATH'],
-            "IMAGE_FINISHED1_PATH": config['DEFAULT']['IMAGE_FINISHED1_PATH'],
-            "IMAGE_FINISHED1S2_PATH": config['DEFAULT']['IMAGE_FINISHED1S2_PATH'],
-            "IMAGE_FINISHED2_PATH": config['DEFAULT']['IMAGE_FINISHED2_PATH'],
+            "IMAGE_FAILED": config['DEFAULT']['IMAGE_FAILED'],
+            "IMAGE_FINISHED0": config['DEFAULT']['IMAGE_FINISHED0'],
+            "IMAGE_FINISHED1": config['DEFAULT']['IMAGE_FINISHED1'],
+            "IMAGE_FINISHED1S2": config['DEFAULT']['IMAGE_FINISHED1S2'],
+            "IMAGE_FINISHED2": config['DEFAULT']['IMAGE_FINISHED2'],
             "IMAGE_BOSSHP": config['DEFAULT']['IMAGE_BOSSHP'],
             "IMAGE_BOSSMARK": config[self.__sv]['IMAGE_BOSSMARK'],
             "IMAGE_INBATTLE": config[self.__sv]['IMAGE_INBATTLE'],
 
             # SERVER (self.__sv)
-            "IMAGE_READY_PATH": config[self.__sv]['IMAGE_READY_PATH'],
+            "IMAGE_READY": config[self.__sv]['IMAGE_READY'],
             "IMAGE_COOP2_SEAL": config[self.__sv]['IMAGE_COOP2_SEAL'],
             "IMAGE_CHATDETECT": config[self.__sv]['IMAGE_CHATDETECT'],
             "IMAGE_CHATSTICKER": config[self.__sv]['IMAGE_CHATSTICKER'],
@@ -89,8 +89,8 @@ class SingleSoul(threading.Thread):
             detectAssistance.start
 
             #lock line up
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_LOCK_PATH'], part=1, pos1=(_displayChat+475, 485), pos2=(_displayChat+540, 540))
-            position2=(self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT_PATH'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT_PATH'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640)))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_LOCK'], part=1, pos1=(_displayChat+475, 485), pos2=(_displayChat+540, 540))
+            position2=(self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640)))
             if position != False and position2 != False:
                 logging.info("Successfully lock lineup...")
                 self.__gui.mouse_click_bg(position)
@@ -102,21 +102,21 @@ class SingleSoul(threading.Thread):
                 _idlecount=0
                 self.__gui.mouse_click_bg(position2)
 
-            if cantattk >= 5 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI'], part=1, pos1=(_displayChat+486, 390), pos2=(_displayChat+650, 450)) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE'], part=1, pos1=(_displayChat+792, 143), pos2=(_displayChat+875, 200)) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL'], part=1, pos1=(_displayChat+361, 337), pos2=(_displayChat+575, 420)) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX_PATH'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+424, 332), threshold=0.98) == False):
+            if cantattk >= 5 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI'], part=1, pos1=(_displayChat+486, 390), pos2=(_displayChat+650, 450)) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE'], part=1, pos1=(_displayChat+792, 143), pos2=(_displayChat+875, 200)) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL'], part=1, pos1=(_displayChat+361, 337), pos2=(_displayChat+575, 420)) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+424, 332), threshold=0.98) == False):
                 logging.info("Unable to process, Exit!")
                 self.create_file(str(self.__total))
                 subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
                             creationflags=subprocess.CREATE_NO_WINDOW)
                 return
 
-            gameready=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1106, 607))
+            gameready=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1106, 607))
             if gameready != False:
                 self.__gui.mouse_click_bg(gameready)
                 time.sleep(1)
                 continue
             
             #Fail
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'], part=1, pos1=(_displayChat+368, 153), pos2=(_displayChat+423, 204))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED'], part=1, pos1=(_displayChat+368, 153), pos2=(_displayChat+423, 204))
             if position != False:
                 cantattk=0
                 _idlecount=0
@@ -132,7 +132,7 @@ class SingleSoul(threading.Thread):
                     self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
 
              #check finish
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH'], part=1, pos1=(_displayChat+395, 10), pos2=(_displayChat+459, 192)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2_PATH'], part=1, pos1=(_displayChat+30, 30), pos2=(_displayChat+95, 95))) != False:
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 10), pos2=(_displayChat+459, 192)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+30, 30), pos2=(_displayChat+95, 95))) != False:
                 logging.info("Battle End, Victory!")
                 cantattk=0
                 _idlecount=0
@@ -142,10 +142,10 @@ class SingleSoul(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT_PATH'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT_PATH'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))) != False:
                         break
 
-                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_PETREWARD_PATH'], part=1, pos1=(_displayChat+103, 197), pos2=(_displayChat+304, 282)):
+                    if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_PETREWARD'], part=1, pos1=(_displayChat+103, 197), pos2=(_displayChat+304, 282)):
                         logging.info("Claim Pet Reward.")
                         self.__gui.mouse_click_bg((_displayChat + 950, 450))
                         time.sleep(1)
@@ -158,7 +158,7 @@ class SingleSoul(threading.Thread):
                     self.__gui.mouse_click_bg(START_SOUL_COORDINATE)
                 break
 
-            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_PETREWARD_PATH'], part=1, pos1=(_displayChat+103, 197), pos2=(_displayChat+304, 282)):
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_PETREWARD'], part=1, pos1=(_displayChat+103, 197), pos2=(_displayChat+304, 282)):
                 logging.info("Claim Pet Reward.")
                 self.__gui.mouse_click_bg((_displayChat + 950, 450))
                 time.sleep(1)
@@ -221,18 +221,18 @@ class SingleSoul(threading.Thread):
 
 
     def create_file(self, data='0'):
-        temp_path = f"runprocess/temp{self.__pid}.txt"
+        temp = f"runprocess/temp{self.__pid}.txt"
         try:
-            with open(temp_path, "w") as file:
+            with open(temp, "w") as file:
                 file.write(data)
                 file.close
         except Exception as error:
             logging.error(error)
     
     def create_file2(self, data='False'):
-        temp_path = f"runprocess/wanted{self.__pid}.txt"
+        temp = f"runprocess/wanted{self.__pid}.txt"
         try:
-            with open(temp_path, "w") as file:
+            with open(temp, "w") as file:
                 file.write(data)
                 file.close
         except Exception as error:

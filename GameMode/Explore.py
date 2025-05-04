@@ -26,38 +26,38 @@ class Explore(threading.Thread):
         self.__gui=GameControl(self.__hwnd,0)
 
         color_templates = {
-            "IMAGE_STORY_LEAD_PATH": config[self.__sv]['IMAGE_STORY_LEAD_PATH'],
+            "IMAGE_STORY_LEAD": config[self.__sv]['IMAGE_STORY_LEAD'],
         }
 
         gray_templates = {
             # EXPLORE
-            "IMAGE_STORY_ACCEPT_PATH": config['EXPLORE']['IMAGE_STORY_ACCEPT_PATH'],
-            "IMAGE_STORY_BOX_PATH": config['EXPLORE']['IMAGE_STORY_BOX_PATH'],
-            "IMAGE_STORY_FIGHT_PATH": config['EXPLORE']['IMAGE_STORY_FIGHT_PATH'],
-            "IMAGE_STORY_FIGHT_BOSS_PATH": config['EXPLORE']['IMAGE_STORY_FIGHT_BOSS_PATH'],
-            "IMAGE_STORY_CHERRY_CAKE_PATH": config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE_PATH'],
-            "IMAGE_STORY_LIST_CHAPTER_PATH": config['EXPLORE']['IMAGE_STORY_LIST_CHAPTER_PATH'],
-            "IMAGE_STORY_GET_REWARD_PATH": config['EXPLORE']['IMAGE_STORY_GET_REWARD_PATH'],
+            "IMAGE_STORY_ACCEPT": config['EXPLORE']['IMAGE_STORY_ACCEPT'],
+            "IMAGE_STORY_BOX": config['EXPLORE']['IMAGE_STORY_BOX'],
+            "IMAGE_STORY_FIGHT": config['EXPLORE']['IMAGE_STORY_FIGHT'],
+            "IMAGE_STORY_FIGHT_BOSS": config['EXPLORE']['IMAGE_STORY_FIGHT_BOSS'],
+            "IMAGE_STORY_CHERRY_CAKE": config['EXPLORE']['IMAGE_STORY_CHERRY_CAKE'],
+            "IMAGE_STORY_LIST_CHAPTER": config['EXPLORE']['IMAGE_STORY_LIST_CHAPTER'],
+            "IMAGE_STORY_GET_REWARD": config['EXPLORE']['IMAGE_STORY_GET_REWARD'],
 
             # SOUL
-            "IMAGE_SOUL_INVITE_PATH": config['SOUL']['IMAGE_SOUL_INVITE_PATH'],
-            "IMAGE_SOUL_ROOM_DETECT_PATH": config['SOUL']['IMAGE_SOUL_ROOM_DETECT_PATH'],
+            "IMAGE_SOUL_INVITE": config['SOUL']['IMAGE_SOUL_INVITE'],
+            "IMAGE_SOUL_ROOM_DETECT": config['SOUL']['IMAGE_SOUL_ROOM_DETECT'],
 
             # DEFAULT
-            "IMAGE_FINISHED2_PATH": config['DEFAULT']['IMAGE_FINISHED2_PATH'],
-            "IMAGE_FINISHED1_PATH": config['DEFAULT']['IMAGE_FINISHED1_PATH'],
-            "IMAGE_FINISHED1S2_PATH": config['DEFAULT']['IMAGE_FINISHED1S2_PATH'],
-            "IMAGE_FAILED_PATH": config['DEFAULT']['IMAGE_FAILED_PATH'],
+            "IMAGE_FINISHED2": config['DEFAULT']['IMAGE_FINISHED2'],
+            "IMAGE_FINISHED1": config['DEFAULT']['IMAGE_FINISHED1'],
+            "IMAGE_FINISHED1S2": config['DEFAULT']['IMAGE_FINISHED1S2'],
+            "IMAGE_FAILED": config['DEFAULT']['IMAGE_FAILED'],
             "IMAGE_EMPTY_SUSHI": config['DEFAULT']['IMAGE_EMPTY_SUSHI'],
             "IMAGE_EMPTY_SUSHI_CLOSE": config['DEFAULT']['IMAGE_EMPTY_SUSHI_CLOSE'],
             "IMAGE_BUFF": config['DEFAULT']['IMAGE_BUFF'],
             "IMAGE_INBATTLE": config[self.__sv]['IMAGE_INBATTLE'],
 
             # self.__sv-specific (server-dependent)
-            "IMAGE_SOUL_INVITE_DIALOG_PATH": config[self.__sv]['IMAGE_SOUL_INVITE_DIALOG_PATH'],
-            "IMAGE_SOUL_START_PATH": config[self.__sv]['IMAGE_SOUL_START_PATH'],
-            "IMAGE_STORY_AUTOFOOD_PATH": config[self.__sv]['IMAGE_STORY_AUTOFOOD_PATH'],
-            "IMAGE_READY_PATH": config[self.__sv]['IMAGE_READY_PATH'],
+            "IMAGE_SOUL_INVITE_DIALOG": config[self.__sv]['IMAGE_SOUL_INVITE_DIALOG'],
+            "IMAGE_SOUL_START": config[self.__sv]['IMAGE_SOUL_START'],
+            "IMAGE_STORY_AUTOFOOD": config[self.__sv]['IMAGE_STORY_AUTOFOOD'],
+            "IMAGE_READY": config[self.__sv]['IMAGE_READY'],
             "IMAGE_SOULMAX": config[self.__sv]['IMAGE_SOULMAX'],
             "IMAGE_COOP2_SEAL": config[self.__sv]['IMAGE_COOP2_SEAL'],
             "IMAGE_CHATDETECT": config[self.__sv]['IMAGE_CHATDETECT'],
@@ -98,7 +98,7 @@ class Explore(threading.Thread):
             detectAssistance.setDaemon(True)
             detectAssistance.start
 
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_ACCEPT_PATH'],part=1, pos1=(_displayChat+82, 187), pos2=(_displayChat+171, 263))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_ACCEPT'],part=1, pos1=(_displayChat+82, 187), pos2=(_displayChat+171, 263))
             if position != False:
                 logging.info("Accept Invite.")
                 self.__gui.mouse_click_bg(position)  
@@ -106,14 +106,14 @@ class Explore(threading.Thread):
                 time.sleep(1)
                 continue
 
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_BOX_PATH'],part=1, pos1=(_displayChat+8, 119), pos2=(_displayChat+896, 501))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_BOX'],part=1, pos1=(_displayChat+8, 119), pos2=(_displayChat+896, 501))
             if position != False:
                 logging.info("Box Found. (Func.2)")
                 self.__gui.mouse_click_bg(position)
-            if self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) != False:
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) != False:
                 self.__gui.mouse_click_bg((_displayChat+CLICK_FINISH2[0], CLICK_FINISH2[1]))
             
-            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_PATH'], part=1, pos1=(528, 185), pos2=(631, 270)) != False:
+            if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE'], part=1, pos1=(528, 185), pos2=(631, 270)) != False:
                 waittime+=1
                 if waittime>=12:
                     self.__gui.mouse_click_bg((_displayChat+960, 225))
@@ -121,7 +121,7 @@ class Explore(threading.Thread):
                     self.__gui.mouse_click_bg((_displayChat+444, 514))
                     waittime=0
             
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_DIALOG_PATH'], part=1, pos1=(381, 242), pos2=(754, 323))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_DIALOG'], part=1, pos1=(381, 242), pos2=(754, 323))
             if position != False:
                 logging.info("Invited..")
                 time.sleep(1)
@@ -134,8 +134,8 @@ class Explore(threading.Thread):
                             creationflags=subprocess.CREATE_NO_WINDOW)
                 return
                     
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_START_PATH'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))
-            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_PATH'], part=1, pos1=(903, 185), pos2=(1034, 270))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_START'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE'], part=1, pos1=(903, 185), pos2=(1034, 270))
             if position != False and position2 == False:
                 logging.info("Start... ")
                 self.__gui.mouse_click_bg(position)
@@ -143,7 +143,7 @@ class Explore(threading.Thread):
                 _idlecount=0
                 time.sleep(1)
 
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_AUTOFOOD_PATH'],part=1, pos1=(_displayChat+90, 575), pos2=(_displayChat+265, 625))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_AUTOFOOD'],part=1, pos1=(_displayChat+90, 575), pos2=(_displayChat+265, 625))
             if position != False:
                 logging.info("Click Auto Rotation")
                 self.__gui.mouse_click_bg((_displayChat+117, 599))
@@ -159,7 +159,7 @@ class Explore(threading.Thread):
 
             #-=======================================================================================================
             if _isLeader == False:
-                position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LEAD_PATH'], part=1, pos1=(75, 245), pos2=(170, 300), gray=0, threshold=0.90)
+                position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LEAD'], part=1, pos1=(75, 245), pos2=(170, 300), gray=0, threshold=0.90)
                 if position != False:
                     logging.info("Leader Detected in display..")
                     _isLeader=True
@@ -167,9 +167,9 @@ class Explore(threading.Thread):
                     _isLeader=False
             
                 #===============================================slide windows if not found monster
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_PATH'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
-            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE_PATH'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49))
-            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS_PATH'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49))
+            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
             if _isLeader != False and (position == False or position3 == False) and position2 != False:
                 time.sleep(1)
                 if position == False and position2 != False and position3 == False:
@@ -182,7 +182,7 @@ class Explore(threading.Thread):
                         _localVariable.detectCount=30
                         time.sleep(1)
             
-            # position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS_PATH'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
+            # position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
             if (_isLeader and position3) != False:
                 logging.info("BOSS was detected: ")
                 self.__gui.mouse_click_bg(position3)
@@ -192,7 +192,7 @@ class Explore(threading.Thread):
                 time.sleep(1)
                 continue
 
-            # position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_PATH'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
+            # position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
             if (_isLeader and position) != False:
                 logging.info("Monster was detected... ")
                 self.__gui.mouse_click_bg(position)
@@ -201,7 +201,7 @@ class Explore(threading.Thread):
                 time.sleep(1)
                 continue
             #=========================================get ready=================================================
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY_PATH'], part=1, pos1=(_displayChat+981, 477), pos2=(_displayChat+1103, 567))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY'], part=1, pos1=(_displayChat+981, 477), pos2=(_displayChat+1103, 567))
             if position != False:
                 logging.info("Starting battle.... ")
                 self.__gui.mouse_click_bg(position)
@@ -211,7 +211,7 @@ class Explore(threading.Thread):
 
             #=========================================Finish=================================================
             #Fail
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED_PATH'], part=1, pos1=(_displayChat+368, 20), pos2=(_displayChat+423, 204))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED'], part=1, pos1=(_displayChat+368, 20), pos2=(_displayChat+423, 204))
             if position != False:
                 cantattk=0
                 _idlecount=0
@@ -219,7 +219,7 @@ class Explore(threading.Thread):
                 self.__gui.mouse_click_bg(position)
                 continue
 
-            # position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2_PATH'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477))
+            # position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477))
             # if position != False:
             #     cantattk=0
             #     _idlecount=0
@@ -227,10 +227,10 @@ class Explore(threading.Thread):
             #     continue
 
             #check finish
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1_PATH'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) or 
-                self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2_PATH'], part=1, pos1=(_displayChat+25, 26), pos2=(_displayChat+120, 605)) != False) and (
-                self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER_PATH'],part=1, pos1=(_displayChat+955, 79), pos2=(_displayChat+1080, 180)) or 
-                self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_ROOM_DETECT_PATH'], part=1, pos1=(_displayChat+20, 455), pos2=(_displayChat+81, 535)) == False):
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) or 
+                self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+25, 26), pos2=(_displayChat+120, 605)) != False) and (
+                self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+955, 79), pos2=(_displayChat+1080, 180)) or 
+                self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_ROOM_DETECT'], part=1, pos1=(_displayChat+20, 455), pos2=(_displayChat+81, 535)) == False):
                 logging.info("Battle End, Victory!")
                 cantattk=0
                 _idlecount=0
@@ -239,14 +239,14 @@ class Explore(threading.Thread):
                         detectAssistance = threading.Thread(target=self.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
-                    if (_isboss != True) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE_PATH'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49)) != False or 
-                        self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_ACCEPT_PATH'],part=1, pos1=(_displayChat+82, 187), pos2=(_displayChat+171, 263)) != False or 
-                        self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER_PATH'],part=1, pos1=(_displayChat+955, 79), pos2=(_displayChat+1080, 180)) != False or 
+                    if (_isboss != True) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49)) != False or 
+                        self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_ACCEPT'],part=1, pos1=(_displayChat+82, 187), pos2=(_displayChat+171, 263)) != False or 
+                        self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+955, 79), pos2=(_displayChat+1080, 180)) != False or 
                         self.__gui.find_game_img(self.__gui.templates['IMAGE_BUFF']) != False or 
                         self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI'], part=1, pos1=(_displayChat+486, 390), pos2=(_displayChat+650, 450)) != False):
                         time.sleep(1)
                         break
-                    if (_isboss) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE_PATH'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49)) != False):
+                    if (_isboss) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49)) != False):
                         _isboss=False
                         continue
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
@@ -259,7 +259,7 @@ class Explore(threading.Thread):
                 break
 
             #==========================================Reward settlement=============================================
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_GET_REWARD_PATH'],part=1, pos1=(_displayChat+190, 310), pos2=(_displayChat+921, 561))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_GET_REWARD'],part=1, pos1=(_displayChat+190, 310), pos2=(_displayChat+921, 561))
             if position != False:
                 logging.info("Get treasure.... ")
                 self.__gui.send_esc_down()
@@ -328,18 +328,18 @@ class Explore(threading.Thread):
 
 
     def create_file(self, data='0'):
-        temp_path = f"runprocess/temp{self.__pid}.txt"
+        temp = f"runprocess/temp{self.__pid}.txt"
         try:
-            with open(temp_path, "w") as file:
+            with open(temp, "w") as file:
                 file.write(data)
                 file.close
         except Exception as error:
             logging.error(error)
     
     def create_file2(self, data='False'):
-        temp_path = f"runprocess/wanted{self.__pid}.txt"
+        temp = f"runprocess/wanted{self.__pid}.txt"
         try:
-            with open(temp_path, "w") as file:
+            with open(temp, "w") as file:
                 file.write(data)
                 file.close
         except Exception as error:
