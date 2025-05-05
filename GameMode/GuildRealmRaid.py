@@ -128,7 +128,7 @@ class GuildRealmRaid(threading.Thread):
             guildscroll=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDSCROLL'], part=1, pos1=(_displayChat+975, 105), pos2=(_displayChat+1045, 580))
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTION2'], part=1, pos1=(_displayChat+540, 115), pos2=(_displayChat+970, 580))
             if (guildscroll != False) and (position == False):
-                logging.debug("Looking for enemy")
+                logging.info("Looking for enemy")
                 page_end=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILDPAGEEND'], part=1, pos1=(_displayChat+637, 118), pos2=(_displayChat+675, 582)) #รูปเขตที่ตีไปแล้ว
                 if page_end:
                     logging.debug("scroll up")

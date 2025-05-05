@@ -108,7 +108,7 @@ class Explor3Realm(threading.Thread):
         # logging.info("Event template loaded (%s): %d templates", mode, len(paths))
                 
     def gameModeExplore_3Realm(self):
-        global _cAttackRealm, _firstcheck, _idlecount
+        global _cAttackRealm, _firstcheck, _idlecount, count
         logging.debug("Working in [gameModeExplore_3Realm]")
         while True: 
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+196, 600), pos2=(_displayChat+448, 640))
@@ -205,7 +205,7 @@ class Explor3Realm(threading.Thread):
 
             #soulmax
             if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
-                logging.info("Soul Max")
+                logging.info('Closed "Soul limit Maxed out" popup!')
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 time.sleep(1)
                 continue
@@ -214,7 +214,7 @@ class Explor3Realm(threading.Thread):
                 _idlecount+=1
     
     def gameModeExplor(self):
-        global _displayChat, _cAutoRotation, cantattk, _firstcheck, _idlecount
+        global _displayChat, _cAutoRotation, cantattk, _firstcheck, _idlecount, count
         logging.debug("Working in [gameModeExplor]")
         while True:
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+369, 600), pos2=(_displayChat+448, 640))
@@ -310,7 +310,7 @@ class Explor3Realm(threading.Thread):
                         break
                 elif position2 == False:
                     _localVariable.isBossDetected=False
-                    logging.info("Starting exploration.... ")
+                    logging.info("Start Explore!")
                     self.__gui.mouse_click_bg(position)
                     cantattk+=1
                     _firstcheck = False
@@ -332,8 +332,10 @@ class Explor3Realm(threading.Thread):
                         # self.__gui.mouse_drag_bg(SLIDE_STORY_COORDINATE[1],SLIDE_STORY_COORDINATE[0])
                         self.__gui.mouse_drag_bg(SLIDE_STORY_COORDINATE[0],SLIDE_STORY_COORDINATE[1])
                         _localVariable.detectCount=30
+
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
             if position3 != False:
-                logging.info("BOSS was detected: ")
+                logging.info("BOSS Found! Start fighting..")
                 self.__gui.mouse_click_bg(position3)
                 _localVariable.isBossDetected=True
                 _firstcheck = False
@@ -342,8 +344,9 @@ class Explor3Realm(threading.Thread):
                 time.sleep(1)
                 continue
 
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
             if position != False:
-                logging.info("Monster was detected... ")
+                logging.info("Start fighting..")
                 self.__gui.mouse_click_bg(position)
                 cantattk+=1
                 _idlecount=0
@@ -353,7 +356,7 @@ class Explor3Realm(threading.Thread):
             #=========================================get ready=================================================
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY'], part=1, pos1=(_displayChat+981, 477), pos2=(_displayChat+1103, 567))
             if position != False:
-                logging.info("Starting battle.... ")
+                # logging.info("Starting battle.... ")
                 self.__gui.mouse_click_bg(position)
                 #time.sleep(2)
                 continue
@@ -394,7 +397,7 @@ class Explor3Realm(threading.Thread):
                         break
                     #soulmax
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
-                        logging.info("Soul Max")
+                        logging.info('Closed "Soul limit Maxed out" popup!')
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                         time.sleep(1)
                         continue
@@ -403,7 +406,7 @@ class Explor3Realm(threading.Thread):
             #==========================================Reward settlement=============================================
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_GET_REWARD'],part=1, pos1=(_displayChat+190, 310), pos2=(_displayChat+921, 561))
             if position != False:
-                logging.info("Get treasure.... ")
+                logging.info("Challenge finished. Exiting for next round.")
                 self.__gui.send_esc_down()
                 time.sleep(2)
                 self.__gui.mouse_click_bg((_displayChat+655, 383))
@@ -411,7 +414,7 @@ class Explor3Realm(threading.Thread):
                 
             #soulmax
             if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
-                logging.info("Soul Max")
+                logging.info('Closed "Soul limit Maxed out" popup!')
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 time.sleep(1)
                 continue
@@ -420,7 +423,7 @@ class Explor3Realm(threading.Thread):
                 _idlecount+=1
     
     def gameModeRealmRaid(self):
-        global _cAttackRealm, _displayChat, _is3Realm, _firstcheck, _idlecount
+        global _cAttackRealm, _displayChat, _is3Realm, _firstcheck, _idlecount, count
         logging.debug("Working in [gameModeRealmRaid]")
         while True:
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+196, 600), pos2=(_displayChat+277, 640))
@@ -462,7 +465,7 @@ class Explor3Realm(threading.Thread):
             #Click icon realm
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_RAID'], part=1, pos1=(_displayChat+44, 547), pos2=(_displayChat+664, 632))
             if position != False:
-                logging.info("Click icon realm raid...")
+                logging.info("Enter Realm Raid!")
                 self.__gui.mouse_click_bg(position)
                 time.sleep(3)
                 continue
@@ -494,7 +497,7 @@ class Explor3Realm(threading.Thread):
             #This to Refresh#=========================================================================================================
             if ((_is3Realm != False) and position4 != False and (self.__mode != 'AllRaid')) or (
             (self.__mode == 'AllRaid') and (position4 != False) and (positionatk == False)):
-                logging.debug('This should refresh')
+                logging.info('Refresh Realm Raid Page!')
                 self.__gui.mouse_click_bg(position4)
                 time.sleep(1)
                 #This to Click OK button
@@ -511,7 +514,7 @@ class Explor3Realm(threading.Thread):
                 time.sleep(1)
                 if _is3Realm == False and position5 != False:
                     if positionatk != False and _is3Realm == False:
-                        logging.info("Click Enemy Section..")
+                        logging.info("Attack Realm!")
                         self.__gui.mouse_click_bg(positionatk)
                         time.sleep(2)
                         _cAttackRealm+=1
@@ -534,7 +537,7 @@ class Explor3Realm(threading.Thread):
                         # self.gameModeRealmRaid()
                 #else====================================================================================================
             if positionatk == False and position4 != False:
-                logging.debug('This is "Enemy Cant Attalck"')
+                logging.debug("Can't Attalck, Skip!")
                 time.sleep(1)
                 self.__gui.mouse_click_bg(position4)
                 time.sleep(1)
@@ -660,6 +663,7 @@ class Explor3Realm(threading.Thread):
             logging.error(error)
 
     def run(self):
+        global count
         count=self.__beforetotal
         self.create_file(data=str(count))
         _localVariable.detectCount=30

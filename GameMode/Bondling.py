@@ -110,7 +110,7 @@ class Bondling(threading.Thread):
 
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_BONDLING'],part=1, pos1=(_displayChat+726, 540), pos2=(_displayChat+1025, 628))
             if position != False:
-                logging.info("Enter Bondling Fairyland")
+                logging.info("Enter Bondling Fairyland!")
                 self.__gui.mouse_click_bg(position)
                 _idlecount=0
                 time.sleep(5)
@@ -190,40 +190,40 @@ class Bondling(threading.Thread):
                     time.sleep(2)
                     position = self.__gui.find_game_img(self.__gui.templates['IMAGE_ROOM_BACK'],part=1, pos1=(_displayChat+7, 4), pos2=(_displayChat+86, 67))
                     if position != False:
-                        logging.info("Select Bondling!")
+                        logging.info("Selecting Bondling...")
                         if self.__crystal == '1':
-                            logging.info("Tomb Guard Select!")
                             self.__gui.mouse_click_bg((_displayChat+896, 383))
                             time.sleep(1)
                             self.__gui.mouse_click_bg((_displayChat+591, 569))
+                            logging.info("Tomb Guard selected!")
                             time.sleep(5)
 
                         if self.__crystal == '2':
-                            logging.info("Snowball Select!")
                             self.__gui.mouse_click_bg((_displayChat+405, 383))
                             time.sleep(1)
                             self.__gui.mouse_click_bg((_displayChat+591, 569))
+                            logging.info("Snowball selected!")
                             time.sleep(5)
 
                         if self.__crystal == '3':
-                            logging.info("Azure Basan Select!")
                             self.__gui.mouse_click_bg((_displayChat+639, 383))
                             time.sleep(1)
                             self.__gui.mouse_click_bg((_displayChat+591, 569))
+                            logging.info("Azure Basan selected!")
                             time.sleep(5)
                             
                         if self.__crystal == '4':
-                            logging.info("Kuro Select!")
                             self.__gui.mouse_click_bg((_displayChat+190, 383))
                             time.sleep(1)
                             self.__gui.mouse_click_bg((_displayChat+591, 569))
+                            logging.info("Kuro selected!")
                             time.sleep(5)
 
             
             #Pact Settings
             position = self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACTSETTINGS'],part=1, pos1=(_displayChat+138, 538), pos2=(_displayChat+247, 631))
             if (self.__mode == 'Pact' or self.__mode == 'Both') and (position != False) and pactst == False:
-                logging.info('Pact Settings')
+                logging.info('Configuring Pact-forming')
                 self.__gui.mouse_click_bg(position)
                 _idlecount=0
                 time.sleep(1)
@@ -233,7 +233,7 @@ class Bondling(threading.Thread):
                     self.__gui.mouse_click_bg((position2[0],position2[1]-327))
                     time.sleep(1)
                     if self.__pact == '1':
-                        logging.info('select Basic Disc')
+                        logging.info('Select a Basic Disc..')
                         self.__gui.mouse_click_bg((position2[0],position2[1]-245))
                         time.sleep(1)
                         self.__gui.mouse_click_bg((position2[0]+180,position2[1]))
@@ -241,7 +241,7 @@ class Bondling(threading.Thread):
                             self.__gui.mouse_click_bg((position2[0]+180,position2[1]))
                             time.sleep(1)
                     if self.__pact == '2':
-                        logging.info('select Great Disc')
+                        logging.info('Select a Great Disc..')
                         self.__gui.mouse_click_bg((position2[0]+125,position2[1]-245))
                         time.sleep(1)
                         self.__gui.mouse_click_bg((position2[0]+180,position2[1]))
@@ -249,7 +249,7 @@ class Bondling(threading.Thread):
                             self.__gui.mouse_click_bg((position2[0]+180,position2[1]))
                             time.sleep(1)
                     if self.__pact == '3':
-                        logging.info('select Ultra Disc')
+                        logging.info('Select a Ultra Disc..')
                         self.__gui.mouse_click_bg((position2[0]+249,position2[1]-245))
                         time.sleep(1)
                         self.__gui.mouse_click_bg((position2[0]+180,position2[1]))
@@ -269,7 +269,7 @@ class Bondling(threading.Thread):
             
             if (self.__mode == 'Pact' or self.__mode == 'Both') and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_INFO'],part=1, pos1=(_displayChat+31, 535), pos2=(_displayChat+132, 623)) != False
                 ) and (position != False):
-                logging.info('Pact-forming Start')
+                logging.info('Pact-forming Start!')
                 cantattk+=1
                 _idlecount=0
                 _ispact=True
@@ -278,7 +278,7 @@ class Bondling(threading.Thread):
 
             if (self.__mode == 'Explore' or self.__mode == 'Both') and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_EXPDETECT'],part=1, pos1=(_displayChat+525, 576), pos2=(_displayChat+616, 636)) != False
                 ) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_SUMMON'],part=1, pos1=(_displayChat+1018, 378), pos2=(_displayChat+1089, 440)) != False):
-                logging.info('Explore Start')
+                logging.info('Explore Start!')
                 cantattk+=1
                 _idlecount=0
                 self.__gui.mouse_click_bg((_displayChat + 1045, 545))
@@ -301,10 +301,9 @@ class Bondling(threading.Thread):
             #Pact sucess
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_BRUSH'],part=1, pos1=(_displayChat+22, 67), pos2=(_displayChat+200, 300))
             if position != False and position2 == False:
-                logging.info("#Pact sucess")
+                logging.info("Pact Formed!")
                 while True:
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_EXPDETECT'],part=1, pos1=(_displayChat+525, 576), pos2=(_displayChat+616, 636)) != False:
-                        logging.info("Pact Round End...")
                         # count+=1
                         _idlecount=0
                         break
@@ -330,7 +329,7 @@ class Bondling(threading.Thread):
 
              #check finish
             if self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) != False:
-                logging.info("Battle End!")
+                logging.info("Battle End, Victory!")
                 cantattk=0
                 _idlecount=0
                 while True:

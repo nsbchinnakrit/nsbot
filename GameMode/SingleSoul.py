@@ -97,7 +97,7 @@ class SingleSoul(threading.Thread):
             
             if position2:
                 time.sleep(0.5)
-                logging.info('Start:%s'%position2)
+                logging.info('Start Challenge!')
                 cantattk+=1
                 _idlecount=0
                 self.__gui.mouse_click_bg(position2)
@@ -152,6 +152,7 @@ class SingleSoul(threading.Thread):
 
                     #soulmax
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
+                        logging.info('Closed "Soul limit Maxed out" popup!')
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                         time.sleep(1)
 
@@ -165,6 +166,7 @@ class SingleSoul(threading.Thread):
 
             #soulmax
             if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
+                logging.info('Closed "Soul limit Maxed out" popup!')
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 time.sleep(1)
             

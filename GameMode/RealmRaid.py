@@ -121,7 +121,7 @@ class RealmRaid(threading.Thread):
             #Click icon realm
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_RAID'], part=1, pos1=(_displayChat+44, 547), pos2=(_displayChat+664, 632))
             if position != False:
-                logging.info("Click icon realm raid...")
+                logging.info("Enter Realm Raid!")
                 self.__gui.mouse_click_bg(position)
                 time.sleep(3)
                 continue
@@ -153,7 +153,7 @@ class RealmRaid(threading.Thread):
             #This to Refresh#=========================================================================================================
             if ((_is3Realm != False) and position4 != False and (self.__mode != 'AllRaid')) or (
             (self.__mode == 'AllRaid') and (position4 != False) and (positionatk == False)):
-                logging.debug('This should refresh')
+                logging.info('Refresh Realm Raid Page!')
                 self.__gui.mouse_click_bg(position4)
                 time.sleep(1)
                 #This to Click OK button
@@ -169,7 +169,7 @@ class RealmRaid(threading.Thread):
                 time.sleep(1)
                 if _is3Realm == False and position5 != False:
                     if positionatk != False and _is3Realm == False:
-                        logging.info("Click Enemy Section..")
+                        logging.info("Attack Realm!")
                         self.__gui.mouse_click_bg(positionatk)
                         time.sleep(2)
                         _cAttackRealm+=1
@@ -192,7 +192,7 @@ class RealmRaid(threading.Thread):
                         # self.gameModeRealmRaid()
                 #else====================================================================================================
             if positionatk == False and position4 != False:
-                logging.debug('This is "Enemy Cant Attalck"')
+                logging.debug("Can't Attalck, Skip!")
                 time.sleep(1)
                 self.__gui.mouse_click_bg(position4)
                 time.sleep(1)

@@ -57,7 +57,7 @@ class GameControl:
         self.exclude_log_templates = {
             # "IMAGE_BACK2",
             "IMAGE_REALM_COOLDOWN",
-            "IMAGE_REALM_3RAID_PATH",
+            "IMAGE_REALM_3RAID",
             'IMAGE_INBATTLE',
         }
     
@@ -418,7 +418,7 @@ class GameControl:
         else:
             key = win32con.WM_KEYUP
         if self.client == 0:
-            logging.info('Press "ESC"')
+            logging.debug('Press "ESC"')
             win32api.PostMessage(self.hwnd, key, win32con.VK_ESCAPE, 0)
         if self.client == 1:
             os.system('adb shell input keyevent 4')

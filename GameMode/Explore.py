@@ -137,7 +137,7 @@ class Explore(threading.Thread):
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_START'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))
             position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE'], part=1, pos1=(903, 185), pos2=(1034, 270))
             if position != False and position2 == False:
-                logging.info("Start... ")
+                logging.info("Start Explore!")
                 self.__gui.mouse_click_bg(position)
                 waittime=0
                 _idlecount=0
@@ -161,12 +161,12 @@ class Explore(threading.Thread):
             if _isLeader == False:
                 position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LEAD'], part=1, pos1=(75, 245), pos2=(170, 300), gray=0, threshold=0.90)
                 if position != False:
-                    logging.info("Leader Detected in display..")
+                    logging.info("Leader Detected!")
                     _isLeader=True
                 else:
                     _isLeader=False
             
-                #===============================================slide windows if not found monster
+            #===============================================slide windows if not found monster
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
             position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49))
             position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
@@ -182,9 +182,9 @@ class Explore(threading.Thread):
                         _localVariable.detectCount=30
                         time.sleep(1)
             
-            # position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
             if (_isLeader and position3) != False:
-                logging.info("BOSS was detected: ")
+                logging.info("BOSS Found! Start fighting..")
                 self.__gui.mouse_click_bg(position3)
                 _isboss=True
                 cantattk+=1
@@ -192,9 +192,9 @@ class Explore(threading.Thread):
                 time.sleep(1)
                 continue
 
-            # position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
             if (_isLeader and position) != False:
-                logging.info("Monster was detected... ")
+                logging.info("Start fighting..")
                 self.__gui.mouse_click_bg(position)
                 cantattk+=1
                 _idlecount=0
@@ -203,7 +203,7 @@ class Explore(threading.Thread):
             #=========================================get ready=================================================
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY'], part=1, pos1=(_displayChat+981, 477), pos2=(_displayChat+1103, 567))
             if position != False:
-                logging.info("Starting battle.... ")
+                # logging.info("Starting battle.... ")S
                 self.__gui.mouse_click_bg(position)
                 _idlecount=0
                 time.sleep(2)
@@ -250,7 +250,7 @@ class Explore(threading.Thread):
                         _isboss=False
                         continue
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
-                        logging.info("Soul Max")
+                        logging.info('Closed "Soul limit Maxed out" popup!')
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                         time.sleep(1)
                         continue
@@ -261,7 +261,7 @@ class Explore(threading.Thread):
             #==========================================Reward settlement=============================================
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_GET_REWARD'],part=1, pos1=(_displayChat+190, 310), pos2=(_displayChat+921, 561))
             if position != False:
-                logging.info("Get treasure.... ")
+                logging.info("Challenge finished. Exiting for next round.")
                 self.__gui.send_esc_down()
                 time.sleep(2)
                 _idlecount=0
@@ -269,7 +269,7 @@ class Explore(threading.Thread):
 
             #soulmax
             if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOULMAX'], part=1, pos1=(_displayChat+320, 213), pos2=(_displayChat+811, 431)) != False:
-                logging.info("Soul Max")
+                logging.info('Closed "Soul limit Maxed out" popup!')
                 self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                 time.sleep(1)
                 continue
