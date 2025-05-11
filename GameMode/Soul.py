@@ -119,7 +119,7 @@ class Soul(threading.Thread):
                 time.sleep(1)
                 # return
 
-            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+424, 332))
+            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+540, 345))
             if position:
                 logging.info("Invited..")
                 self.__gui.mouse_click_bg(position)
