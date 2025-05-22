@@ -13,7 +13,7 @@ cantattk=0
 _idlecount=0
 
 class SingleExplore(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
         # global svselect
         threading.Thread.__init__(self)
         self.__sv=Server

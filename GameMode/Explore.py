@@ -15,7 +15,7 @@ waittime=0
 _idlecount=0
 
 class Explore(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
         # global self.__sv
         threading.Thread.__init__(self)
         self.__sv=Server
@@ -141,7 +141,8 @@ class Explore(threading.Thread):
                 self.__gui.mouse_click_bg(position)
                 waittime=0
                 _idlecount=0
-                time.sleep(1)
+                time.sleep(2)
+                continue
 
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_AUTOFOOD'],part=1, pos1=(_displayChat+90, 575), pos2=(_displayChat+265, 625))
             if position != False:
@@ -167,11 +168,11 @@ class Explore(threading.Thread):
                     _isLeader=False
             
             #===============================================slide windows if not found monster
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
             position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49))
-            position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
-            if _isLeader != False and (position == False or position3 == False) and position2 != False:
-                time.sleep(1)
+            if _isLeader and position2:
+                # time.sleep(1)
+                position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
+                position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
                 if position == False and position2 != False and position3 == False:
                     self.__gui.mouse_drag_bg(SLIDE_STORY_COORDINATE[1],SLIDE_STORY_COORDINATE[0])
                     _localVariable.detectCount -= 1
@@ -181,25 +182,26 @@ class Explore(threading.Thread):
                         self.__gui.mouse_drag_bg(SLIDE_STORY_COORDINATE[0],SLIDE_STORY_COORDINATE[1])
                         _localVariable.detectCount=30
                         time.sleep(1)
-            
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
-            if (_isLeader and position3) != False:
-                logging.info("BOSS Found! Start fighting..")
-                self.__gui.mouse_click_bg(position3)
-                _isboss=True
-                cantattk+=1
-                _idlecount=0
-                time.sleep(1)
-                continue
+                
+                # position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT_BOSS'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
+                if (_isLeader and position3) != False:
+                    logging.info("BOSS Found! Start fighting..")
+                    self.__gui.mouse_click_bg(position3)
+                    _isboss=True
+                    cantattk+=1
+                    _idlecount=0
+                    time.sleep(1)
+                    continue
 
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
-            if (_isLeader and position) != False:
-                logging.info("Start fighting..")
-                self.__gui.mouse_click_bg(position)
-                cantattk+=1
-                _idlecount=0
-                time.sleep(1)
-                continue
+                # position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_FIGHT'],part=1, pos1=(_displayChat+1, 200), pos2=(_displayChat+1136, 500))
+                if (_isLeader and position) != False:
+                    logging.info("Start fighting..")
+                    self.__gui.mouse_click_bg(position)
+                    cantattk+=1
+                    _idlecount=0
+                    time.sleep(1)
+                    continue
+            
             #=========================================get ready=================================================
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY'], part=1, pos1=(_displayChat+981, 477), pos2=(_displayChat+1103, 567))
             if position != False:

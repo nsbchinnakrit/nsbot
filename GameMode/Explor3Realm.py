@@ -19,7 +19,7 @@ SLIDE_STORY_COORDINATE=[(_displayChat+200,200),(_displayChat+1000,200)]
 START_SOUL_COORDINATE = (1075, 565)
 
 class Explor3Realm(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
         global _idlecount
         threading.Thread.__init__(self)
         self.__sv=Server

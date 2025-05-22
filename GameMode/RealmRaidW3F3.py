@@ -16,7 +16,7 @@ CLICK_FINISH2=(1070, 120)
 START_SOUL_COORDINATE = (1075, 565)
 
 class RealmRaidW3F3(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
         # global self.__sv
         threading.Thread.__init__(self)
         self.__sv=Server
@@ -158,6 +158,9 @@ class RealmRaidW3F3(threading.Thread):
                 else:
                     logging.debug('set 3Realm raid state = True')
                     _is3Realm = True
+                    time.sleep(2)
+                    self.__gui.mouse_click_bg((_displayChat+CLICK_FINISH2[0], CLICK_FINISH2[1]))
+                    time.sleep(2)
 
             #Click Realm
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_SECTIONFROG'], part=1, pos1=(_displayChat+117, 115), pos2=(_displayChat+1020, 490), threshold=0.91)

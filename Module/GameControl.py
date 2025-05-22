@@ -314,7 +314,7 @@ class GameControl:
             return 0, 0
 
 
-    def find_game_img(self, img_template, part=0, pos1=None, pos2=None, gray=None, center=True, delay=0.04, threshold=0.9, label=None):
+    def find_game_img(self, img_template, part=0, pos1=None, pos2=None, gray=None, center=True, delay=0.03, threshold=0.9, label=None):
         '''
         Find game image using preloaded numpy template
         '''
@@ -360,7 +360,7 @@ class GameControl:
         return False
 
     
-    def find_game_img_count(self, img_template, part=0, pos1=None, pos2=None, gray=1, delay=0.0, threshold=0.9, label=None):
+    def find_game_img_count(self, img_template, part=0, pos1=None, pos2=None, gray=1, delay=0.03, threshold=0.9, label=None):
         '''
         Return count of matched images (grouped to avoid duplicates)
         '''

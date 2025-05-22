@@ -13,7 +13,7 @@ CLICK_SOULMAX=(568, 387)
 START_SOUL_COORDINATE = (1075, 565)
 
 class Soul(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
         # global svselect
         threading.Thread.__init__(self)
         self.__sv=Server
@@ -21,7 +21,6 @@ class Soul(threading.Thread):
         self.__beforetotal=beforetotal
         self.__total=total
         self.__pid=pid
-        self.__bossmark=markboss
         self.__gui=GameControl(self.__hwnd,0)
 
         color_templates = {
@@ -105,7 +104,7 @@ class Soul(threading.Thread):
                 # time.sleep(1)
                 # return
             
-            if cantattk >= 12 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI'], part=1, pos1=(_displayChat+486, 390), pos2=(_displayChat+650, 450)) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE'], part=1, pos1=(_displayChat+792, 143), pos2=(_displayChat+875, 200)) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL'], part=1, pos1=(_displayChat+361, 337), pos2=(_displayChat+575, 420)) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+424, 332)) == False):
+            if cantattk >= 12 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI'], part=1, pos1=(_displayChat+486, 390), pos2=(_displayChat+650, 450)) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE'], part=1, pos1=(_displayChat+792, 143), pos2=(_displayChat+875, 200)) != False) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CANCEL'], part=1, pos1=(_displayChat+361, 337), pos2=(_displayChat+575, 420)) != False) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+540, 360)) == False):
                 logging.info("Unable to process, Exit!")
                 self.create_file(str(self.__total))
                 subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
@@ -119,7 +118,7 @@ class Soul(threading.Thread):
                 time.sleep(1)
                 # return
 
-            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+540, 345))
+            position = self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+540, 360))
             if position:
                 logging.info("Invited..")
                 self.__gui.mouse_click_bg(position)
@@ -152,7 +151,7 @@ class Soul(threading.Thread):
 
                     if (
                         self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_ROOM_DETECT'], part=1, pos1=(_displayChat+20, 455), pos2=(_displayChat+81, 535)) or
-                        self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+424, 332)) or
+                        self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_INVITE_CHECKBOX'], part=1, pos1=(_displayChat+260, 280), pos2=(_displayChat+540, 360)) or
                         self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_START'],gray=0, part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640)) or
                         self.__gui.find_game_img(self.__gui.templates['IMAGE_MAIL'], part=1, pos1=(_displayChat+996, 4), pos2=(_displayChat+1124, 63),threshold=0.96) or
                         self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_AUTOACCEPT'], part=1, pos1=(_displayChat+184, 200), pos2=(_displayChat+250, 260)) or 

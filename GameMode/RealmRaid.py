@@ -14,7 +14,7 @@ CLICK_FINISH2=(35, 510)
 START_SOUL_COORDINATE = (1075, 565)
 
 class RealmRaid(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
         # global self.__sv
         threading.Thread.__init__(self)
         self.__sv=Server

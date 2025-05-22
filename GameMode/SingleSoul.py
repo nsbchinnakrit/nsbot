@@ -10,7 +10,7 @@ cantattk=0
 _idlecount=0
 
 class SingleSoul(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
         # global svselect
         threading.Thread.__init__(self)
         self.__sv=Server
@@ -18,7 +18,6 @@ class SingleSoul(threading.Thread):
         self.__beforetotal=beforetotal
         self.__total=total
         self.__pid=pid
-        self.__bossmark=markboss
         self.__gui=GameControl(self.__hwnd,0)
 
         color_templates = {

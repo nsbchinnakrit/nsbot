@@ -12,7 +12,7 @@ cantattk=0
 _idlecount=0
 
 class Event(threading.Thread):
-    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro, markboss):
+    def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
         # global Server
         threading.Thread.__init__(self)
         self.__sv=Server
@@ -20,7 +20,6 @@ class Event(threading.Thread):
         self.__beforetotal=beforetotal
         self.__total=total
         self.__pid=pid
-        self.__bossmark=markboss
         self.__gui=GameControl(self.__hwnd, self.load_templates, 0)
 
         color_templates = {

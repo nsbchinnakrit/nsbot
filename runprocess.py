@@ -105,7 +105,6 @@ def parse_args() -> argparse.Namespace:  # noqa: D401
     parser.add_argument("snowball", type=str)
     parser.add_argument("azure", type=str)
     parser.add_argument("kuro", type=str)
-    parser.add_argument("mark_boss", type=str)
     return parser.parse_args()
 
 
@@ -144,7 +143,7 @@ def main() -> None:
     pid = os.getpid()
 
     logging.debug(
-        "WindowsID: [%s], GameMode: [%s], Server: [%s], Total Rounds: [%s]",
+        "HWID: [%s], GameMode: [%s], Server: [%s], Total Rounds: [%s]",
         args.window_name,
         args.game_mode,
         args.server,
@@ -171,7 +170,6 @@ def main() -> None:
         args.snowball,
         args.azure,
         args.kuro,
-        args.mark_boss,
     )
 
     # 5) Run the game mode (can be thread or process depending on implementation)
