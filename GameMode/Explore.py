@@ -1,9 +1,12 @@
 from Module.GameControl import *
 from Module.ThreadGame import *
-from Module.Util import *
 from Module.loadconfig import *
+from Module.Utils import GameUtils
 import time
 import pyautogui, subprocess
+import threading
+import logging
+from Module.loadconfig import config
 
 _localVariable=threading.local()
 _displayChat=0
@@ -16,14 +19,22 @@ _idlecount=0
 
 class Explore(threading.Thread):
     def __init__(self,Server, windowName, beforetotal, total, pid, bondlingmode, pactsettings, crystal_use, tomb, snowball, azure, kuro):
-        # global self.__sv
         threading.Thread.__init__(self)
-        self.__sv=Server
-        self.__hwnd=windowName
-        self.__beforetotal=beforetotal
-        self.__total=total
-        self.__pid=pid
-        self.__gui=GameControl(self.__hwnd,0)
+        self.__sv = Server
+        self.__windowName = windowName
+        self.__beforetotal = beforetotal
+        self.__total = total
+        self.__pid = pid
+        self.__bondlingmode = bondlingmode
+        self.__pactsettings = pactsettings
+        self.__crystal_use = crystal_use
+        self.__tomb = tomb
+        self.__snowball = snowball
+        self.__azure = azure
+        self.__kuro = kuro
+        self.__gui = GameControl(self.__windowName, 0)
+        self.game_utils = GameUtils(self.__gui, self.__pid)
+        self.game_utils.set_total(self.__total)  # Set total for idle detection
 
         color_templates = {
             "IMAGE_STORY_LEAD": config[self.__sv]['IMAGE_STORY_LEAD'],
@@ -82,7 +93,7 @@ class Explore(threading.Thread):
 
 
     def gameModeExplore(self):
-        global _isLeader, _cAutoRotation, cantattk, waittime, _idlecount, _isboss
+        global _isLeader, _cAutoRotation, cantattk, waittime, _isboss
         CLICK_SOULMAX=(568, 387)
         CLICK_FINISH2=(35, 510)
         SLIDE_STORY_COORDINATE=[(_displayChat+200,200),(_displayChat+1000,200)]
@@ -91,10 +102,9 @@ class Explore(threading.Thread):
             COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
             if INBATTLE!= False and COOP_QUEST == False:
                 time.sleep(1)
-                _idlecount+=1
                 continue
 
-            detectAssistance = threading.Thread(target=self.detectAssistance())
+            detectAssistance = threading.Thread(target=self.game_utils.detectAssistance())
             detectAssistance.setDaemon(True)
             detectAssistance.start
 
@@ -102,7 +112,7 @@ class Explore(threading.Thread):
             if position != False:
                 logging.info("Accept Invite.")
                 self.__gui.mouse_click_bg(position)  
-                _idlecount=0
+                self.game_utils.reset_idle_count()
                 time.sleep(1)
                 continue
 
@@ -127,9 +137,9 @@ class Explore(threading.Thread):
                 time.sleep(1)
                 self.__gui.mouse_click_bg((_displayChat+position[0]+170,position[1]+100))
             
-            if cantattk >= 12 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI'], part=1, pos1=(_displayChat+486, 390), pos2=(_displayChat+650, 450)) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE'], part=1, pos1=(_displayChat+792, 143), pos2=(_displayChat+875, 200)) == False):
+            if cantattk >= 10 or (self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI'], part=1, pos1=(_displayChat+486, 390), pos2=(_displayChat+650, 450)) != False and self.__gui.find_game_img(self.__gui.templates['IMAGE_EMPTY_SUSHI_CLOSE'], part=1, pos1=(_displayChat+792, 143), pos2=(_displayChat+875, 200)) == False):
                 logging.info("Unable to process, Exit!")
-                self.create_file(str(self.__total))
+                self.game_utils.create_file(str(self.__total))
                 subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
                             creationflags=subprocess.CREATE_NO_WINDOW)
                 return
@@ -140,7 +150,8 @@ class Explore(threading.Thread):
                 logging.info("Start Explore!")
                 self.__gui.mouse_click_bg(position)
                 waittime=0
-                _idlecount=0
+                cantattk+=1
+                self.game_utils.reset_idle_count()
                 time.sleep(2)
                 continue
 
@@ -151,7 +162,7 @@ class Explore(threading.Thread):
                 _cAutoRotation+=1
                 if _cAutoRotation >= 5:
                     logging.info("Exit!")
-                    self.create_file(str(self.__total))
+                    self.game_utils.create_file(str(self.__total))
                     subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
                                 creationflags=subprocess.CREATE_NO_WINDOW)
                     return
@@ -189,7 +200,7 @@ class Explore(threading.Thread):
                     self.__gui.mouse_click_bg(position3)
                     _isboss=True
                     cantattk+=1
-                    _idlecount=0
+                    self.game_utils.reset_idle_count()
                     time.sleep(1)
                     continue
 
@@ -198,7 +209,7 @@ class Explore(threading.Thread):
                     logging.info("Start fighting..")
                     self.__gui.mouse_click_bg(position)
                     cantattk+=1
-                    _idlecount=0
+                    self.game_utils.reset_idle_count()
                     time.sleep(1)
                     continue
             
@@ -207,7 +218,7 @@ class Explore(threading.Thread):
             if position != False:
                 # logging.info("Starting battle.... ")S
                 self.__gui.mouse_click_bg(position)
-                _idlecount=0
+                self.game_utils.reset_idle_count()
                 time.sleep(2)
                 continue
 
@@ -216,7 +227,7 @@ class Explore(threading.Thread):
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_FAILED'], part=1, pos1=(_displayChat+368, 20), pos2=(_displayChat+423, 204))
             if position != False:
                 cantattk=0
-                _idlecount=0
+                self.game_utils.reset_idle_count()
                 logging.info("Battle End, Fail..")
                 self.__gui.mouse_click_bg(position)
                 continue
@@ -235,10 +246,10 @@ class Explore(threading.Thread):
                 self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_ROOM_DETECT'], part=1, pos1=(_displayChat+20, 455), pos2=(_displayChat+81, 535)) == False):
                 logging.info("Battle End, Victory!")
                 cantattk=0
-                _idlecount=0
+                self.game_utils.reset_idle_count()
                 while True:
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175)) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(_displayChat+560, 300), pos2=(_displayChat+607, 397)):
-                        detectAssistance = threading.Thread(target=self.detectAssistance())
+                        detectAssistance = threading.Thread(target=self.game_utils.detectAssistance())
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
                     if (_isboss != True) and (self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49)) != False or 
@@ -266,7 +277,7 @@ class Explore(threading.Thread):
                 logging.info("Challenge finished. Exiting for next round.")
                 self.__gui.send_esc_down()
                 time.sleep(2)
-                _idlecount=0
+                self.game_utils.reset_idle_count()
                 self.__gui.mouse_click_bg((_displayChat+655, 383))
 
             #soulmax
@@ -276,80 +287,12 @@ class Explore(threading.Thread):
                 time.sleep(1)
                 continue
 
-            else:
-                _idlecount+=1
 
             
     
-    def detectAssistance(self):
-        global _displayChat, _idlecount
-        position1 = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
-        position2 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(_displayChat+560, 300), pos2=(_displayChat+607, 397))
-        position3 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])
-        # position4 = self.__gui.find_game_img(self.__gui.templates['IMAGE_CLOSEWANTED'])
-        wq_jade = config['VALUE']['WQ_JADE']
-        wq_coin = config['VALUE']['WQ_COIN']
-        wq_sushi = config['VALUE']['WQ_SUSHI']
-        wq_food = config['VALUE']['WQ_FOOD']
-
-        if _displayChat == 0 and position3:
-            _displayChat = 525
-            self.__gui.recheckRect()
-            logging.info('External chat detected.')
-
-        if (not position3) and position2:
-            self.__gui.mouse_click_bg(position2)
-            _displayChat = 0
-            self.__gui.recheckRect()
-            logging.info('ChatPanel detected, closed!')
-
-        if position1:
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_JADE']) and wq_jade
-            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_COIN']) and wq_coin
-            ) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_SUSHI']) and wq_sushi
-            ) or ((self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODDOG']) or self.__gui.find_game_img(self.__gui.templates['IMAGE_WQ_FOODCAT'])) and wq_food):
-                logging.info("Accept wanted quest!")
-                self.__gui.mouse_click_bg((_displayChat+757, 368))
-                screenshot = self.__gui.takescreenshot('คนเหลี่ยมๆ')
-                self.create_file2(data=screenshot)
-            else:
-                logging.info("Refuse to accept the invitation for the wanted seal.")
-                self.__gui.mouse_click_bg((_displayChat+757, 461))
-                self.__gui.takescreenshot('คนเหลี่ยมๆ')
-        
-        # if position4 != False:
-        #     logging.info('Close Event Wanted!')
-        #     self.__gui.mouse_click_bg(position4)
-        
-        if _idlecount >= 1200:
-            logging.info("Idle Count = 1200, Exit.")
-            self.create_file(str(self.__total))
-            subprocess.run(['taskkill','/F','/PID', str(self.__pid)],
-                        creationflags=subprocess.CREATE_NO_WINDOW)
-            return
-
-
-    def create_file(self, data='0'):
-        temp = f"runprocess/temp{self.__pid}.txt"
-        try:
-            with open(temp, "w") as file:
-                file.write(data)
-                file.close
-        except Exception as error:
-            logging.error(error)
-    
-    def create_file2(self, data='False'):
-        temp = f"runprocess/wanted{self.__pid}.txt"
-        try:
-            with open(temp, "w") as file:
-                file.write(data)
-                file.close
-        except Exception as error:
-            logging.error(error)
-
     def run(self):
         count=self.__beforetotal
-        self.create_file(data=str(count))
+        self.game_utils.create_file(data=str(count))
         _localVariable.detectCount=30
         while self.__total-count>0:
             seconds=0
@@ -360,7 +303,7 @@ class Explore(threading.Thread):
             self.gameModeExplore()
             count+=1
             message="completed %s, remaining %s round"%(str(count),str(self.__total-count))
-            self.create_file(data=str(count))
+            self.game_utils.create_file(data=str(count))
             logging.info(message)
 
 
