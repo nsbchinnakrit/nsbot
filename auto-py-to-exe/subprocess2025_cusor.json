@@ -1,0 +1,117 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "D:/Game/Github Project/nsbo_cusor/runprocess.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": false
+  },
+  {
+   "optionDest": "console",
+   "value": true
+  },
+  {
+   "optionDest": "icon_file",
+   "value": "D:/Game/Github Project/nsbot/icon.ico"
+  },
+  {
+   "optionDest": "name",
+   "value": "runprocess"
+  },
+  {
+   "optionDest": "clean_build",
+   "value": false
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": false
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": false
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": false
+  },
+  {
+   "optionDest": "argv_emulation",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.SingleSoul"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.Soul"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.Explore"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.SingleExplore"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.RealmRaid"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.RealmRaidW3F3"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.GuildRealmRaid"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.Explor3Realm"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.Explor3RealmW3F3"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.Event"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GameMode.Bondling"
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/Game/Github Project/nsbo_cusor/Module;Module/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/Game/Github Project/nsbo_cusor/GameMode;GameMode/"
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}

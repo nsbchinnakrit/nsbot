@@ -2,10 +2,11 @@
   "VALUE": {
     "LOG_LV": "DEBUG",
     "FIND_IMG_DELAY": 0.04,
-    "WQ_JADE": true,
+    "WQ_JADE": false,
     "WQ_COIN": false,
     "WQ_SUSHI": false,
-    "WQ_FOOD": true
+    "WQ_FOOD": false,
+    "IDLE_TIMEOUT_MINUTES": 15
   },
   "DEFAULT": {
     "IMAGE_FINISHED0": "./Image/Default/finished0.png",
@@ -166,7 +167,8 @@
     "IMAGE_EVENT_LOCKED": "./Image/Event/ev_lineup_locked.png",
     "IMAGE_EVENT_ATT": "./Image/Event/att.png",
     "IMAGE_EVENT_TARGET": "./Image/Event/target.png",
-    "IMAGE_EVENT_TARGET2": "./Image/Event/target2.png"
+    "IMAGE_EVENT_TARGET2": "./Image/Event/target2.png",
+    "IMAGE_EVENT_REWARD": "./Image/Event/reward.png"
   },
   "BONDLING": {
     "IMAGE_BONDLING_BONDLING": "./Image/Bondling/bondling.png",

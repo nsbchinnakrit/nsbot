@@ -99,10 +99,18 @@ class Bondling(threading.Thread):
         global cantattk, pactst, _firstclick, count, _ispact
         CLICK_SOULMAX=(568, 387)
         START_SOUL_COORDINATE=(1075, 565)
+
+        if self.__crystal_use != "false":
+            self.__tomb = "false"
+            self.__snowball = "false"
+            self.__azure = "false"
+            self.__kuro = "false"
+
         while True:  
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+196, 600), pos2=(_displayChat+277, 640))
             COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
             if INBATTLE!= False and COOP_QUEST == False:
+                self.game_utils.reset_idle_count()
                 time.sleep(1)
                 continue
                 
@@ -162,7 +170,7 @@ class Bondling(threading.Thread):
                 position = self.__gui.find_game_img(
                     self.__gui.templates[pact["template"]],
                     gray=0,
-                    threshold=0.95 ,part=1, pos1=(_displayChat+30, 389), pos2=(_displayChat+1022, 510)
+                    threshold=0.975 ,part=1, pos1=(_displayChat+30, 389), pos2=(_displayChat+1022, 510)
                 )
 
                 # ตรงนี้: ดึงชื่อ attribute แบบรองรับ __ ได้
@@ -182,7 +190,7 @@ class Bondling(threading.Thread):
             
             
             if self.__bondlingmode == 'Pact' and self.__crystal_use != 'false':
-                if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACT%s'%self.__crystal_use],part=1, pos1=(_displayChat+30, 389), pos2=(_displayChat+1022, 510)) == False) and (position != False):
+                if (self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_PACT%s'%self.__crystal_use],part=1, pos1=(_displayChat+30, 389), pos2=(_displayChat+1022, 510),threshold=0.96) == False) and (position != False):
                     logging.info("Summon Bondling!")
                     time.sleep(1)
                     self.__gui.mouse_click_bg(position)
@@ -289,6 +297,7 @@ class Bondling(threading.Thread):
             gameready=self.__gui.find_game_img(self.__gui.templates['IMAGE_READY'], part=1, pos1=(_displayChat+981, 477), pos2=(_displayChat+1103, 567))
             if gameready != False:
                 self.__gui.mouse_click_bg(gameready)
+                self.game_utils.reset_idle_count()
                 time.sleep(1)
                 continue
 
@@ -296,6 +305,7 @@ class Bondling(threading.Thread):
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_BRUSH'],part=1, pos1=(_displayChat+22, 67), pos2=(_displayChat+200, 300))
             if position != False and position2 == False:
                 logging.info("Pact Formed!")
+                cantattk = 0
                 while True:
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_BONDLING_EXPDETECT'],part=1, pos1=(_displayChat+525, 576), pos2=(_displayChat+616, 636)) != False:
                         break
@@ -322,6 +332,7 @@ class Bondling(threading.Thread):
             if self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) != False:
                 logging.info("Battle End, Victory!")
                 cantattk=0
+                self.game_utils.reset_idle_count()
                 while True:
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175)) or (_displayChat == 0 and self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATDETECT'])) or self.__gui.find_game_img(self.__gui.templates['IMAGE_CHATSTICKER'], part=1, pos1=(_displayChat+560, 300), pos2=(_displayChat+607, 397)):
                         detectAssistance = threading.Thread(target=self.game_utils.detectAssistance())
