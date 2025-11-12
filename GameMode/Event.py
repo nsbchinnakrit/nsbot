@@ -96,18 +96,18 @@ class Event(threading.Thread):
             detectAssistance.setDaemon(True)
             detectAssistance.start
             
-            position = (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625))) or (
-                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK2"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625)))
+            position = (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK"], part=1, pos1=(_displayChat+505, 560), pos2=(_displayChat+980, 625))) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK2"], part=1, pos1=(_displayChat+505, 560), pos2=(_displayChat+980, 625)))
             if position != False:
                 self.__gui.mouse_click_bg(position)
                 self.game_utils.reset_idle_count()
                 continue
 
-            position = (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
-                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED2"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625)))
+            position = (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED"], part=1, pos1=(_displayChat+505, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED2"], part=1, pos1=(_displayChat+505, 560), pos2=(_displayChat+980, 625)))
             if position != False:
                 logging.info('Start Challenge!')
-                self.__gui.mouse_click_bg((position[0]+345, position[1]+0))
+                self.__gui.mouse_click_bg(pos=(_displayChat+1009, 529), pos_end=(_displayChat+1079, 581))
                 self.game_utils.reset_idle_count()
                 time.sleep(1)
                 continue
@@ -142,10 +142,10 @@ class Event(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
-                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED2"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
-                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
-                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK2"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)):
+                    if (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED"], part=1, pos1=(_displayChat+505, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED2"], part=1, pos1=(_displayChat+505, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK"], part=1, pos1=(_displayChat+505, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK2"], part=1, pos1=(_displayChat+505, 560), pos2=(_displayChat+980, 625), threshold=0.84)):
                         break
 
                     if (self.__gui.find_game_img(self.__gui.templates["IMAGE_SOULMAX"], part=1, pos1=(_displayChat+361, 207), pos2=(_displayChat+778, 343))) != False:
