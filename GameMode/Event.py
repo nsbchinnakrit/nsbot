@@ -45,6 +45,7 @@ class Event(threading.Thread):
             "IMAGE_FINISHED1S1": config['DEFAULT']['IMAGE_FINISHED1S1'],
             "IMAGE_FINISHED1S2": config['DEFAULT']['IMAGE_FINISHED1S2'],
             "IMAGE_FINISHED1S3": config['DEFAULT']['IMAGE_FINISHED1S3'],
+            "IMAGE_FINISHED_CP": config['DEFAULT']['IMAGE_FINISHED_CP'],
 
             # Server-specific
             "IMAGE_REALM_RAID": config[self.__sv]['IMAGE_REALM_RAID'],
@@ -57,7 +58,9 @@ class Event(threading.Thread):
             # EVENT
             # "IMAGE_EVENT_ICON": config['EVENT']['IMAGE_EVENT_ICON'],
             "IMAGE_EVENT_LOCK": config['EVENT']['IMAGE_EVENT_LOCK'],
+            "IMAGE_EVENT_LOCK2": config['EVENT']['IMAGE_EVENT_LOCK2'],
             "IMAGE_EVENT_LOCKED": config['EVENT']['IMAGE_EVENT_LOCKED'],
+            "IMAGE_EVENT_LOCKED2": config['EVENT']['IMAGE_EVENT_LOCKED2'],
             "IMAGE_EVENT_START": config['EVENT']['IMAGE_EVENT_START'],
             "IMAGE_EVENT_REWARD": config['EVENT']['IMAGE_EVENT_REWARD'],
 
@@ -83,7 +86,7 @@ class Event(threading.Thread):
         global _displayChat, _cAttackRealm
         CLICK_SOULMAX=(568, 387)
         while True:
-            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+459, 600), pos2=(_displayChat+544, 640))
+            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+195, 600), pos2=(_displayChat+544, 640))
             COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
             if INBATTLE!= False and COOP_QUEST == False:
                 time.sleep(1)
@@ -93,18 +96,20 @@ class Event(threading.Thread):
             detectAssistance.setDaemon(True)
             detectAssistance.start
             
-            position = self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK"], part=1, pos1=(_displayChat+704, 568), pos2=(_displayChat+1000, 625))
+            position = (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625))) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK2"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625)))
             if position != False:
                 self.__gui.mouse_click_bg(position)
                 self.game_utils.reset_idle_count()
                 continue
 
-            position = self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED"], part=1, pos1=(_displayChat+704, 568), pos2=(_displayChat+1000, 625), threshold=0.84)
+            position = (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED2"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625)))
             if position != False:
                 logging.info('Start Challenge!')
-                self.__gui.mouse_click_bg((position[0]+276, position[1]+0))
+                self.__gui.mouse_click_bg((position[0]+345, position[1]+0))
                 self.game_utils.reset_idle_count()
-                time.sleep(0.5)
+                time.sleep(1)
                 continue
 
             if _cAttackRealm >= 12:
@@ -122,7 +127,12 @@ class Event(threading.Thread):
                 self.game_utils.reset_idle_count()
                 continue
                 
-            if (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1"], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) != False) or (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S1"], part=1, pos1=(_displayChat+326, 119), pos2=(_displayChat+434, 215)) != False) or (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED2"], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) != False) or (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_REWARD"], part=1, pos1=(_displayChat+252, 155), pos2=(_displayChat+330, 300)) != False):
+            if (self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1"], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED_CP"], part=1, pos1=(_displayChat+360, 80), pos2=(_displayChat+500, 160)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S1"], part=1, pos1=(_displayChat+326, 119), pos2=(_displayChat+434, 215)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S3"], part=1, pos1=(_displayChat+50, 550), pos2=(_displayChat+450, 610)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED2"], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_REWARD"], part=1, pos1=(_displayChat+252, 155), pos2=(_displayChat+330, 300)) != False):
                 logging.info("Battle End, Victory!")
                 _cAttackRealm=0
                 self.game_utils.reset_idle_count()
@@ -132,7 +142,10 @@ class Event(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED"], part=1, pos1=(_displayChat+704, 568), pos2=(_displayChat+1000, 625), threshold=0.84)) or self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK"], part=1, pos1=(_displayChat+704, 568), pos2=(_displayChat+1000, 625), threshold=0.84):
+                    if (self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCKED2"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)) or (
+                        self.__gui.find_game_img(self.__gui.templates["IMAGE_EVENT_LOCK2"], part=1, pos1=(_displayChat+620, 560), pos2=(_displayChat+980, 625), threshold=0.84)):
                         break
 
                     if (self.__gui.find_game_img(self.__gui.templates["IMAGE_SOULMAX"], part=1, pos1=(_displayChat+361, 207), pos2=(_displayChat+778, 343))) != False:
