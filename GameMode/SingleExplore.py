@@ -49,9 +49,12 @@ class SingleExplore(threading.Thread):
             "IMAGE_EMPTY_SUSHI": config['DEFAULT']['IMAGE_EMPTY_SUSHI'],
             "IMAGE_EMPTY_SUSHI_CLOSE": config['DEFAULT']['IMAGE_EMPTY_SUSHI_CLOSE'],
             "IMAGE_FAILED": config['DEFAULT']['IMAGE_FAILED'],
-            "IMAGE_FINISHED2": config['DEFAULT']['IMAGE_FINISHED2'],
             "IMAGE_FINISHED1": config['DEFAULT']['IMAGE_FINISHED1'],
+            "IMAGE_FINISHED1S1": config['DEFAULT']['IMAGE_FINISHED1S1'],
             "IMAGE_FINISHED1S2": config['DEFAULT']['IMAGE_FINISHED1S2'],
+            "IMAGE_FINISHED1S3": config['DEFAULT']['IMAGE_FINISHED1S3'],
+            "IMAGE_FINISHED_CP": config['DEFAULT']['IMAGE_FINISHED_CP'],
+            "IMAGE_FINISHED2": config['DEFAULT']['IMAGE_FINISHED2'],
             "IMAGE_INBATTLE": config[self.__sv]['IMAGE_INBATTLE'],
 
             # SOUL
@@ -249,7 +252,15 @@ class SingleExplore(threading.Thread):
 
 
             #check finish
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+35, 555), pos2=(_displayChat+95, 605))) != False:
+            # if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) or 
+            # self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+35, 555), pos2=(_displayChat+95, 605))) != False:
+            #     logging.info("Battle End, Victory!")
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192))) or (
+                self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+35, 555), pos2=(_displayChat+95, 605))) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED_CP"], part=1, pos1=(_displayChat+360, 80), pos2=(_displayChat+500, 160)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S1"], part=1, pos1=(_displayChat+326, 119), pos2=(_displayChat+434, 215)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S3"], part=1, pos1=(_displayChat+50, 550), pos2=(_displayChat+450, 610)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477))):
                 logging.info("Battle End, Victory!")
                 cantattk=0
                 self.game_utils.reset_idle_count()

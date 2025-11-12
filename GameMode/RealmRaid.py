@@ -72,7 +72,10 @@ class RealmRaid(threading.Thread):
             "IMAGE_INBATTLE": config[self.__sv]['IMAGE_INBATTLE'],
             "IMAGE_FAILED": config['DEFAULT']['IMAGE_FAILED'],
             "IMAGE_FINISHED1": config['DEFAULT']['IMAGE_FINISHED1'],
+            "IMAGE_FINISHED1S1": config['DEFAULT']['IMAGE_FINISHED1S1'],
+            "IMAGE_FINISHED1S2": config['DEFAULT']['IMAGE_FINISHED1S2'],
             "IMAGE_FINISHED1S3": config['DEFAULT']['IMAGE_FINISHED1S3'],
+            "IMAGE_FINISHED_CP": config['DEFAULT']['IMAGE_FINISHED_CP'],
             "IMAGE_FINISHED2": config['DEFAULT']['IMAGE_FINISHED2'],
 
             #WANTED Quest
@@ -240,7 +243,14 @@ class RealmRaid(threading.Thread):
                     self.__gui.mouse_click_bg((_displayChat+CLICK_FINISH2[0], CLICK_FINISH2[1]))
 
             #check finish
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477))):
+            # if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477))):
+            #     logging.info("Battle End, Victory!")
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192))) or (
+                self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+30, 30), pos2=(_displayChat+95, 95))) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED_CP"], part=1, pos1=(_displayChat+360, 80), pos2=(_displayChat+500, 160)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S1"], part=1, pos1=(_displayChat+326, 119), pos2=(_displayChat+434, 215)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates["IMAGE_FINISHED1S3"], part=1, pos1=(_displayChat+50, 550), pos2=(_displayChat+450, 610)) != False) or (
+                self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477))):
                 logging.info("Battle End, Victory!")
                 #time.sleep(5)
                 while True:
