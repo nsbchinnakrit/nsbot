@@ -11,7 +11,7 @@ _localVariable=threading.local()
 _displayChat=0
 _cAttackRealm=0
 _idlecount=0
-CLICK_SOULMAX=(568, 387)
+CLICK_SOULMAX=(649, 389)
 START_SOUL_COORDINATE = (1075, 565)
 
 class Soul(threading.Thread):

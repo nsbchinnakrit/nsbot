@@ -84,7 +84,7 @@ class SingleSoul(threading.Thread):
 
     def gameModeSoul(self):
         global _displayChat, _cAttackRealm
-        CLICK_SOULMAX=(568, 387)
+        CLICK_SOULMAX=(649, 389)
         START_SOUL_COORDINATE=(1075, 565)
         while True:  
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+459, 600), pos2=(_displayChat+544, 640))

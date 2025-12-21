@@ -95,7 +95,7 @@ class SingleExplore(threading.Thread):
 
     def gameModeExplore(self):
         global _isPaused, _displayChat, _cAutoRotation, cantattk
-        CLICK_SOULMAX=(568, 387)
+        CLICK_SOULMAX=(649, 389)
         CLICK_FINISH2=(35, 510)
         SLIDE_STORY_COORDINATE=[(_displayChat+200,200),(_displayChat+1000,200)]
         while True:

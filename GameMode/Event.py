@@ -84,7 +84,7 @@ class Event(threading.Thread):
 #   
     def gameModeEvent(self):
         global _displayChat, _cAttackRealm
-        CLICK_SOULMAX=(568, 387)
+        CLICK_SOULMAX=(649, 389)
         while True:
             INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+195, 600), pos2=(_displayChat+544, 640))
             COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))

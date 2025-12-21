@@ -15,7 +15,7 @@ _cAttackRealm=0
 cantattk=0
 _firstcheck=True
 
-CLICK_SOULMAX=(568, 387)
+CLICK_SOULMAX=(649, 389)
 CLICK_FINISH2=(35, 510)
 SLIDE_STORY_COORDINATE=[(_displayChat+200,200),(_displayChat+1000,200)]
 START_SOUL_COORDINATE = (1075, 565)
