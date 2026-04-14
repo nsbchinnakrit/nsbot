@@ -146,6 +146,7 @@ class Soul(threading.Thread):
                 # self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED0']) or 
                 self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) or
                 self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+30, 30), pos2=(_displayChat+920, 550)) or
+                self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+629, 484), pos2=(_displayChat+950, 556)) or
                 self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477))
             ):
                 logging.info("Battle End, Victory!")
