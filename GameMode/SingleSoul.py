@@ -53,6 +53,7 @@ class SingleSoul(threading.Thread):
             "IMAGE_FINISHED0": config['DEFAULT']['IMAGE_FINISHED0'],
             "IMAGE_FINISHED1": config['DEFAULT']['IMAGE_FINISHED1'],
             "IMAGE_FINISHED1S2": config['DEFAULT']['IMAGE_FINISHED1S2'],
+            "IMAGE_FINISHED1S3": config['DEFAULT']['IMAGE_FINISHED1S3'],
             "IMAGE_FINISHED2": config['DEFAULT']['IMAGE_FINISHED2'],
             "IMAGE_BOSSHP": config['DEFAULT']['IMAGE_BOSSHP'],
             "IMAGE_BOSSMARK": config[self.__sv]['IMAGE_BOSSMARK'],
@@ -87,7 +88,7 @@ class SingleSoul(threading.Thread):
         CLICK_SOULMAX=(649, 389)
         START_SOUL_COORDINATE=(1075, 565)
         while True:  
-            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+459, 600), pos2=(_displayChat+544, 640))
+            INBATTLE=self.__gui.find_game_img(self.__gui.templates['IMAGE_INBATTLE'],part=1, pos1=(_displayChat+170, 600), pos2=(_displayChat+544, 640))
             COOP_QUEST = self.__gui.find_game_img(self.__gui.templates['IMAGE_COOP2_SEAL'], part=1, pos1=(_displayChat+455, 135), pos2=(_displayChat+495, 175))
             if INBATTLE!= False and COOP_QUEST == False:
                 time.sleep(1)
@@ -141,7 +142,12 @@ class SingleSoul(threading.Thread):
                     self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
 
              #check finish
-            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 10), pos2=(_displayChat+459, 192)) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+30, 30), pos2=(_displayChat+95, 95))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+629, 484), pos2=(_displayChat+950, 556)))) != False:
+            if (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477)) or 
+            self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 10), pos2=(_displayChat+459, 192)) or 
+            (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+30, 30), pos2=(_displayChat+95, 95))) or
+            (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+271, 479), pos2=(_displayChat+849, 550))) or
+            (self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S3'], part=1, pos1=(_displayChat+101, 556), pos2=(_displayChat+405, 610)))) != False:
+
                 logging.info("Battle End, Victory!")
                 _cAttackRealm=0
                 self.game_utils.reset_idle_count()
@@ -165,7 +171,7 @@ class SingleSoul(threading.Thread):
                         self.__gui.mouse_click_bg((_displayChat+CLICK_SOULMAX[0], CLICK_SOULMAX[1]))
                         time.sleep(1)
 
-                    self.__gui.mouse_click_bg(START_SOUL_COORDINATE)
+                    self.__gui.mouse_click_bg((_displayChat + 548, 620))
                 break
 
             if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_PETREWARD'], part=1, pos1=(_displayChat+103, 197), pos2=(_displayChat+304, 282)):
