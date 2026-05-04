@@ -62,6 +62,7 @@ class Soul(threading.Thread):
             "IMAGE_FINISHED0": config['DEFAULT']['IMAGE_FINISHED0'],
             "IMAGE_FINISHED1": config['DEFAULT']['IMAGE_FINISHED1'],
             "IMAGE_FINISHED1S2": config['DEFAULT']['IMAGE_FINISHED1S2'],
+            "IMAGE_FINISHED1S3": config['DEFAULT']['IMAGE_FINISHED1S3'],
             "IMAGE_FINISHED2": config['DEFAULT']['IMAGE_FINISHED2'],
 
             # SERVER (shared)
@@ -146,7 +147,7 @@ class Soul(threading.Thread):
                 # self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED0']) or 
                 self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1'], part=1, pos1=(_displayChat+395, 137), pos2=(_displayChat+459, 192)) or
                 self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+30, 30), pos2=(_displayChat+920, 550)) or
-                self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S2'], part=1, pos1=(_displayChat+629, 484), pos2=(_displayChat+950, 556)) or
+                self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED1S3'], part=1, pos1=(_displayChat+101, 556), pos2=(_displayChat+405, 610)) or
                 self.__gui.find_game_img(self.__gui.templates['IMAGE_FINISHED2'], part=1, pos1=(_displayChat+513, 444), pos2=(_displayChat+559, 477))
             ):
                 logging.info("Battle End, Victory!")
