@@ -57,6 +57,7 @@ class Explor3RealmW3F3(threading.Thread):
             "IMAGE_STORY_BACK": config['EXPLORE']['IMAGE_STORY_BACK'],
             "IMAGE_STORY_AUTOFOOD": config[self.__sv]['IMAGE_STORY_AUTOFOOD'],
             "IMAGE_STORY_START": config[self.__sv]['IMAGE_STORY_START'],
+            "IMAGE_STORY_NEWSTART": config[self.__sv]['IMAGE_STORY_NEWSTART'],
 
             # SOUL
             "IMAGE_SOUL_ROOM_DETECT": config['SOUL']['IMAGE_SOUL_ROOM_DETECT'],
@@ -106,6 +107,7 @@ class Explor3RealmW3F3(threading.Thread):
             "IMAGE_WQ_SUSHI": config['DEFAULT']['IMAGE_WQ_SUSHI'],
             "IMAGE_WQ_FOODDOG": config['DEFAULT']['IMAGE_WQ_FOODDOG'],
             "IMAGE_WQ_FOODCAT": config['DEFAULT']['IMAGE_WQ_FOODCAT'],
+            "IMAGE_ROOM_BACK": config['DEFAULT']['IMAGE_ROOM_BACK'],
 
             # SHARED SERVER
             "IMAGE_COOP2_SEAL": config[self.__sv]['IMAGE_COOP2_SEAL'],
@@ -139,7 +141,7 @@ class Explor3RealmW3F3(threading.Thread):
             detectAssistance.start
 
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET2'],part=1, pos1=(_displayChat+79, 6), pos2=(_displayChat+940, 47), threshold=0.90)
-            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+955, 79), pos2=(_displayChat+1080, 180))  
+            position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+941, 430), pos2=(_displayChat+1006, 488)) 
             position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_GUILD'], part=1, pos1=(_displayChat+1000, 194), pos2=(_displayChat+1132, 446))
             position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+874, 80), pos2=(_displayChat+1120, 160))
             position5=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_BOX'],part=1, pos1=(_displayChat+8, 119), pos2=(_displayChat+896, 501))
@@ -156,7 +158,7 @@ class Explor3RealmW3F3(threading.Thread):
                     time.sleep(1)
                     continue
                 
-            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'], part=1, pos1=(_displayChat+874, 80), pos2=(_displayChat+1112, 174))
+            position4=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_NEWSTART'],part=1, pos1=(_displayChat+770, 448), pos2=(_displayChat+1101, 616))
             if position != False or position3 != False:
                 logging.info("Change to Realm Raid")
                 while True:
@@ -178,7 +180,7 @@ class Explor3RealmW3F3(threading.Thread):
                         break
 
                     if position4 != False and position3 == False:
-                        self.__gui.mouse_click_bg(position4)
+                        self.__gui.mouse_click_bg((position4[0]-969,position4[1]-524))
                         logging.info('Close Explore Page.')
                         #Click icon realm
                         time.sleep(1)
@@ -187,7 +189,7 @@ class Explor3RealmW3F3(threading.Thread):
                     else:
                         self.gameModeRealmRaid()
 
-            if position == False and position2 != False or self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49)) != False or self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_START'],part=1, pos1=(_displayChat+770, 448), pos2=(_displayChat+907, 517)) != False:
+            if position == False and position2 != False or self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49)) != False or self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_NEWSTART'],part=1, pos1=(_displayChat+770, 448), pos2=(_displayChat+1101, 616)) != False:
                 self.gameModeExplor()
             
             #Fail
@@ -289,7 +291,7 @@ class Explor3RealmW3F3(threading.Thread):
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49))
             if position == False:
                 time.sleep(1)
-                position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+955, 79), pos2=(_displayChat+1080, 180))  
+                position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+941, 430), pos2=(_displayChat+1006, 488))   
                 if _firstcheck == False and (self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_EMPTY_TICKET2'],part=1, pos1=(_displayChat+79, 6), pos2=(_displayChat+940, 47))) != False:
                     _firstcheck = False
                     count+=1
@@ -298,11 +300,11 @@ class Explor3RealmW3F3(threading.Thread):
                 elif position != False:
                     _localVariable.isBossDetected=False
                     logging.info("Entering last chapter..")
-                    self.__gui.mouse_click_bg((position[0],position[1]+370))
+                    self.__gui.mouse_click_bg((position[0],position[1]))
                     time.sleep(1)
                     continue
                 
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_START'],part=1, pos1=(_displayChat+770, 448), pos2=(_displayChat+907, 517))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_NEWSTART'],part=1, pos1=(_displayChat+770, 448), pos2=(_displayChat+1101, 616))
             position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_BOX'],part=1, pos1=(_displayChat+8, 119), pos2=(_displayChat+896, 501))
             position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'],part=1, pos1=(_displayChat+896, 101), pos2=(_displayChat+964, 171))
             if position != False:
@@ -418,7 +420,7 @@ class Explor3RealmW3F3(threading.Thread):
                         detectAssistance.start
 
                     if (self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49)) != False or 
-                        self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+955, 79), pos2=(_displayChat+1080, 180)) != False):
+                        self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+941, 430), pos2=(_displayChat+1006, 488)) != False):
                         time.sleep(1)
                         break
                     #soulmax

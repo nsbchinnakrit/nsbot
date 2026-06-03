@@ -66,7 +66,7 @@ class Bondling(threading.Thread):
             # SOUL
             "IMAGE_SOUL_INVITE_CHECKBOX": config['SOUL']['IMAGE_SOUL_INVITE_CHECKBOX'],
             "IMAGE_SINGLE_SOUL_LOCK": config['SOUL']['IMAGE_SINGLE_SOUL_LOCK'],
-            "IMAGE_SINGLE_SOUL_STAT": config['SOUL']['IMAGE_SINGLE_SOUL_STAT'],
+            "IMAGE_SINGLE_SOUL_START": config['SOUL']['IMAGE_SINGLE_SOUL_START'],
             "IMAGE_SOULMAX": config[self.__sv]['IMAGE_SOULMAX'],
 
             # REALM

@@ -71,6 +71,7 @@ class SingleExplore(threading.Thread):
             "IMAGE_REALM_CANCEL": config[self.__sv]['IMAGE_REALM_CANCEL'],
             "IMAGE_STORY_AUTOFOOD": config[self.__sv]['IMAGE_STORY_AUTOFOOD'],
             "IMAGE_STORY_START": config[self.__sv]['IMAGE_STORY_START'],
+            "IMAGE_STORY_NEWSTART": config[self.__sv]['IMAGE_STORY_NEWSTART'],
             "IMAGE_COOP2_SEAL": config[self.__sv]['IMAGE_COOP2_SEAL'],
             "IMAGE_CHATDETECT": config[self.__sv]['IMAGE_CHATDETECT'],
             "IMAGE_CHATSTICKER": config[self.__sv]['IMAGE_CHATSTICKER'],
@@ -152,18 +153,18 @@ class SingleExplore(threading.Thread):
 
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_CHERRY_CAKE'],part=1, pos1=(_displayChat+584, 5), pos2=(_displayChat+649, 49))
             if position == False:
-                position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+955, 79), pos2=(_displayChat+1080, 180))  
+                position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_LIST_CHAPTER'],part=1, pos1=(_displayChat+941, 430), pos2=(_displayChat+1006, 488))  
                 if position != False:
                     _localVariable.isBossDetected=False
                     logging.info("Entering last chapter.... ")
-                    self.__gui.mouse_click_bg((position[0],position[1]+370))
+                    self.__gui.mouse_click_bg((position[0],position[1]))
                     cantattk+=1
                     self.game_utils.reset_idle_count()
                     time.sleep(1)
                     continue
                 
 
-            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_START'],part=1, pos1=(_displayChat+770, 448), pos2=(_displayChat+907, 517))
+            position=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_NEWSTART'],part=1, pos1=(_displayChat+770, 448), pos2=(_displayChat+1101, 616))
             position2=self.__gui.find_game_img(self.__gui.templates['IMAGE_STORY_BOX'],part=1, pos1=(_displayChat+8, 119), pos2=(_displayChat+896, 501))
             position3=self.__gui.find_game_img(self.__gui.templates['IMAGE_REALM_CLOSE'],part=1, pos1=(_displayChat+896, 101), pos2=(_displayChat+964, 171))
             if position != False:

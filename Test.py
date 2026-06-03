@@ -37,7 +37,7 @@ class Test(threading.Thread):
             # self.__gui.find_game_img(self.__gui.templates['IMAGE_EVENT_START'])
             # self.__gui.find_game_img(self.__gui.templates['IMAGE_EVENT_START2'])
             # self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_START'])
-            # self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT'])
+            # self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_START'])
 
         
 

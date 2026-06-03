@@ -37,8 +37,9 @@ class SingleSoul(threading.Thread):
         gray_templates = {
             # SOUL
             "IMAGE_SINGLE_SOUL_LOCK": config['SOUL']['IMAGE_SINGLE_SOUL_LOCK'],
-            "IMAGE_SINGLE_SOUL_STAT": config['SOUL']['IMAGE_SINGLE_SOUL_STAT'],
-            "IMAGE_SINGLE_TOTEM_STAT": config['SOUL']['IMAGE_SINGLE_TOTEM_STAT'],
+            "IMAGE_SINGLE_SOUL_START": config['SOUL']['IMAGE_SINGLE_SOUL_START'],
+            "IMAGE_SINGLE_TOTEM_START": config['SOUL']['IMAGE_SINGLE_TOTEM_START'],
+            "IMAGE_SINGLE_IZANAMI_START": config['SOUL']['IMAGE_SINGLE_IZANAMI_START'],
             "IMAGE_SOUL_INVITE_CHECKBOX": config['SOUL']['IMAGE_SOUL_INVITE_CHECKBOX'],
             "IMAGE_SOUL_PETREWARD": config[self.__sv]['IMAGE_SOUL_PETREWARD'],
             "IMAGE_SOULMAX": config[self.__sv]['IMAGE_SOULMAX'],
@@ -100,7 +101,7 @@ class SingleSoul(threading.Thread):
 
             #lock line up
             position=self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_LOCK'], part=1, pos1=(_displayChat+475, 485), pos2=(_displayChat+540, 540))
-            position2=(self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640)))
+            position2=(self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_START'], part=1, pos1=(_displayChat+938, 597), pos2=(_displayChat+1089, 626)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_IZANAMI_START'], part=1, pos1=(_displayChat+949, 588), pos2=(_displayChat+1130, 630)))
             if position != False and position2 != False:
                 logging.info("Successfully lock lineup...")
                 self.__gui.mouse_click_bg(position)
@@ -157,7 +158,7 @@ class SingleSoul(threading.Thread):
                         detectAssistance.setDaemon(True)
                         detectAssistance.start
 
-                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_STAT'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))) or (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_TOTEM_STAT'], part=1, pos1=(_displayChat+951, 454), pos2=(_displayChat+1136, 640))) != False:
+                    if (self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_SOUL_START'], part=1, pos1=(_displayChat+938, 597), pos2=(_displayChat+1089, 626)) or self.__gui.find_game_img(self.__gui.templates['IMAGE_SINGLE_IZANAMI_START'], part=1, pos1=(_displayChat+949, 588), pos2=(_displayChat+1130, 630))) != False:
                         break
 
                     if self.__gui.find_game_img(self.__gui.templates['IMAGE_SOUL_PETREWARD'], part=1, pos1=(_displayChat+103, 197), pos2=(_displayChat+304, 282)):
